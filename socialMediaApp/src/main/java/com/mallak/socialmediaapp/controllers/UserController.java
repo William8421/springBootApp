@@ -4,8 +4,11 @@ import com.mallak.socialmediaapp.models.User;
 import com.mallak.socialmediaapp.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -16,9 +19,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<Optional<User>> getUser(@RequestBody User user){
-        return userService.getUserById(user.getId());
+    @PostMapping("/user")
+    public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String, String> payload){
+        System.out.println("controller: " + payload.get("id"));
+        return userService.getUserById(payload.get("id"));
     }
 
     @PutMapping("/editprofile")

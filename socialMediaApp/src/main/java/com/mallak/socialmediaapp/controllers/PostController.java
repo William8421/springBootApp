@@ -1,14 +1,15 @@
 package com.mallak.socialmediaapp.controllers;
 
 import com.mallak.socialmediaapp.models.Post;
+import com.mallak.socialmediaapp.models.User;
 import com.mallak.socialmediaapp.services.PostService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -24,8 +25,8 @@ public class PostController {
         return postService.allPosts();
     }
 
-    @PostMapping("addpost")
-    public ResponseEntity<Post> addPost(@RequestBody Post post){
+    @PostMapping("/addpost")
+    public ResponseEntity<String> addPost(@RequestBody Post post){
         return postService.createPost(post);
     }
 
@@ -42,5 +43,10 @@ public class PostController {
     @DeleteMapping("/deletepost")
     public ResponseEntity<String> deleteUserPost(@RequestBody Post post){
         return postService.deletePost(post.getId());
+    }
+
+    @PostMapping("postlike")
+    public ResponseEntity<String> manageLikes(@RequestBody Map<String, String> payload){
+        return postService.likes(payload.get("id"), payload.get("userId"));
     }
 }

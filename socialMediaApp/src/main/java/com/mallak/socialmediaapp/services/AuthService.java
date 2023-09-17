@@ -23,30 +23,38 @@ public class AuthService {
     }
 
     public ResponseEntity<String> registerUser(User user) {
-        if (isInvalidUser(user)) {
-            return new ResponseEntity<>("First name, last name, and username cannot be empty", HttpStatus.BAD_REQUEST);
-        }
-        if (user.getAge() <= 17) {
-            int period = 18 - user.getAge();
-            return new ResponseEntity<>("See you in " + period + " year/s", HttpStatus.BAD_REQUEST);
-        }
-        if (!isValidEmail(user.getEmail())) {
-            return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
-        }
-        if (emailOrUsernameExists(user.getEmail(), user.getUsername())) {
-            return new ResponseEntity<>("Email or Username already exists", HttpStatus.BAD_REQUEST);
-        }
+        try{
+            if (isInvalidUser(user)) {
+                return new ResponseEntity<>("First name, last name, username and age cannot be empty", HttpStatus.BAD_REQUEST);
+            }
+            if (user.getAge() <= 17) {
+                int period = 18 - user.getAge();
+                return new ResponseEntity<>("See you in " + period + " year/s", HttpStatus.BAD_REQUEST);
+            }
+            if (!isValidEmail(user.getEmail())) {
+                return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
+            }
+            if (emailOrUsernameExists(user.getEmail(), user.getUsername())) {
+                return new ResponseEntity<>("Email or Username already exists", HttpStatus.BAD_REQUEST);
+            }
 
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
-        userRepository.save(user);
-        return new ResponseEntity<>("Thank you for Signing up", HttpStatus.CREATED);
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+            return new ResponseEntity<>(user.getUsername() + "&" + user.getId(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ResponseEntity<String> authenticateUser(String email, String providedPassword) {
-        User user = userRepository.findByEmail(email);
-        if (user != null && passwordEncoder.matches(providedPassword, user.getPassword())) {
-            return new ResponseEntity<>("Authentication successful!", HttpStatus.OK);
+        try{
+            User user = userRepository.findByEmail(email);
+            if (user != null && passwordEncoder.matches(providedPassword, user.getPassword())) {
+                return new ResponseEntity<>(user.getUsername() + "&" + user.getId(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return new ResponseEntity<>("Either email or password is incorrect!", HttpStatus.BAD_REQUEST);
     }
@@ -62,7 +70,8 @@ public class AuthService {
     private boolean isInvalidUser(User user) {
         return user.getFirstName() == null || user.getFirstName().isEmpty() ||
                 user.getLastName() == null || user.getLastName().isEmpty() ||
-                user.getUsername() == null || user.getUsername().isEmpty();
+                user.getUsername() == null || user.getUsername().isEmpty() ||
+                user.getAge() == null;
     }
 
     private boolean emailOrUsernameExists(String email, String username) {

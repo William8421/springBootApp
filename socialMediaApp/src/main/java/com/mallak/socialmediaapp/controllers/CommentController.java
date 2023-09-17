@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
@@ -19,13 +20,30 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("addcomment")
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment){
-        return commentService.createComment(comment);
+    @PostMapping("/addcomment")
+    public ResponseEntity<String> addComment(@RequestBody Map<String, String> payload){
+        return commentService.createComment(payload.get("userId"), payload.get("postId"), payload.get("body"));
     }
 
-    @GetMapping("postcomments")
-    public ResponseEntity<List<Comment>> getPostComments(@RequestBody Comment comment){
-        return commentService.findAllComments(comment.getPostId());
+    @PostMapping("/postcomments")
+    public ResponseEntity<List<Comment>> getPostComments(@RequestBody Map<String, String> payload){
+        return commentService.getAllPostComments(payload.get("postId"));
     }
+
+    @PutMapping("/updatepostcomment")
+    public ResponseEntity<String> updatePostComment(@RequestBody Comment comment){
+        return commentService.updateComment(comment);
+    }
+
+    @DeleteMapping("deletecomment")
+    public ResponseEntity<String> deletePostComment(@RequestBody Comment comment){
+        return commentService.deleteComment(comment.getId());
+    }
+
+    @PostMapping("commentlike")
+    public ResponseEntity<String> manageCommentLikes(@RequestBody Map<String, String> payload){
+        return commentService.commentLikes(payload.get("id"), payload.get("userId"));
+    }
+
+
 }
