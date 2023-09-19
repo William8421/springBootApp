@@ -34,18 +34,17 @@ public class CommentService {
             if(post == null){
                 return new ResponseEntity<>("post not found", HttpStatus.BAD_REQUEST);
             }
-            post.setPostComments(post.getPostComments() + 1);
-            post.getPostCommentsIds().add(userId);
-            if(user != null) post.getPostCommentedBy().add(user.getUsername());
-            postRepository.save(post);
-
-            Comment comment = new Comment();
-            comment.setBody(body);
-            comment.setPostId(postId);
-            comment.setUserId(userId);
-            if(user != null) comment.setCommentOwner(user.getUsername());
-
-            commentRepository.save(comment);
+            if(user != null) {
+                Comment comment = new Comment();
+                comment.setBody(body);
+                comment.setPostId(postId);
+                comment.setUserId(userId);
+                comment.setCommentOwner(user.getUsername());
+                commentRepository.save(comment); comment.setCommentOwner(user.getUsername());
+                post.setPostComments(post.getPostComments() + 1);
+                post.getPostCommentsIds().add(comment.getId()); post.getPostCommentedBy().add(user.getUsername());
+                postRepository.save(post);
+            }
             return new ResponseEntity<>("Comment added", HttpStatus.CREATED);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -78,8 +77,19 @@ public class CommentService {
 
     }
 
-    public ResponseEntity<String> deleteComment(String id) {
+    public ResponseEntity<String> deleteComment(String id, String postId) {
         try{
+            Post post = postRepository.findById(postId).orElse(null);
+            Comment comment = commentRepository.findById(id).orElse(null);
+
+            if((post != null) && (comment != null)){
+                if(post.getPostCommentsIds().contains(id)){
+                    post.setPostComments(post.getPostComments() - 1);
+                    post.getPostCommentsIds().remove(id);
+                    post.getPostCommentedBy().remove(comment.getCommentOwner());
+                    }
+                    postRepository.save(post);
+                }
             commentRepository.deleteById(id);
             return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
         } catch (Exception e) {

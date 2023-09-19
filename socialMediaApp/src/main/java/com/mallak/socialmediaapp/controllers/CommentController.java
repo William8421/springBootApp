@@ -35,9 +35,9 @@ public class CommentController {
         return commentService.updateComment(comment);
     }
 
-    @DeleteMapping("deletecomment")
-    public ResponseEntity<String> deletePostComment(@RequestBody Comment comment){
-        return commentService.deleteComment(comment.getId());
+    @PostMapping("deletecomment")
+    public ResponseEntity<String> deletePostComment(@RequestBody Map<String, String> payload){
+        return commentService.deleteComment(payload.get("id"), payload.get("postId"));
     }
 
     @PostMapping("commentlike")

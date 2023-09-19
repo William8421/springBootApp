@@ -3,6 +3,7 @@ package com.mallak.socialmediaapp.services;
 import com.mallak.socialmediaapp.models.Comment;
 import com.mallak.socialmediaapp.models.Post;
 import com.mallak.socialmediaapp.models.User;
+import com.mallak.socialmediaapp.repositories.CommentRepository;
 import com.mallak.socialmediaapp.repositories.PostRepository;
 import com.mallak.socialmediaapp.repositories.UserRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,10 +21,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
 
     public ResponseEntity<List<Post>> allPosts() {
@@ -67,7 +70,10 @@ public class PostService {
 
     public ResponseEntity<String> deletePost(String id) {
         try{
+            Post post = postRepository.findById(id).orElse(null);
+            List<Comment> allComments = commentRepository.findAllByPostId(post.getId());
             postRepository.deleteById(id);
+            commentRepository.deleteAllByPostId(post.getId());
             return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);

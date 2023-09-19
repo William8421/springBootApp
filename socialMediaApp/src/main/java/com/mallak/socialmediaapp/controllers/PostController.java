@@ -30,9 +30,9 @@ public class PostController {
         return postService.createPost(post);
     }
 
-    @GetMapping("/userposts")
-    public ResponseEntity<List<Post>> getSingleUserPosts(@RequestBody Post post){
-        return postService.getUserPosts(post.getUserId());
+    @PostMapping("/userposts")
+    public ResponseEntity<List<Post>> getSingleUserPosts(@RequestBody User user){
+        return postService.getUserPosts(user.getId());
     }
 
     @PutMapping("/updatepost")
@@ -40,9 +40,9 @@ public class PostController {
         return postService.updatePost(post);
     }
 
-    @DeleteMapping("/deletepost")
-    public ResponseEntity<String> deleteUserPost(@RequestBody Post post){
-        return postService.deletePost(post.getId());
+    @PostMapping("/deletepost")
+    public ResponseEntity<String> deleteUserPost(@RequestBody Map<String, String> payload){
+        return postService.deletePost(payload.get("id"));
     }
 
     @PostMapping("postlike")

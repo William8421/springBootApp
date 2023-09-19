@@ -19,7 +19,6 @@ public class UserService {
     public ResponseEntity<Optional<User>> getUserById(String id) {
         try {
             Optional<User> user = userRepository.findById(id);
-            System.out.println(id);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -30,6 +29,7 @@ public class UserService {
        try {
            User existingUser = userRepository.findById(user.getId()).orElse(null);
            User usernameExisted = userRepository.findByUsername(user.getUsername());
+
 
            if (existingUser != null) {
                String[] fieldsToUpdate = { "profilePic", "firstName", "lastName", "username", "age", "gender" };
@@ -50,16 +50,6 @@ public class UserService {
                                existingUser.setLastName(user.getLastName());
                            }
                        }
-                       case "username" -> {
-                           if (user.getUsername() != null) {
-                               if (usernameExisted == null) {
-                                   existingUser.setUsername(user.getUsername());
-                               } else {
-                                   return new ResponseEntity<>("Username already exists, please try a new username",
-                                           HttpStatus.ACCEPTED);
-                               }
-                           }
-                       }
                        case "age" -> {
                            if (user.getAge() != null) {
                                existingUser.setAge(user.getAge());
@@ -68,6 +58,18 @@ public class UserService {
                        case "gender" -> {
                            if (user.getGender() != null) {
                                existingUser.setGender(user.getGender());
+                           }
+                       }case "username" -> {
+                           if (user.getUsername() != null) {
+                                   if (usernameExisted == null) {
+                                       existingUser.setUsername(user.getUsername());
+                                   } else if(user.getUsername().equals(existingUser.getUsername())){
+                                       userRepository.save(existingUser);
+                                       return new ResponseEntity<>("Profile updated successfully", HttpStatus.ACCEPTED);
+                                   }else{
+                                       return new ResponseEntity<>("Username already exists, please try a new username",
+                                               HttpStatus.ACCEPTED);
+                                   }
                            }
                        }
                        default -> throw new IllegalStateException("Unexpected value: " + field);

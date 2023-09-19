@@ -21,7 +21,6 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String, String> payload){
-        System.out.println("controller: " + payload.get("id"));
         return userService.getUserById(payload.get("id"));
     }
 
