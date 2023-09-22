@@ -1,0 +1,11 @@
+.likes-container {
+  width: 100%;
+  .likes-and-comments {
+    display: flex;
+    gap: 1rem;
+  }
+  .liked-by {
+    display: flex;
+    cursor: pointer;
+  }
+}

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.103:3000"})
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -33,6 +33,18 @@ public class PostController {
     @PostMapping("/userposts")
     public ResponseEntity<List<Post>> getSingleUserPosts(@RequestBody User user){
         return postService.getUserPosts(user.getId());
+    }
+
+    @PostMapping("/likedposts")
+    public ResponseEntity<List<Post>> getLikedPostsByUser(@RequestBody Map<String, String> payload) {
+        String userId = payload.get("userId");
+        return postService.getLikedPostsByUser(userId);
+    }
+
+    @PostMapping("/commentedposts")
+    public ResponseEntity<List<Post>> getCommentedPostsByUser(@RequestBody Map<String, String> payload) {
+        String username = payload.get("username");
+        return postService.getCommentedPostsByUser(username);
     }
 
     @PutMapping("/updatepost")

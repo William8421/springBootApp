@@ -1,0 +1,633 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 95vh;
+  background-color: #ebe4ea;
+}
+body button {
+  cursor: pointer;
+}
+
+.App {
+  margin-top: 4rem;
+}
+.App .close-button {
+  border: none;
+  background-color: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  color: black;
+}
+.App .main-button {
+  border-radius: 6px;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.4rem;
+  background-color: #944854;
+  color: white;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4e87aa;
+  margin-bottom: 0.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+.navbar-container .landscape-bar {
+  display: none;
+}
+.navbar-container .navbar-sub-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar-container .navbar-sub-container .bar-button {
+  width: 3rem;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-right: auto;
+}
+.navbar-container .navbar-sub-container .bar-button .bar {
+  background-color: rgb(15, 14, 14);
+  height: 5px;
+  border-radius: 10px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar-container .navbar-sub-container .bar-button .middle.open {
+  display: none;
+}
+.navbar-container .navbar-sub-container .bar-button .top.open {
+  transform: rotateZ(-45deg) translate(-7px, 7px);
+  width: 100%;
+  opacity: 0.5;
+}
+.navbar-container .navbar-sub-container .bar-button .bottom.open {
+  transform: rotateZ(45deg) translate(-6.5px, -6.5px);
+  width: 100%;
+  opacity: 0.5;
+}
+.navbar-container .navbar-sub-container .pages .burger-menu {
+  display: none;
+}
+.navbar-container .navbar-sub-container .pages .burger-menu.on {
+  background-color: #bdaebb;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 80vh;
+}
+.navbar-container .navbar-sub-container .pages .burger-menu.on button {
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+  color: #669bbc;
+  font-weight: bolder;
+}
+.navbar-container .navbar-sub-container .pages .routes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 25vh;
+}
+.navbar-container .navbar-sub-container .pages .signUp-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 25vh;
+}
+.navbar-container .navbar-sub-container .username-container {
+  display: flex;
+  align-items: center;
+}
+.navbar-container .navbar-sub-container .username-container .username {
+  width: 2rem;
+  height: 2rem;
+  background-color: #b45d83;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-decoration: none;
+  color: black;
+}
+.navbar-container .navbar-sub-container .username-container .username img {
+  object-fit: cover;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+.navbar-container .navbar-sub-container .username-container .no-username {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.navbar-container .app-name {
+  text-decoration: none;
+  color: black;
+}
+.navbar-container .landscape-username-container {
+  display: none;
+}
+.navbar-container .server-response-message {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.469);
+  color: grey;
+  border-radius: 6px;
+  padding: 0 0.3rem;
+  font-size: 12px;
+}
+
+.login-modal {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: 0%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+}
+.login-modal .login-modal-header {
+  background-color: #cd729c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  padding: 0 1rem;
+  color: black;
+  height: 3rem;
+}
+.login-modal .login-form-container {
+  background-color: #3a3f98;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  padding: 1rem;
+  color: white;
+}
+.login-modal .login-form-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: fit-content;
+  gap: 1rem;
+  height: 100%;
+}
+.login-modal .login-form-container form div {
+  width: 100%;
+}
+.login-modal .login-form-container form div input {
+  width: 100%;
+  height: 2rem;
+  border: none;
+  border-radius: 6px;
+  padding: 1rem;
+}
+.login-modal .login-form-container form .password-container {
+  position: relative;
+}
+.login-modal .login-form-container form .password-container .showHidePassword {
+  position: absolute;
+  top: 25%;
+  right: 3%;
+  color: black;
+}
+
+.loginModalOff {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.loginModalOn {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+
+.login-hidden-div.loginModalOn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.signUp-modal {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: 0%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  overflow: auto;
+}
+.signUp-modal .signUp-modal-header {
+  background-color: #cd729c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  padding: 0 1rem;
+  color: black;
+  height: 3rem;
+}
+.signUp-modal .signUp-form-container {
+  background-color: #3a3f98;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  padding: 1rem;
+  color: white;
+}
+.signUp-modal .signUp-form-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: fit-content;
+  gap: 1rem;
+  width: 100%;
+}
+.signUp-modal .signUp-form-container form div {
+  width: 100%;
+}
+.signUp-modal .signUp-form-container form div input {
+  width: 100%;
+  height: 2rem;
+  border: none;
+  border-radius: 6px;
+  padding: 1rem;
+}
+.signUp-modal .signUp-form-container form .password-container {
+  position: relative;
+}
+.signUp-modal .signUp-form-container form .password-container .showHidePassword {
+  position: absolute;
+  top: 25%;
+  right: 3%;
+  color: black;
+}
+
+.signUpModalOff {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.signUpModalOn {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+
+.signUp-hidden-div.signUpModalOn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.home-container {
+  width: 100%;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.posts .post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+  background-color: white;
+  border-radius: 16px;
+  width: 90%;
+}
+.posts .post img {
+  width: 100%;
+  object-fit: cover;
+}
+.posts .post .post-body-container {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+.posts .post .post-body-container .edited {
+  color: grey;
+  align-self: flex-end;
+}
+.posts .post .reactions-section {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+.posts .post .reactions-section .reactions-buttons {
+  display: flex;
+  gap: 1rem;
+}
+.posts .post .reactions-section .reactions-buttons .icon {
+  cursor: pointer;
+}
+.posts .post .likes-section {
+  width: 90%;
+}
+
+.delete-post-hidden-div.delete-post-on {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.post-likes-hidden-div.showLikesForPost-on {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.add-post {
+  width: 95%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+.add-post form textarea {
+  width: 100%;
+  height: 5rem;
+  resize: none;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+}
+.add-post form .icons-container {
+  display: flex;
+  justify-content: space-between;
+}
+.add-post form .icons-container .input-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.add-post form .icons-container .icon {
+  cursor: pointer;
+  font-size: 30px;
+}
+.add-post .add-post-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.action-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.action-buttons-container .show-more-button {
+  align-self: flex-end;
+  cursor: pointer;
+}
+.action-buttons-container .more-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.1rem;
+}
+
+.likes-container {
+  width: 100%;
+}
+.likes-container .likes-and-comments {
+  display: flex;
+  gap: 1rem;
+}
+.likes-container .liked-by {
+  display: flex;
+  cursor: pointer;
+}
+
+.delete-post {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: 0%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  background-color: white;
+}
+.delete-post .delete-post-header {
+  background-color: #cd729c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  padding: 0 1rem;
+  color: black;
+  height: 3rem;
+}
+
+.delete-post-off {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.delete-post-on {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+
+.post-liked-by {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: -10%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  background-color: white;
+}
+.post-liked-by .post-liked-header {
+  background-color: #cd729c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  padding: 0 1rem;
+  color: black;
+  height: 3rem;
+}
+
+.showLikesForPost-off {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.showLikesForPost-on {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+
+.update-post {
+  width: 95%;
+  margin: 0 auto;
+}
+.update-post form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.update-post form textarea {
+  width: 100%;
+  height: 5rem;
+  resize: none;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+}
+.update-post form .icons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.update-post form .icons-container .input-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.update-post form .icons-container .icon {
+  cursor: pointer;
+  font-size: 30px;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.comments .comment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.comments .comment .comment-body-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.comments .comment .comment-body-container .edited {
+  color: grey;
+  align-self: flex-end;
+}
+.comments .delete-comment {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: 0%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  background-color: white;
+}
+.comments .delete-comment .delete-comment-header {
+  background-color: #cd729c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  padding: 0 1rem;
+  color: black;
+  height: 3rem;
+}
+.comments .delete-comment-off {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+.comments .delete-comment-on {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+.comments .delete-comment-hidden-div.delete-comment-on {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.my-profile .my-likes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.my-profile .my-comments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*# sourceMappingURL=Style.css.map */

@@ -8,4 +8,8 @@ import java.util.List;
 public interface PostRepository extends MongoRepository<Post, String> {
 
     List<Post> findAllByUserId(String userId);
+
+    List<Post> findAllByPostLikesIdsContaining(String userId);
+
+    List<Post> findAllByPostCommentedByContaining(String username);
 }

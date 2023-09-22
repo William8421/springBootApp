@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 95vh;
+  background-color: #ebe4ea;
+  button {
+    cursor: pointer;
+  }
+}
+.App {
+  margin-top: 4rem;
+  .close-button {
+    border: none;
+    background-color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    color: black;
+  }
+  .main-button {
+    //   color: #131763;
+    //   background-color: #cd729c;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    padding: 0.2rem 0.4rem;
+    background-color: #944854;
+    color: white;
+  }
+}

@@ -1,0 +1,33 @@
+.post-liked-by {
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  right: -10%;
+  transform: translate(-15%, -50%);
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  background-color: white;
+  .post-liked-header {
+    background-color: #cd729c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    padding: 0 1rem;
+    color: black;
+    height: 3rem;
+  }
+}
+.showLikesForPost-off {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+.showLikesForPost-on {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}

@@ -1,0 +1,132 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4e87aa;
+  margin-bottom: 0.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  .landscape-bar {
+    display: none;
+  }
+  .navbar-sub-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .bar-button {
+      width: 3rem;
+      height: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      margin-right: auto;
+      .bar {
+        background-color: rgb(15, 14, 14);
+        height: 5px;
+        border-radius: 10px;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .middle.open {
+        display: none;
+      }
+
+      .top.open {
+        transform: rotateZ(-45deg) translate(-7px, 7px);
+        width: 100%;
+        opacity: 0.5;
+      }
+
+      .bottom.open {
+        transform: rotateZ(45deg) translate(-6.5px, -6.5px);
+        width: 100%;
+        opacity: 0.5;
+      }
+    }
+    .pages {
+      .burger-menu {
+        display: none;
+      }
+      .burger-menu.on {
+        background-color: #bdaebb;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 80vh;
+        button {
+          font-size: 1.5rem;
+          background-color: transparent;
+          border: none;
+          color: #669bbc;
+          font-weight: bolder;
+        }
+      }
+      .routes-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 25vh;
+      }
+      .signUp-login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 25vh;
+      }
+    }
+    .username-container {
+      display: flex;
+      align-items: center;
+      .username {
+        width: 2rem;
+        height: 2rem;
+        background-color: #b45d83;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        text-decoration: none;
+        color: black;
+        img {
+          object-fit: cover;
+          width: 2rem;
+          height: 2rem;
+          border-radius: 50%;
+        }
+      }
+      .no-username {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+  }
+  .app-name {
+    text-decoration: none;
+    color: black;
+  }
+  .landscape-username-container {
+    display: none;
+  }
+  .server-response-message {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.469);
+    color: grey;
+    border-radius: 6px;
+    padding: 0 0.3rem;
+    font-size: 12px;
+  }
+}

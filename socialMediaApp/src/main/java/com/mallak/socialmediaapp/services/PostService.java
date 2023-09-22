@@ -122,4 +122,22 @@ public class PostService {
             throw new RuntimeException(e);
         }
     }
+
+    public ResponseEntity<List<Post>> getLikedPostsByUser(String userId) {
+        try {
+            List<Post> likedPosts = postRepository.findAllByPostLikesIdsContaining(userId);
+            return new ResponseEntity<>(likedPosts, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResponseEntity<List<Post>> getCommentedPostsByUser(String username) {
+        try {
+            List<Post> commentedPosts = postRepository.findAllByPostCommentedByContaining(username);
+            return new ResponseEntity<>(commentedPosts, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
