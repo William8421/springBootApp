@@ -3,12 +3,11 @@ import { useComment } from "../context/CommentContext";
 import { useUser } from "../context/UserContext";
 
 export default function DeleteComment({ comment }) {
-  const { isDeleteCommentOpen, openCloseDeleteComment, removeComment } =
-    useComment();
-  const { isLoggedIn } = useUser();
+  const { removeComment, toggleDeleteComment } = useComment();
+  const { loggedInUser } = useUser();
 
   function deleteComment() {
-    if (isLoggedIn) {
+    if (loggedInUser) {
       const commentId = {
         id: comment.id,
         postId: comment.postId,
@@ -18,18 +17,19 @@ export default function DeleteComment({ comment }) {
   }
 
   return (
-    <div>
-      <div
-        className={`delete-comment-hidden-div ${isDeleteCommentOpen}`}
-        onClick={openCloseDeleteComment}
-      ></div>
-      <div className={`delete-comment ${isDeleteCommentOpen}`}>
-        <div className="delete-comment-header">
-          <h2>Warning</h2>
-        </div>
-        <p>Are you sure you want to delete this comment?</p>
-        <button onClick={deleteComment}>Delete</button>
-        <button onClick={openCloseDeleteComment}>Cancel</button>
+    <div className="delete-comment">
+      <div className="delete-header">
+        <h2>Warning</h2>
+        <button onClick={toggleDeleteComment} className="close-button">
+          X
+        </button>
+      </div>
+      <p>Are you sure you want to delete this comment?</p>
+      <div className="delete-update-buttons-container">
+        <button className="main-button" onClick={deleteComment}>
+          Delete
+        </button>
+        <button onClick={toggleDeleteComment}>Cancel</button>
       </div>
     </div>
   );

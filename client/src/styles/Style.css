@@ -6,7 +6,7 @@
 
 body {
   min-height: 95vh;
-  background-color: #ebe4ea;
+  background-color: #f2f4f6;
 }
 body button {
   cursor: pointer;
@@ -14,6 +14,11 @@ body button {
 
 .App {
   margin-top: 4rem;
+}
+.App .icon {
+  cursor: pointer;
+  font-size: 30px;
+  color: #6aaf3c;
 }
 .App .close-button {
   border: none;
@@ -26,66 +31,64 @@ body button {
   border-radius: 6px;
   font-size: 1.2rem;
   padding: 0.2rem 0.4rem;
-  background-color: #944854;
+  background-color: #6aaf3c;
   color: white;
+  border: none;
+}
+.App .delete-update-buttons-container {
+  display: flex;
+  gap: 1rem;
+}
+.App .hidden-div.open {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
 }
 
 .navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #4e87aa;
-  margin-bottom: 0.5rem;
+  background-color: #f2f4f6;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  padding: 0.5rem 1rem;
+  padding-top: 1rem;
 }
-.navbar-container .landscape-bar {
-  display: none;
-}
-.navbar-container .navbar-sub-container {
+.navbar-container .routes-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.navbar-container .navbar-sub-container .bar-button {
-  width: 3rem;
-  height: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: space-around;
-  margin-right: auto;
+  align-items: center;
 }
-.navbar-container .navbar-sub-container .bar-button .bar {
-  background-color: rgb(15, 14, 14);
-  height: 5px;
-  border-radius: 10px;
-  width: 80%;
+.navbar-container .routes-container .route {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 2rem;
+  width: 2rem;
+  border: solid #6aaf3c 2px;
+  border-radius: 50%;
+  padding: 1rem;
 }
-.navbar-container .navbar-sub-container .bar-button .middle.open {
+.navbar-container .routes-container .route .nav-icon {
+  font-size: 20px;
+}
+.navbar-container .routes-container .route img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: block;
+}
+.navbar-container .pages {
+  text-align: center;
+}
+.navbar-container .pages .burger-menu {
   display: none;
 }
-.navbar-container .navbar-sub-container .bar-button .top.open {
-  transform: rotateZ(-45deg) translate(-7px, 7px);
-  width: 100%;
-  opacity: 0.5;
-}
-.navbar-container .navbar-sub-container .bar-button .bottom.open {
-  transform: rotateZ(45deg) translate(-6.5px, -6.5px);
-  width: 100%;
-  opacity: 0.5;
-}
-.navbar-container .navbar-sub-container .pages .burger-menu {
-  display: none;
-}
-.navbar-container .navbar-sub-container .pages .burger-menu.on {
-  background-color: #bdaebb;
+.navbar-container .pages .burger-menu.on {
+  background-color: #f2f4f6;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -93,60 +96,21 @@ body button {
   top: 100%;
   left: 0;
   width: 100%;
-  height: 80vh;
+  min-height: 100vh;
 }
-.navbar-container .navbar-sub-container .pages .burger-menu.on button {
+.navbar-container .pages .burger-menu.on button {
   font-size: 1.5rem;
   background-color: transparent;
   border: none;
-  color: #669bbc;
+  color: #6aaf3c;
   font-weight: bolder;
 }
-.navbar-container .navbar-sub-container .pages .routes-container {
+.navbar-container .pages .signUp-login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   height: 25vh;
-}
-.navbar-container .navbar-sub-container .pages .signUp-login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 25vh;
-}
-.navbar-container .navbar-sub-container .username-container {
-  display: flex;
-  align-items: center;
-}
-.navbar-container .navbar-sub-container .username-container .username {
-  width: 2rem;
-  height: 2rem;
-  background-color: #b45d83;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  text-decoration: none;
-  color: black;
-}
-.navbar-container .navbar-sub-container .username-container .username img {
-  object-fit: cover;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-.navbar-container .navbar-sub-container .username-container .no-username {
-  width: 2.5rem;
-  height: 2.5rem;
-}
-.navbar-container .app-name {
-  text-decoration: none;
-  color: black;
-}
-.navbar-container .landscape-username-container {
-  display: none;
 }
 .navbar-container .server-response-message {
   position: absolute;
@@ -303,6 +267,15 @@ body button {
   right: 3%;
   color: black;
 }
+.signUp-modal .signUp-form-container form .icons-container {
+  display: flex;
+  justify-content: space-between;
+}
+.signUp-modal .signUp-form-container form .icons-container .input-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
 .signUpModalOff {
   display: none;
@@ -336,7 +309,8 @@ body button {
   align-items: center;
   gap: 2rem;
 }
-.posts .post {
+
+.post {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -346,83 +320,101 @@ body button {
   border-radius: 16px;
   width: 90%;
 }
-.posts .post img {
+.post .owner {
+  width: 90%;
+}
+.post .owner h5 {
+  color: grey;
+}
+.post img {
   width: 100%;
   object-fit: cover;
 }
-.posts .post .post-body-container {
+.post .post-body-container {
   width: 90%;
   display: flex;
   justify-content: space-between;
 }
-.posts .post .post-body-container .edited {
+.post .post-body-container .edited {
   color: grey;
   align-self: flex-end;
 }
-.posts .post .reactions-section {
+.post .reactions-section {
   width: 90%;
   display: flex;
   justify-content: space-between;
 }
-.posts .post .reactions-section .reactions-buttons {
+.post .reactions-section .reactions-buttons {
   display: flex;
   gap: 1rem;
 }
-.posts .post .reactions-section .reactions-buttons .icon {
+.post .reactions-section .reactions-buttons .icon {
   cursor: pointer;
 }
-.posts .post .likes-section {
+.post .likes-comments-section {
   width: 90%;
 }
 
-.delete-post-hidden-div.delete-post-on {
-  position: fixed;
-  top: 0;
-  right: 0;
+.my-liked-posts {
+  width: 90%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.1rem;
+}
+.my-liked-posts .posts-list {
+  width: 32%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: solid 1px black;
+}
+.my-liked-posts .posts-list .post-container img {
   width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.5;
+  height: 5rem;
+  object-fit: cover;
+}
+.my-liked-posts .posts-list .post-container p {
+  height: 1rem;
+  overflow: hidden;
+  font-size: 0.5rem;
 }
 
-.post-likes-hidden-div.showLikesForPost-on {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.5;
-}
-
-.add-post {
-  width: 95%;
+.add-post,
+.add-comment {
+  width: 90%;
   margin: 0 auto;
   margin-bottom: 2rem;
 }
-.add-post form textarea {
+.add-post form textarea,
+.add-comment form textarea {
   width: 100%;
   height: 5rem;
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
 }
-.add-post form .icons-container {
+.add-post form .icons-container,
+.add-comment form .icons-container {
   display: flex;
   justify-content: space-between;
 }
-.add-post form .icons-container .input-button-container {
+.add-post form .icons-container .input-button-container,
+.add-comment form .icons-container .input-button-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.add-post form .icons-container .icon {
-  cursor: pointer;
-  font-size: 30px;
-}
-.add-post .add-post-button-container {
+.add-post .add-post-button-container,
+.add-comment .add-post-button-container {
   display: flex;
   justify-content: center;
+}
+
+.add-comment {
+  width: 100%;
 }
 
 .action-buttons-container {
@@ -453,83 +445,43 @@ body button {
   cursor: pointer;
 }
 
-.delete-post {
-  width: 300px;
-  position: fixed;
-  top: 50%;
-  right: 0%;
-  transform: translate(-15%, -50%);
-  display: flex;
-  align-items: center;
-  padding-top: 3rem;
-  background-color: white;
-}
-.delete-post .delete-post-header {
-  background-color: #cd729c;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  position: fixed;
-  top: 0;
-  padding: 0 1rem;
-  color: black;
-  height: 3rem;
-}
-
-.delete-post-off {
-  display: none;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-
-.delete-post-on {
-  display: block;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-}
-
 .post-liked-by {
-  width: 300px;
   position: fixed;
   top: 50%;
-  right: -10%;
-  transform: translate(-15%, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
-  background-color: white;
 }
 .post-liked-by .post-liked-header {
-  background-color: #cd729c;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  position: fixed;
-  top: 0;
   padding: 0 1rem;
-  color: black;
-  height: 3rem;
-}
-
-.showLikesForPost-off {
-  display: none;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-
-.showLikesForPost-on {
-  display: block;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
 }
 
 .update-post {
-  width: 95%;
-  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.update-post .update-post-header {
+  background-color: #6aaf3c;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 .update-post form {
+  margin: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -552,9 +504,23 @@ body button {
   align-items: center;
   gap: 0.5rem;
 }
-.update-post form .icons-container .icon {
-  cursor: pointer;
-  font-size: 30px;
+
+.update-comment {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.update-comment .update-comment-header {
+  background-color: red;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .comments {
@@ -576,55 +542,43 @@ body button {
   color: grey;
   align-self: flex-end;
 }
-.comments .delete-comment {
-  width: 300px;
+
+.delete-comment,
+.delete-post,
+.update-comment {
   position: fixed;
   top: 50%;
-  right: 0%;
-  transform: translate(-15%, -50%);
-  display: flex;
-  align-items: center;
-  padding-top: 3rem;
-  background-color: white;
-}
-.comments .delete-comment .delete-comment-header {
-  background-color: #cd729c;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  position: fixed;
-  top: 0;
-  padding: 0 1rem;
-  color: black;
-  height: 3rem;
-}
-.comments .delete-comment-off {
-  display: none;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-.comments .delete-comment-on {
-  display: block;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-}
-.comments .delete-comment-hidden-div.delete-comment-on {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.5;
-}
-
-.my-profile .my-likes {
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.my-profile .my-comments {
+.delete-comment .delete-header,
+.delete-comment .update-header,
+.delete-post .delete-header,
+.delete-post .update-header,
+.update-comment .delete-header,
+.update-comment .update-header {
+  background-color: #6aaf3c;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.profile .my-likes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile .my-comments {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,64 +1,90 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
 import { useUser } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const PostContext = createContext();
 
 export function PostProvider({ children }) {
-  const { setServerResponse, isLoggedIn } = useUser();
+  const { setServerResponse, loggedInUser } = useUser();
 
   const [posts, setPosts] = useState([]);
-  const [refreshItems, setRefreshItems] = useState(false);
-  const [isDeletePostOpen, setIsDeletePostOpen] = useState("delete-post-off");
-  const [selectedPost, setSelectedPost] = useState({});
   const [userPosts, setUserPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
   const [commentedPosts, setCommentedPosts] = useState([]);
 
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showCommentsForPost, setShowCommentsForPost] = useState(null);
-  const [showLikesForPost, setShowLikesForPost] = useState(null);
-  const [showMyLikes, setShowMyLikes] = useState(null);
-  const [showMyComments, setShowMyComments] = useState(null);
-  const [showMore, setShowMore] = useState(false);
+  const navigate = useNavigate();
+
+  const [refreshItems, setRefreshItems] = useState(false);
+  const initialShow = {
+    updateModal: null,
+    deleteModal: null,
+    commentsForPost: null,
+    likesForPost: null,
+    myLikes: null,
+    myComments: null,
+    more: null,
+    hiddenDiv: false,
+  };
+
+  const [show, setShow] = useState(initialShow);
+
+  function toggleMoreActions(postId) {
+    if (show.more === null) {
+      setShow({ ...show, more: postId });
+    } else {
+      setShow({ ...show, more: null });
+    }
+  }
 
   function toggleUpdate(postId) {
-    setShowUpdateModal((prevState) => (prevState === postId ? null : postId));
+    if (!show.hiddenDiv) {
+      setShow({ ...show, updateModal: postId, hiddenDiv: true });
+    } else {
+      setShow({ ...show, updateModal: null, hiddenDiv: false });
+    }
+  }
+
+  function toggleDelete(postId) {
+    if (!show.hiddenDiv) {
+      setShow({ ...show, deleteModal: postId, hiddenDiv: true });
+    } else {
+      setShow({ ...show, deleteModal: null, hiddenDiv: false });
+    }
   }
 
   function toggleComments(postId) {
-    setShowCommentsForPost((prevState) =>
-      prevState === postId ? null : postId
-    );
+    setShow((prevState) => {
+      if (prevState.commentsForPost === postId) {
+        return { ...show, commentsForPost: null };
+      } else {
+        return { ...show, commentsForPost: postId };
+      }
+    });
   }
 
   function togglePostLikes(postId) {
-    setShowLikesForPost((prevState) => (prevState === postId ? null : postId));
+    if (!show.hiddenDiv) {
+      setShow({ ...show, likesForPost: postId, hiddenDiv: true });
+    } else {
+      setShow({ ...show, likesForPost: null, hiddenDiv: false });
+    }
   }
+
   function toggleMyLikes(userId) {
-    setShowMyLikes((prevState) => (prevState === userId ? null : userId));
-    setShowMyComments(null);
+    if (show.myLikes === null) {
+      setShow({ ...show, myLikes: userId, myComments: null });
+    } else {
+      setShow({ ...show, myLikes: null, myComments: null });
+    }
   }
 
-  function toggleMyComments(username) {
-    setShowMyComments((prevState) =>
-      prevState === username ? null : username
-    );
-    setShowMyLikes(null);
-  }
-
-  function toggleMoreActions(postId) {
-    setShowMore((prevState) => (prevState === postId ? null : postId));
-    toggleUpdate();
-  }
-
-  function openCloseDeletePost(e) {
-    setIsDeletePostOpen(
-      isDeletePostOpen === "delete-post-off"
-        ? "delete-post-on"
-        : "delete-post-off"
-    );
-    setSelectedPost(e);
+  function toggleMyComments(userId) {
+    if (show.myComments === null) {
+      setShow({ ...show, myComments: userId, myLikes: null });
+    } else {
+      setShow({ ...show, myComments: null, myLikes: null });
+    }
   }
 
   const axiosInstance = axios.create({
@@ -87,18 +113,23 @@ export function PostProvider({ children }) {
     }
   }
 
-  async function getUserPosts() {
-    const response = await axiosInstance.post("/userposts", isLoggedIn);
-    setUserPosts([...response.data].reverse());
+  async function getUserPosts(user) {
+    try {
+      const response = await axiosInstance.post("/userposts", user);
+      setUserPosts([...response.data].reverse());
+    } catch (error) {
+      navigate("/");
+      console.error(error);
+    }
   }
 
   async function getLikedPosts() {
     try {
       const userId = {
-        userId: isLoggedIn.id,
+        userId: loggedInUser.id,
       };
       const response = await axiosInstance.post("/likedposts", userId);
-      setLikedPosts(response.data);
+      setLikedPosts([...response.data].reverse());
     } catch (error) {
       console.error(error);
     }
@@ -106,10 +137,10 @@ export function PostProvider({ children }) {
 
   async function getCommentedPosts() {
     try {
-      const username = {
-        username: isLoggedIn.username,
+      const userId = {
+        userId: loggedInUser.id,
       };
-      const response = await axiosInstance.post("/commentedposts", username);
+      const response = await axiosInstance.post("/commentedposts", userId);
       setCommentedPosts(response.data);
     } catch (error) {
       console.error(error);
@@ -123,7 +154,7 @@ export function PostProvider({ children }) {
         message: response.data,
         showMessage: true,
       });
-      setShowUpdateModal(false);
+      setShow(initialShow);
       setRefreshItems(!refreshItems);
     } catch (error) {
       console.error(error);
@@ -133,7 +164,7 @@ export function PostProvider({ children }) {
   async function removePost(post) {
     try {
       const response = await axiosInstance.post("/deletepost", post);
-      setIsDeletePostOpen("delete-post-off");
+      setShow(initialShow);
       setServerResponse({
         message: response.data,
         showMessage: true,
@@ -162,29 +193,22 @@ export function PostProvider({ children }) {
         likeAPost,
         refreshItems,
         editPost,
-        openCloseDeletePost,
-        isDeletePostOpen,
-        selectedPost,
         removePost,
         userPosts,
         getUserPosts,
-        showUpdateModal,
         toggleUpdate,
-        showCommentsForPost,
-        showMore,
+        toggleDelete,
         toggleMoreActions,
         toggleComments,
-        showLikesForPost,
         togglePostLikes,
-        setShowLikesForPost,
         getLikedPosts,
         likedPosts,
-        showMyLikes,
         toggleMyLikes,
         getCommentedPosts,
         commentedPosts,
-        showMyComments,
         toggleMyComments,
+        show,
+        setShow,
       }}
     >
       {children}

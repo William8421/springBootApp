@@ -86,6 +86,7 @@ public class PostService {
             User user = userRepository.findById(post.getUserId()).orElse(null);
             if(user != null){
                 post.setPostOwner(user.getUsername());
+                post.setPostOwnerName(user.getFirstName() + " " + user.getLastName());
             }
             postRepository.save(post);
             return new ResponseEntity<>("Post added", HttpStatus.OK);
@@ -132,9 +133,9 @@ public class PostService {
         }
     }
 
-    public ResponseEntity<List<Post>> getCommentedPostsByUser(String username) {
+    public ResponseEntity<List<Post>> getCommentedPostsByUser(String userId) {
         try {
-            List<Post> commentedPosts = postRepository.findAllByPostCommentedByContaining(username);
+            List<Post> commentedPosts = postRepository.findAllByPostCommentsIdsContaining(userId);;
             return new ResponseEntity<>(commentedPosts, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -1,17 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { usePost } from "../context/PostContext";
 import axios from "axios";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageAddFill, RiCheckLine } from "react-icons/ri";
+import { useUser } from "../context/UserContext";
 
 export default function UpdatePostModal({ post }) {
-  const { editPost } = usePost();
-
-  const hiddenFileInput = useRef(null);
-
-  const uploadButtonHandler = (event) => {
-    hiddenFileInput.current.click();
-  };
+  const { editPost, toggleUpdate } = usePost();
+  const { hiddenFileInput, uploadButtonHandler } = useUser();
 
   const [newData, setNewData] = useState({
     id: post.id,
@@ -61,14 +57,14 @@ export default function UpdatePostModal({ post }) {
 
   return (
     <div className="update-post">
+      <div className="update-post-header">
+        <h2>Update your post</h2>
+        <button className="close-button" onClick={toggleUpdate}>
+          X
+        </button>
+      </div>
+
       <form>
-        {/* <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        > */}
         <textarea
           name="body"
           value={newData.body}
@@ -77,11 +73,7 @@ export default function UpdatePostModal({ post }) {
         <img src={post.image} alt="post" style={{ width: "25%" }} />
         <div className="icons-container">
           <div className="input-button-container">
-            <RiImageAddFill
-              onClick={uploadButtonHandler}
-              className="icon"
-              color="#944854"
-            />
+            <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
             <span>{imgSelected.name}</span>
           </div>
 
@@ -92,24 +84,18 @@ export default function UpdatePostModal({ post }) {
             style={{ display: "none" }}
           />
           {imgSelected === "" ? null : uploaded === "" ? (
-            <FaCloudUploadAlt
-              className="icon"
-              onClick={(e) => uploadPic(e)}
-              color="#944854"
-            />
+            <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />
           ) : (
-            <RiCheckLine
-              className="icon"
-              onClick={(e) => uploadPic(e)}
-              color="#944854"
-            />
+            <RiCheckLine className="icon" onClick={(e) => uploadPic(e)} />
           )}
         </div>
-        {/* </div> */}
       </form>
-      <button className="main-button" onClick={updatePost}>
-        Update post
-      </button>
+      <div className="delete-update-buttons-container">
+        <button className="main-button" onClick={updatePost}>
+          Update post
+        </button>
+        <button onClick={toggleUpdate}>Cancel</button>
+      </div>
     </div>
   );
 }

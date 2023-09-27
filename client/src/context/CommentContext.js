@@ -5,15 +5,18 @@ import { useUser } from "./UserContext";
 export const CommentContext = createContext();
 
 export function CommentProvider({ children }) {
+  const { setServerResponse } = useUser();
   const [postComments, setPostComments] = useState([]);
   const [refreshComments, setRefreshComments] = useState(false);
-  const [isDeleteCommentOpen, setIsDeleteCommentOpen] =
-    useState("delete-comment-off");
-  const [selectedComment, setSelectedComment] = useState({});
-  const [showUpdateCommentModal, setShowUpdateCommentModal] = useState(false);
-  const [showMoreCommentAction, setShowMoreCommentAction] = useState(false);
 
-  const { setServerResponse } = useUser();
+  const initialCommentShow = {
+    updateCommentModal: null,
+    deleteCommentModal: null,
+    moreActions: null,
+    hiddenDiv: false,
+  };
+
+  const [commentShow, setCommentShow] = useState(initialCommentShow);
 
   const axiosInstance = axios.create({
     baseURL: "http://192.168.1.103:8080/api/comments",
@@ -23,25 +26,44 @@ export function CommentProvider({ children }) {
     setRefreshComments(!refreshComments);
   }
 
-  function openCloseDeleteComment(e) {
-    setIsDeleteCommentOpen(
-      isDeleteCommentOpen === "delete-comment-off"
-        ? "delete-comment-on"
-        : "delete-comment-off"
-    );
-    setSelectedComment(e);
+  function toggleDeleteComment(commentId) {
+    if (!commentShow.hiddenDiv) {
+      setCommentShow({
+        ...commentShow,
+        deleteCommentModal: commentId,
+        hiddenDiv: true,
+      });
+    } else {
+      setCommentShow({
+        ...commentShow,
+        deleteCommentModal: null,
+        hiddenDiv: false,
+      });
+    }
   }
 
   function toggleUpdateComment(commentId) {
-    setShowUpdateCommentModal((prevState) =>
-      prevState === commentId ? null : commentId
-    );
+    if (!commentShow.hiddenDiv) {
+      setCommentShow({
+        ...commentShow,
+        updateCommentModal: commentId,
+        hiddenDiv: true,
+      });
+    } else {
+      setCommentShow({
+        ...commentShow,
+        updateCommentModal: null,
+        hiddenDiv: false,
+      });
+    }
   }
+
   function toggleMoreCommentActions(commentId) {
-    setShowMoreCommentAction((prevState) =>
-      prevState === commentId ? null : commentId
-    );
-    toggleUpdateComment();
+    if (commentShow.moreActions === null) {
+      setCommentShow({ ...commentShow, moreActions: commentId });
+    } else {
+      setCommentShow({ ...commentShow, moreActions: null, hiddenDiv: false });
+    }
   }
 
   async function getPostComments(post) {
@@ -56,11 +78,11 @@ export function CommentProvider({ children }) {
   async function createComment(comment) {
     try {
       const response = await axiosInstance.post("/addcomment", comment);
+      triggerRefresh();
       setServerResponse({
         message: response.data,
         showMessage: true,
       });
-      triggerRefresh();
     } catch (error) {
       console.error(error);
     }
@@ -70,10 +92,12 @@ export function CommentProvider({ children }) {
     try {
       const response = await axiosInstance.put("/updatepostcomment", comment);
       triggerRefresh();
+      setCommentShow(initialCommentShow);
       setServerResponse({
         message: response.data,
         showMessage: true,
       });
+      toggleUpdateComment();
     } catch (error) {
       console.error(error);
     }
@@ -86,7 +110,8 @@ export function CommentProvider({ children }) {
         message: response.data,
         showMessage: true,
       });
-      setIsDeleteCommentOpen("delete-comment-off");
+      toggleDeleteComment();
+      setCommentShow(initialCommentShow);
       triggerRefresh();
     } catch (error) {
       console.error(error);
@@ -116,13 +141,11 @@ export function CommentProvider({ children }) {
         refreshComments,
         removeComment,
         toggleUpdateComment,
-        showUpdateCommentModal,
         editComment,
-        openCloseDeleteComment,
-        isDeleteCommentOpen,
-        selectedComment,
-        showMoreCommentAction,
         toggleMoreCommentActions,
+        toggleDeleteComment,
+        commentShow,
+        setCommentShow,
       }}
     >
       {children}

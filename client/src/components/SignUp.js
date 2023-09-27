@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import { RiCheckLine, RiImageAddFill } from "react-icons/ri";
 import axios from "axios";
 
 export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
@@ -41,6 +43,12 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
     }
   }
 
+  const hiddenFileInput = useRef(null);
+
+  const uploadButtonHandler = (event) => {
+    hiddenFileInput.current.click();
+  };
+
   function picHandler(e) {
     const selectedFile = e.target.files?.[0];
     setImgSelected(selectedFile || "");
@@ -53,7 +61,7 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
     formData.append("file", imgSelected);
     formData.append("upload_preset", "WilliamMallak");
     formData.append("upload_name", "denpxdokx");
-    formData.append("folder", "social-media-app");
+    formData.append("folder", "social-media-app/users");
     try {
       const response = await axios.post(
         "https://api.cloudinary.com/v1_1/denpxdokx/image/upload",
@@ -192,25 +200,35 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
               />
             </div>
             <div>
-              <input
-                type="text"
-                placeholder="Gender"
-                name="gender"
-                autoComplete="sex"
-              />
+              <select name="gender" placeholder="Gender">
+                <option value="not set">--</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Others</option>
+              </select>
             </div>
-            <div>
+            <div className="icons-container">
+              <div className="input-button-container">
+                <RiImageAddFill
+                  onClick={uploadButtonHandler}
+                  className="icon"
+                />
+                <span>{imgSelected.name}</span>
+              </div>
+
               <input
                 type="file"
-                name="profilePic"
                 onChange={(e) => picHandler(e)}
+                ref={hiddenFileInput}
+                style={{ display: "none" }}
               />
-              {signUpFormData.profilePic !== "" ? (
-                <button className="main-button" onClick={(e) => uploadPic(e)}>
-                  {uploaded === "" ? "Upload" : "Uploaded"}
-                </button>
+              {imgSelected === "" ? null : uploaded === "" ? (
+                <FaCloudUploadAlt
+                  className="icon"
+                  onClick={(e) => uploadPic(e)}
+                />
               ) : (
-                <div>Please upload a photo</div>
+                <RiCheckLine className="icon" onClick={(e) => uploadPic(e)} />
               )}
             </div>
           </form>

@@ -1,7 +1,21 @@
 .update-post {
-  width: 95%;
-  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: $ATHENS_GRAY;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .update-post-header {
+    background-color: $APPLE;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
   form {
+    margin: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,10 +36,6 @@
       }
       display: flex;
       justify-content: space-between;
-      .icon {
-        cursor: pointer;
-        font-size: 30px;
-      }
     }
   }
 }

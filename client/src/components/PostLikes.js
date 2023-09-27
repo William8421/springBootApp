@@ -3,7 +3,7 @@ import { useUser } from "../context/UserContext";
 import { usePost } from "../context/PostContext";
 
 export default function PostLikes({ post }) {
-  const { isLoggedIn } = useUser();
+  const { loggedInUser } = useUser();
   const { togglePostLikes } = usePost();
   return (
     <div className="likes-container">
@@ -18,14 +18,14 @@ export default function PostLikes({ post }) {
         ) : // one like
         post.postLikedBy.length === 1 ? (
           // loggedIn user?
-          post.postLikedBy[0] === isLoggedIn.username ? (
+          post.postLikedBy[0] === loggedInUser.username ? (
             <p>You like this</p>
           ) : (
             // not?
             <p>{post.postLikedBy[0]} likes this</p>
           )
         ) : // multiple likes loggedIn user?
-        post.postLikedBy.includes(isLoggedIn.username) ? (
+        post.postLikedBy.includes(loggedInUser.username) ? (
           <p>You and {post.postLikedBy.length - 1} others like this</p>
         ) : (
           // not?

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useComment } from "../context/CommentContext";
 import { useUser } from "../context/UserContext";
@@ -11,55 +11,47 @@ import { PiDotsThreeDuotone } from "react-icons/pi";
 import UpdateComment from "./UpdateComment";
 import DeleteComment from "./DeleteComment";
 import CommentLikes from "./CommentLikes";
+import { usePost } from "../context/PostContext";
+import AddComment from "./AddComment";
 
 export default function Comments({ post }) {
   const {
     postComments,
     likeComment,
     getPostComments,
-    createComment,
     refreshComments,
     toggleUpdateComment,
-    showUpdateCommentModal,
-    openCloseDeleteComment,
-    selectedComment,
-    showMoreCommentAction,
+    commentShow,
     toggleMoreCommentActions,
+    toggleDeleteComment,
   } = useComment();
-  const { isLoggedIn } = useUser();
-  const [commentBody, setCommentBody] = useState("");
+  const { loggedInUser } = useUser();
+  const { refreshItems } = usePost();
 
   useEffect(() => {
     getPostComments({ postId: post.id });
     // eslint-disable-next-line
-  }, [refreshComments, post.id]);
-
-  function addComment() {
-    const comment = {
-      userId: isLoggedIn.id,
-      postId: post.id,
-      body: commentBody,
-    };
-    createComment(comment);
-    setCommentBody("");
-  }
+  }, [refreshComments, post.id, refreshItems]);
 
   function likeAComment(comment) {
     const likeData = {
       id: comment.id,
-      userId: isLoggedIn.id,
+      userId: loggedInUser.id,
     };
     likeComment(likeData);
   }
 
   return (
     <div className="comments">
-      {postComments ? (
+      <AddComment post={post} />
+      {postComments &&
         postComments.map((comment) => {
-          const isLikedByUser = comment.commentLikesIds.includes(isLoggedIn.id);
+          const isLikedByUser = comment.commentLikesIds.includes(
+            loggedInUser.id
+          );
           if (comment.postId === post.id) {
             return (
-              // comment
+              // Comment
               <div className="comment" key={comment.id}>
                 <h4>{comment.commentOwner}</h4>
                 {/* comment body container */}
@@ -67,52 +59,44 @@ export default function Comments({ post }) {
                   <p className="comment-body">{comment.body}</p>
                   {comment.edited === true && <p className="edited">Edited</p>}
                 </div>
-                <div className="like-and-more">
+                <div className="reactions-section">
                   {/* like buttons */}
                   {!isLikedByUser ? (
                     <BiLike
                       onClick={() => likeAComment(comment)}
-                      color="#944854"
+                      className="icon"
                     />
                   ) : (
                     <BiSolidLike
                       onClick={() => likeAComment(comment)}
-                      color="#944854"
+                      className="icon"
                     />
                   )}
                   {/* UPDATE comment AND DELETE BUTTON */}
-                  {comment.userId === isLoggedIn.id ? (
+                  {comment.userId === loggedInUser.id ? (
                     <div className="action-buttons-container">
                       <PiDotsThreeDuotone
+                        className="icon"
                         onClick={() => toggleMoreCommentActions(comment.id)}
-                        size={20}
-                        color="#944854"
-                        className="show-more-button"
                       />
-                      {showMoreCommentAction === comment.id ? (
+                      {commentShow.moreActions === comment.id ? (
                         <div className="more-buttons-container">
                           <AiOutlineEdit
-                            color="#944854"
+                            className="icon"
                             onClick={(e) => toggleUpdateComment(comment.id)}
                           />
                           <RiDeleteBin6Line
-                            color="#944854"
-                            onClick={(e) => openCloseDeleteComment(comment)}
+                            className="icon"
+                            onClick={(e) => toggleDeleteComment(comment.id)}
                           />
                         </div>
                       ) : null}
-                      <div style={{ width: "100%" }}>
-                        {showUpdateCommentModal === comment.id ? (
-                          <UpdateComment comment={comment} />
-                        ) : null}
-                        <DeleteComment comment={selectedComment} />
-                      </div>
                     </div>
                   ) : (
-                    post.userId === isLoggedIn.id && (
+                    post.userId === loggedInUser.id && (
                       <RiDeleteBin6Line
-                        color="#944854"
-                        onClick={(e) => openCloseDeleteComment(comment)}
+                        className="icon"
+                        onClick={(e) => toggleDeleteComment(comment.id)}
                       />
                     )
                   )}
@@ -121,24 +105,19 @@ export default function Comments({ post }) {
                 <div className="comment-like-section">
                   <CommentLikes comment={comment} />
                 </div>
+                <div>
+                  {commentShow.updateCommentModal === comment.id ? (
+                    <UpdateComment comment={comment} />
+                  ) : null}
+                  {commentShow.deleteCommentModal === comment.id ? (
+                    <DeleteComment comment={comment} />
+                  ) : null}
+                </div>
               </div>
             );
           }
           return null;
-        })
-      ) : (
-        <p>No comments yet</p>
-      )}
-      <div>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <textarea
-            value={commentBody}
-            onChange={(e) => setCommentBody(e.target.value)}
-            style={{ resize: "none" }}
-          />
-          <button onClick={() => addComment()}>Add comment</button>
-        </form>
-      </div>
+        })}
     </div>
   );
 }

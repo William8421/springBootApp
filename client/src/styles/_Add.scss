@@ -1,5 +1,6 @@
-.add-post {
-  width: 95%;
+.add-post,
+.add-comment {
+  width: 90%;
   margin: 0 auto;
   margin-bottom: 2rem;
   form {
@@ -18,14 +19,13 @@
       }
       display: flex;
       justify-content: space-between;
-      .icon {
-        cursor: pointer;
-        font-size: 30px;
-      }
     }
   }
   .add-post-button-container {
     display: flex;
     justify-content: center;
   }
+}
+.add-comment {
+  width: 100%;
 }

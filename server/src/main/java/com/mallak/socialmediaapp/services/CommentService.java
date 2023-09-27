@@ -42,7 +42,8 @@ public class CommentService {
                 comment.setCommentOwner(user.getUsername());
                 commentRepository.save(comment); comment.setCommentOwner(user.getUsername());
                 post.setPostComments(post.getPostComments() + 1);
-                post.getPostCommentsIds().add(comment.getId()); post.getPostCommentedBy().add(user.getUsername());
+                post.getPostCommentsIds().add(user.getId());
+                post.getPostCommentedBy().add(user.getUsername());
                 postRepository.save(post);
             }
             return new ResponseEntity<>("Comment added", HttpStatus.CREATED);
@@ -83,9 +84,9 @@ public class CommentService {
             Comment comment = commentRepository.findById(id).orElse(null);
 
             if((post != null) && (comment != null)){
-                if(post.getPostCommentsIds().contains(id)){
+                if(post.getPostCommentsIds().contains(comment.getUserId())){
                     post.setPostComments(post.getPostComments() - 1);
-                    post.getPostCommentsIds().remove(id);
+                    post.getPostCommentsIds().remove(comment.getUserId());
                     post.getPostCommentedBy().remove(comment.getCommentOwner());
                     }
                     postRepository.save(post);

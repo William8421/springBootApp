@@ -1,0 +1,44 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+  background-color: white;
+  border-radius: 16px;
+  width: 90%;
+  .owner {
+    width: 90%;
+    h5 {
+      color: grey;
+    }
+  }
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+  .post-body-container {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    .edited {
+      color: grey;
+      align-self: flex-end;
+    }
+  }
+  .reactions-section {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    .reactions-buttons {
+      display: flex;
+      gap: 1rem;
+      .icon {
+        cursor: pointer;
+      }
+    }
+  }
+  .likes-comments-section {
+    width: 90%;
+  }
+}

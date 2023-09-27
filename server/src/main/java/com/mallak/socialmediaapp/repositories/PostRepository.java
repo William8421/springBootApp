@@ -11,5 +11,5 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     List<Post> findAllByPostLikesIdsContaining(String userId);
 
-    List<Post> findAllByPostCommentedByContaining(String username);
+    List<Post> findAllByPostCommentsIdsContaining(String userId);
 }

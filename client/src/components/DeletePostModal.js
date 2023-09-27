@@ -3,11 +3,11 @@ import { usePost } from "../context/PostContext";
 import { useUser } from "../context/UserContext";
 
 export default function DeletePostModal({ post }) {
-  const { isDeletePostOpen, openCloseDeletePost, removePost } = usePost();
-  const { isLoggedIn } = useUser();
+  const { toggleDelete, removePost } = usePost();
+  const { loggedInUser } = useUser();
 
   function deletePost() {
-    if (isLoggedIn) {
+    if (loggedInUser) {
       const postId = {
         id: post.id,
       };
@@ -16,16 +16,20 @@ export default function DeletePostModal({ post }) {
   }
   return (
     <div>
-      <div className={`delete-post ${isDeletePostOpen}`}>
-        <div className="delete-post-header">
+      <div className="delete-post">
+        <div className="delete-header">
           <h2>Warning</h2>
-          <button className="close-button" onClick={openCloseDeletePost}>
+          <button onClick={toggleDelete} className="close-button">
             X
           </button>
         </div>
         <p>Are you sure you want to delete this post?</p>
-        <button onClick={deletePost}>Delete</button>
-        <button onClick={openCloseDeletePost}>Cancel</button>
+        <div className="delete-update-buttons-container">
+          <button className="main-button" onClick={deletePost}>
+            Delete
+          </button>
+          <button onClick={toggleDelete}>Cancel</button>
+        </div>
       </div>
     </div>
   );

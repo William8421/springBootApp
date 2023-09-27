@@ -1,52 +1,43 @@
 import React from "react";
 import { usePost } from "../context/PostContext";
 import { useUser } from "../context/UserContext";
-import DeletePost from "./DeletePostModal";
+import DeletePostModal from "./DeletePostModal";
 import UpdatePostModal from "./UpdatePostModal";
 import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiDotsThreeDuotone } from "react-icons/pi";
 
 export default function ManagePost({ post }) {
-  const {
-    openCloseDeletePost,
-    selectedPost,
-    toggleUpdate,
-    showUpdateModal,
-    showMore,
-    toggleMoreActions,
-  } = usePost();
-  const { isLoggedIn } = useUser();
+  const { toggleUpdate, toggleDelete, toggleMoreActions, show } = usePost();
+  const { loggedInUser } = useUser();
   return (
-    <div className="manage-post-container">
-      {post.userId === isLoggedIn.id && (
-        <div className="action-buttons-container">
-          <PiDotsThreeDuotone
-            onClick={() => toggleMoreActions(post.id)}
-            size={20}
-            color="#944854"
-            className="show-more-button"
-          />
-          {showMore === post.id ? (
-            <div className="more-buttons-container">
-              <AiOutlineEdit
-                color="#944854"
-                onClick={() => toggleUpdate(post.id)}
-              />{" "}
-              <RiDeleteBin6Line
-                color="#944854"
-                onClick={(e) => openCloseDeletePost(post)}
-              />
-            </div>
-          ) : null}
-          <div style={{ width: "100%" }}>
-            {showUpdateModal === post.id ? (
-              <UpdatePostModal post={post} />
+    <div>
+      <div className="manage-post-container">
+        {post.userId === loggedInUser.id && (
+          <div className="action-buttons-container">
+            <PiDotsThreeDuotone
+              className="icon"
+              onClick={() => toggleMoreActions(post.id)}
+            />
+            {show.more === post.id ? (
+              <div className="more-buttons-container">
+                <AiOutlineEdit
+                  className="icon"
+                  onClick={() => toggleUpdate(post.id)}
+                />{" "}
+                <RiDeleteBin6Line
+                  className="icon"
+                  onClick={(e) => toggleDelete(post.id)}
+                />
+              </div>
             ) : null}
-            <DeletePost post={selectedPost} />
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      <div style={{ width: "100%" }}>
+        {show.updateModal === post.id ? <UpdatePostModal post={post} /> : null}
+        {show.deleteModal === post.id ? <DeletePostModal post={post} /> : null}
+      </div>
     </div>
   );
 }

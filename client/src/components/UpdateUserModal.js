@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useUser } from "../context/UserContext";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import { RiImageAddFill, RiCheckLine } from "react-icons/ri";
 
 export default function UpdateUserModal({ userData }) {
-  const { editUser } = useUser();
+  const { editUser, hiddenFileInput, uploadButtonHandler } = useUser();
   const [newData, setNewData] = useState({
     id: userData.id,
     profilePic: userData.profilePic,
@@ -29,7 +31,7 @@ export default function UpdateUserModal({ userData }) {
     formData.append("file", imgSelected);
     formData.append("upload_preset", "WilliamMallak");
     formData.append("upload_name", "denpxdokx");
-    formData.append("folder", "social-media-app");
+    formData.append("folder", "social-media-app/posts");
     try {
       const response = await axios.post(
         "https://api.cloudinary.com/v1_1/denpxdokx/image/upload",
@@ -53,7 +55,6 @@ export default function UpdateUserModal({ userData }) {
   }
   function updateUser() {
     editUser(newData);
-    // setShowServerResponse(true);
   }
 
   return (
@@ -94,18 +95,22 @@ export default function UpdateUserModal({ userData }) {
             autoComplete="sex"
           />
         </div>
-        <div>
+        <div className="icons-container">
+          <div className="input-button-container">
+            <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
+            <span>{imgSelected.name}</span>
+          </div>
+
           <input
             type="file"
-            name="profilePic"
             onChange={(e) => picHandler(e)}
+            ref={hiddenFileInput}
+            style={{ display: "none" }}
           />
-          {userData.profilePic !== "" ? (
-            <button className="main-button" onClick={(e) => uploadPic(e)}>
-              {uploaded === "" ? "Upload" : "Uploaded"}
-            </button>
+          {imgSelected === "" ? null : uploaded === "" ? (
+            <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />
           ) : (
-            <div>Please upload a photo</div>
+            <RiCheckLine className="icon" onClick={(e) => uploadPic(e)} />
           )}
         </div>
       </form>

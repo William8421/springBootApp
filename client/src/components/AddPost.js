@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { usePost } from "../context/PostContext";
 import { useUser } from "../context/UserContext";
 import { FaCloudUploadAlt } from "react-icons/fa";
@@ -7,17 +7,11 @@ import axios from "axios";
 
 export default function AddPost() {
   const { createPost } = usePost();
-  const { isLoggedIn } = useUser();
+  const { loggedInUser, hiddenFileInput, uploadButtonHandler } = useUser();
 
   const [newPost, setNewPost] = useState({});
   const [imgSelected, setImgSelected] = useState("");
   const [uploaded, setUploaded] = useState("");
-
-  const hiddenFileInput = useRef(null);
-
-  const uploadButtonHandler = (event) => {
-    hiddenFileInput.current.click();
-  };
 
   function picHandler(e) {
     const selectedFile = e.target.files?.[0];
@@ -49,15 +43,15 @@ export default function AddPost() {
 
   function handlePostForm(e) {
     const { name, value } = e.target;
-    if (isLoggedIn) {
+    if (loggedInUser) {
       setNewPost((prevState) => {
-        return { ...prevState, [name]: value, userId: isLoggedIn.id };
+        return { ...prevState, [name]: value, userId: loggedInUser.id };
       });
     }
   }
 
   function addPost() {
-    if (!isLoggedIn) {
+    if (!loggedInUser) {
       alert("please login or sign up to be able to add posts");
     } else if (newPost.body === "") {
       alert("Your post and image are empty");
@@ -83,11 +77,7 @@ export default function AddPost() {
         />
         <div className="icons-container">
           <div className="input-button-container">
-            <RiImageAddFill
-              onClick={uploadButtonHandler}
-              className="icon"
-              color="#944854"
-            />
+            <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
             <span>{imgSelected.name}</span>
           </div>
 
@@ -98,17 +88,9 @@ export default function AddPost() {
             style={{ display: "none" }}
           />
           {imgSelected === "" ? null : uploaded === "" ? (
-            <FaCloudUploadAlt
-              className="icon"
-              onClick={(e) => uploadPic(e)}
-              color="#944854"
-            />
+            <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />
           ) : (
-            <RiCheckLine
-              className="icon"
-              onClick={(e) => uploadPic(e)}
-              color="#944854"
-            />
+            <RiCheckLine className="icon" onClick={(e) => uploadPic(e)} />
           )}
         </div>
       </form>

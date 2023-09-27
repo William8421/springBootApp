@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useComment } from "../context/CommentContext";
 
 export default function UpdateComment({ comment }) {
-  const { editComment } = useComment();
+  const { editComment, toggleUpdateComment } = useComment();
 
   const [newComment, setNewComment] = useState({
     id: comment.id,
@@ -21,7 +21,13 @@ export default function UpdateComment({ comment }) {
   }
 
   return (
-    <div>
+    <div className="update-comment">
+      <div className="update-header">
+        <h2>Update your comment</h2>
+        <button className="close-button" onClick={toggleUpdateComment}>
+          X
+        </button>
+      </div>
       <form>
         <textarea
           name="body"
@@ -30,9 +36,12 @@ export default function UpdateComment({ comment }) {
           style={{ resize: "none" }}
         />
       </form>
-      <button className="main-button" onClick={updateComment}>
-        Update
-      </button>
+      <div className="delete-update-buttons-container">
+        <button className="main-button" onClick={updateComment}>
+          Update
+        </button>
+        <button onClick={toggleUpdateComment}>Cancel</button>
+      </div>
     </div>
   );
 }

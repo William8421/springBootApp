@@ -1,109 +1,118 @@
 import React, { useEffect } from "react";
 import { useUser } from "../context/UserContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AiOutlineUser, AiOutlineHome, AiOutlineInfo } from "react-icons/ai";
+import { usePost } from "../context/PostContext";
+import { useComment } from "../context/CommentContext";
 
-export default function Navbar() {
+export default function NewNavbar() {
   const {
     openCloseLoginModal,
     openCloseSignUpModal,
     logOut,
     switcher,
-    burger,
     menu,
-    isLoggedIn,
+    loggedInUser,
     userData,
     getUser,
     serverResponse,
+    setUserInfoId,
   } = useUser();
+
+  const { show, setShow } = usePost();
+  const { commentShow, setCommentShow } = useComment();
+
+  const navigate = useNavigate();
+
+  function closeHiddenDiv() {
+    if (show.hiddenDiv) {
+      setShow({
+        ...show,
+        updateModal: null,
+        deleteModal: null,
+        commentsForPost: null,
+        likesForPost: null,
+        hiddenDiv: false,
+      });
+    } else {
+      setCommentShow({
+        ...commentShow,
+        updateCommentModal: null,
+        deleteCommentModal: null,
+        hiddenDiv: false,
+      });
+    }
+  }
+
+  function goToUserProfile() {
+    setUserInfoId(loggedInUser.id);
+    navigate(`/userprofile`);
+    switcher();
+  }
 
   useEffect(() => {
     getUser();
     // eslint-disable-next-line
-  }, [!isLoggedIn]);
+  }, [!loggedInUser]);
 
   return (
     <div className="navbar-container">
-      <div className="navbar-sub-container">
-        <div className="bar-button" onClick={switcher}>
-          <div className={`bar top ${burger}`}></div>
-          <div className={`bar middle ${burger}`}></div>
-          <div className={`bar bottom ${burger}`}></div>
-        </div>
-        <div className="pages">
-          <div className={`burger-menu ${menu}`}>
-            <div className="routes-container">
-              <NavLink to={"/"}>
-                <button onClick={switcher}>Home</button>
-              </NavLink>
-              <NavLink to={"/about"}>
-                <button onClick={switcher}>About</button>
-              </NavLink>
-            </div>
+      <div
+        className={`hidden-div ${show.hiddenDiv ? "open" : ""} ${
+          commentShow.hiddenDiv ? "open" : ""
+        }`}
+        onClick={closeHiddenDiv}
+      ></div>
+      <div className="routes-container">
+        <div className="route">
+          {loggedInUser ? (
             <div>
-              {!isLoggedIn ? (
-                <div className="signUp-login-container">
-                  <button onClick={openCloseSignUpModal}>Sign Up</button>
-                  <button onClick={openCloseLoginModal}>Login</button>
-                </div>
-              ) : (
-                <div className="signUp-login-container">
-                  <button onClick={logOut}>Logout</button>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="username-container">
-            {isLoggedIn ? (
-              <div>
-                <NavLink className="username" to="myprofile">
-                  {userData.profilePic === "noPic" ? (
-                    isLoggedIn.username[0].toUpperCase()
-                  ) : (
-                    <img src={userData.profilePic} alt="profile" />
-                  )}
-                </NavLink>
-              </div>
-            ) : (
-              <div className="no-username"></div>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="app-name-landscape">
-        <NavLink className="app-name" to="/">
-          <h2>Social media app</h2>
-        </NavLink>
-        <div className="landscape-username-container">
-          {isLoggedIn ? (
-            <div>
-              <NavLink className="landscape-username" to="myprofile">
+              <div onClick={switcher}>
                 {userData.profilePic === "noPic" ? (
-                  isLoggedIn.username[0].toUpperCase()
+                  loggedInUser.username[0].toUpperCase()
                 ) : (
                   <img src={userData.profilePic} alt="profile" />
                 )}
-              </NavLink>
+              </div>
             </div>
           ) : (
-            <div className="landscape-no-username"></div>
+            <div>
+              <AiOutlineUser
+                // onClick={loggedInUser ? logOut : openCloseLoginModal}
+                onClick={switcher}
+                className="nav-icon"
+              />
+            </div>
           )}
         </div>
+        <div className="route">
+          <NavLink to={"/"}>
+            <AiOutlineHome className="nav-icon" />
+          </NavLink>
+        </div>
+        <div className="route">
+          <NavLink to={"/about"}>
+            <AiOutlineInfo className="nav-icon" />
+          </NavLink>
+        </div>
       </div>
-      {/* <div className='landscape-bar'>
-        <NavLink className='landscape-routes' to='/'>Home</NavLink>
-        <NavLink className='landscape-routes' to='/about'>About</NavLink>
-        <div>
-          {!isLoggedIn ? (
-            <div className='landscape-signUp-login-container'>
+      <div className="pages">
+        <div className={`burger-menu ${menu}`}>
+          {!loggedInUser ? (
+            <div className="signUp-login-container">
               <button onClick={openCloseSignUpModal}>Sign Up</button>
               <button onClick={openCloseLoginModal}>Login</button>
             </div>
-          )
-            :
-            (<div className='landscape-signUp-login-container'><button onClick={logOut} >Logout</button></div>)
-          }
+          ) : (
+            <div>
+              <div className="signUp-login-container">
+                <button onClick={goToUserProfile}>Your profile</button>
+                <button onClick={logOut}>Logout</button>
+              </div>
+            </div>
+          )}
         </div>
-      </div> */}
+      </div>
       {serverResponse.showMessage && (
         <p className="server-response-message">{serverResponse.message}</p>
       )}

@@ -2,21 +2,12 @@ import React from "react";
 import { usePost } from "../context/PostContext";
 
 export default function PostLikedByModal({ post }) {
-  const { showLikesForPost, setShowLikesForPost } = usePost();
+  const { togglePostLikes } = usePost();
   return (
-    <div
-      className={`post-liked-by ${
-        showLikesForPost !== null
-          ? "showLikesForPost-on"
-          : "showLikesForPost-off"
-      }`}
-    >
+    <div className="post-liked-by">
       <div className="post-liked-header">
         <h2>Likes</h2>
-        <button
-          className="close-button"
-          onClick={() => setShowLikesForPost(null)}
-        >
+        <button className="close-button" onClick={togglePostLikes}>
           X
         </button>
       </div>

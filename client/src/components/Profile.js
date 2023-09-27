@@ -1,43 +1,40 @@
 import React, { useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import { AiOutlineEdit } from "react-icons/ai";
-import MyPosts from "./MyPosts";
 import UpdateUserModal from "./UpdateUserModal";
 import { usePost } from "../context/PostContext";
 import MyLikedPosts from "./MyLikedPosts";
 import MyCommentedPosts from "./MyCommentedPosts";
+import Post from "./Post";
 
 export default function MyProfile() {
   const {
     getUser,
     userData,
     refresh,
-    isLoggedIn,
+    loggedInUser,
     toggleUpdateUser,
     showUpdateUserModal,
   } = useUser();
   const {
-    isDeletePostOpen,
-    openCloseDeletePost,
-    showMyLikes,
     toggleMyLikes,
-    showMyComments,
     toggleMyComments,
+    userPosts,
+    getUserPosts,
+    show,
+    refreshItems,
   } = usePost();
-
   useEffect(() => {
     getUser();
+    getUserPosts(loggedInUser);
+
     // eslint-disable-next-line
-  }, [refresh]);
+  }, [refresh, refreshItems]);
 
   return (
-    <div className="my-profile">
+    <div className="profile">
       My profile
-      <div
-        className={`delete-post-hidden-div ${isDeletePostOpen}`}
-        onClick={openCloseDeletePost}
-      ></div>
-      {isLoggedIn && userData ? (
+      {loggedInUser && userData ? (
         <div>
           {userData.profilePic === "noPic" ? (
             <div>No profile picture provided</div>
@@ -54,22 +51,34 @@ export default function MyProfile() {
           <div>Username: {userData.username}</div>
           <div>Age: {userData.age}</div>
           <div>Gender: {userData.gender}</div>
-          <AiOutlineEdit onClick={() => toggleUpdateUser(userData.id)} />
+          <AiOutlineEdit
+            className="icon"
+            onClick={() => toggleUpdateUser(userData.id)}
+          />
           {showUpdateUserModal === userData.id ? (
             <UpdateUserModal userData={userData} />
           ) : null}
         </div>
       ) : null}
-      <MyPosts userId={userData.id} />
+      <div className="posts">
+        My posts
+        {userPosts.length > 0 ? (
+          userPosts.map((post) => {
+            return <Post post={post} key={post.id} />;
+          })
+        ) : (
+          <div>You have no posts yet</div>
+        )}
+      </div>
       <div className="my-likes">
-        <button onClick={() => toggleMyLikes(isLoggedIn.id)}>My likes</button>
-        {showMyLikes === isLoggedIn.id ? <MyLikedPosts /> : null}
+        <button onClick={() => toggleMyLikes(loggedInUser.id)}>My likes</button>
+        {show.myLikes === loggedInUser.id ? <MyLikedPosts /> : null}
       </div>
       <div className="my-comments">
-        <button onClick={() => toggleMyComments(isLoggedIn.username)}>
+        <button onClick={() => toggleMyComments(loggedInUser.id)}>
           My comments
         </button>
-        {showMyComments === isLoggedIn.username ? <MyCommentedPosts /> : null}
+        {show.myComments === loggedInUser.id ? <MyCommentedPosts /> : null}
       </div>
     </div>
   );

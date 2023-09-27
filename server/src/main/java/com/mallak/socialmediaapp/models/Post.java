@@ -14,6 +14,7 @@ public class Post {
     private String id;
     private String userId;
     private String postOwner;
+    private String postOwnerName;
     private String body;
     private String image;
     private Integer postLikes = 0;

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import axios from "axios";
 import SignIn from "../components/SignIn.js";
 import SignUp from "../components/SignUp.js";
@@ -11,13 +17,14 @@ export function UserProvider({ children }) {
   const location = useLocation();
 
   const [userData, setUserData] = useState({});
+  const [userInfo, setUserInfo] = useState({});
+  const [userInfoId, setUserInfoId] = useState("");
   const [serverResponse, setServerResponse] = useState({
     message: "",
     showMessage: false,
   });
 
   const [menu, setMenu] = useState("off");
-  const [burger, setBurger] = useState("close");
 
   const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
 
@@ -29,7 +36,6 @@ export function UserProvider({ children }) {
 
   function switcher() {
     setMenu(menu === "off" ? "on" : "off");
-    setBurger(burger === "close" ? "open" : "close");
   }
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState("loginModalOff");
@@ -40,7 +46,6 @@ export function UserProvider({ children }) {
       isLoginModalOpen === "loginModalOff" ? "loginModalOn" : "loginModalOff"
     );
     setMenu("off");
-    setBurger("close");
   }
   function openCloseSignUpModal() {
     setIsSignUpModalOpen(
@@ -54,14 +59,21 @@ export function UserProvider({ children }) {
   const [refresh, setRefresh] = useState(false);
 
   const triggerRefresh = () => {
-    setRefresh(true);
+    setRefresh(!refresh);
   };
 
   const axiosInstance = axios.create({
     baseURL: "http://192.168.1.103:8080/api",
   });
 
-  const isLoggedIn = JSON.parse(localStorage.getItem("user")) || "";
+  const loggedInUser = JSON.parse(localStorage.getItem("user")) || "";
+  const selectedUser = JSON.parse(localStorage.getItem("selectedUser")) || "";
+
+  const hiddenFileInput = useRef(null);
+
+  const uploadButtonHandler = (event) => {
+    hiddenFileInput.current.click();
+  };
 
   async function signUp(data) {
     try {
@@ -74,7 +86,6 @@ export function UserProvider({ children }) {
       localStorage.setItem("user", JSON.stringify(userStorage));
       openCloseSignUpModal();
       setMenu("off");
-      setBurger("close");
       setServerResponse({
         message: "You are signed up",
         showMessage: true,
@@ -95,7 +106,6 @@ export function UserProvider({ children }) {
       localStorage.setItem("user", JSON.stringify(userStorage));
       openCloseLoginModal();
       setMenu("off");
-      setBurger("close");
       setServerResponse({
         message: "You are logged in",
         showMessage: true,
@@ -107,33 +117,45 @@ export function UserProvider({ children }) {
 
   function logOut() {
     localStorage.removeItem("user");
+    localStorage.removeItem("selectedUser");
     switcher();
     triggerRefresh();
-    if (location.pathname === "/myprofile") {
+    if (location.pathname === "/profile") {
       navigate("/");
     }
   }
 
   async function getUser() {
-    if (isLoggedIn) {
+    if (loggedInUser) {
       try {
-        const response = await axiosInstance.post("/users/user", isLoggedIn);
+        const response = await axiosInstance.post("/users/user", loggedInUser);
         setUserData(response.data);
       } catch (error) {
         console.error(error);
       }
     }
   }
+  async function getUserInfo() {
+    try {
+      const response = await axiosInstance.post("/users/user", {
+        id: selectedUser,
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function editUser(user) {
     try {
       const response = await axiosInstance.put("/users/editprofile", user);
-      triggerRefresh();
       setShowUpdateUserModal(false);
       setServerResponse({
         message: response.data,
         showMessage: true,
       });
+
+      triggerRefresh();
     } catch (error) {
       console.error(error);
     }
@@ -159,10 +181,9 @@ export function UserProvider({ children }) {
         signIn,
         logOut,
         signUp,
-        isLoggedIn,
+        loggedInUser,
         switcher,
         menu,
-        burger,
         openCloseLoginModal,
         openCloseSignUpModal,
         getUser,
@@ -173,6 +194,12 @@ export function UserProvider({ children }) {
         refresh,
         serverResponse,
         setServerResponse,
+        hiddenFileInput,
+        uploadButtonHandler,
+        setUserInfoId,
+        userInfoId,
+        getUserInfo,
+        userInfo,
       }}
     >
       {children}

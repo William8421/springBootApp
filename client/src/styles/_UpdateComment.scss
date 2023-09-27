@@ -1,4 +1,4 @@
-.post-liked-by {
+.update-comment {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -8,10 +8,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  .post-liked-header {
+  .update-comment-header {
+    background-color: red;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0 1rem;
   }
 }
