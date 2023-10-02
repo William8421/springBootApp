@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -12,13 +13,15 @@ import java.util.List;
 @Document(collection = "posts")
 public class Post {
     private String id;
+    private Date createdAt;
     private String userId;
+    private String userPicture;
     private String postOwner;
     private String postOwnerName;
     private String body;
     private String image;
     private Integer postLikes = 0;
-private List<String> postLikesIds = new ArrayList<>();
+    private List<String> postLikesIds = new ArrayList<>();
     private List<String> postLikedBy = new ArrayList<>();
     private Integer postComments = 0;
     private List<String> postCommentsIds = new ArrayList<>();

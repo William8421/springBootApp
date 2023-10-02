@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 @Service
@@ -27,10 +28,14 @@ public class AuthService {
             if (isInvalidUser(user)) {
                 return new ResponseEntity<>("First name, last name, username and age cannot be empty", HttpStatus.BAD_REQUEST);
             }
-            if (user.getAge() <= 17) {
-                int period = 18 - user.getAge();
-                return new ResponseEntity<>("See you in " + period + " year/s", HttpStatus.BAD_REQUEST);
+            Date currentDate = new Date();
+            long ageInMillis = currentDate.getTime() - user.getDateOfBirth().getTime();
+            int age = (int) (ageInMillis / (1000L * 60 * 60 * 24 * 365));
+            if (age < 18) {
+                int remainingYears = 18 - age;
+                return new ResponseEntity<>("You must be at least 18 years old to register. Please wait for another " + remainingYears + " year(s).", HttpStatus.BAD_REQUEST);
             }
+
             if (!isValidEmail(user.getEmail())) {
                 return new ResponseEntity<>("Invalid email format", HttpStatus.BAD_REQUEST);
             }
@@ -71,7 +76,7 @@ public class AuthService {
         return user.getFirstName() == null || user.getFirstName().isEmpty() ||
                 user.getLastName() == null || user.getLastName().isEmpty() ||
                 user.getUsername() == null || user.getUsername().isEmpty() ||
-                user.getAge() == null;
+                user.getDateOfBirth() == null;
     }
 
     private boolean emailOrUsernameExists(String email, String username) {

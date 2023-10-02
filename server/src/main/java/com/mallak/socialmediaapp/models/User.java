@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,9 +17,9 @@ public class User {
     private String profilePic;
     private String firstName;
     private String lastName;
-    private String username;
     private String email;
     private String password;
-    private Integer age;
+    private Date dateOfBirth;
     private String gender;
+    private String username;
 }

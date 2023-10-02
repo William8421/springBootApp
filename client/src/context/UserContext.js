@@ -1,13 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import SignIn from "../components/SignIn.js";
-import SignUp from "../components/SignUp.js";
+import SignIn from "../components/auth/SignIn.js";
+import SignUp from "../components/auth/SignUp.js";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
@@ -19,20 +13,18 @@ export function UserProvider({ children }) {
   const [userData, setUserData] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [userInfoId, setUserInfoId] = useState("");
+  const [postLikesUsers, setPostLikesUsers] = useState([]);
   const [serverResponse, setServerResponse] = useState({
     message: "",
     showMessage: false,
   });
+  const [serverError, setServerError] = useState({
+    userError: null,
+    postError: null,
+    commentError: null,
+  });
 
   const [menu, setMenu] = useState("off");
-
-  const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
-
-  function toggleUpdateUser(userId) {
-    setShowUpdateUserModal((prevState) =>
-      prevState === userId ? null : userId
-    );
-  }
 
   function switcher() {
     setMenu(menu === "off" ? "on" : "off");
@@ -69,11 +61,11 @@ export function UserProvider({ children }) {
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || "";
   const selectedUser = JSON.parse(localStorage.getItem("selectedUser")) || "";
 
-  const hiddenFileInput = useRef(null);
+  const [formKey, setFormKey] = useState(0);
 
-  const uploadButtonHandler = (event) => {
-    hiddenFileInput.current.click();
-  };
+  function resetForm() {
+    setFormKey((prevKey) => prevKey + 1);
+  }
 
   async function signUp(data) {
     try {
@@ -87,11 +79,20 @@ export function UserProvider({ children }) {
       openCloseSignUpModal();
       setMenu("off");
       setServerResponse({
-        message: "You are signed up",
+        message: `Welcome ${userStorage.username}`,
         showMessage: true,
       });
+      setServerError((prevError) => {
+        return { ...prevError, userError: null };
+      });
+      if (response.data) {
+        resetForm();
+      }
     } catch (error) {
-      alert(error.response.data);
+      console.error(error);
+      setServerError((prevError) => {
+        return { ...prevError, userError: error.response.data };
+      });
     }
   }
 
@@ -110,8 +111,15 @@ export function UserProvider({ children }) {
         message: "You are logged in",
         showMessage: true,
       });
+      resetForm();
+
+      setServerError((prevError) => {
+        return { ...prevError, userError: null };
+      });
     } catch (error) {
-      console.error(error);
+      setServerError((prevError) => {
+        return { ...prevError, userError: error.response.data };
+      });
     }
   }
 
@@ -120,7 +128,7 @@ export function UserProvider({ children }) {
     localStorage.removeItem("selectedUser");
     switcher();
     triggerRefresh();
-    if (location.pathname === "/profile") {
+    if (location.pathname === "/userprofile") {
       navigate("/");
     }
   }
@@ -145,19 +153,33 @@ export function UserProvider({ children }) {
       console.error(error);
     }
   }
+  async function getUsersByIds(userIds) {
+    try {
+      const response = await axiosInstance.post("/users/usersByIds", {
+        userIds,
+      });
+      setPostLikesUsers(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function editUser(user) {
     try {
       const response = await axiosInstance.put("/users/editprofile", user);
-      setShowUpdateUserModal(false);
       setServerResponse({
         message: response.data,
         showMessage: true,
       });
-
+      setServerError((prevError) => {
+        return { ...prevError, userError: null };
+      });
       triggerRefresh();
+      resetForm();
     } catch (error) {
-      console.error(error);
+      setServerError((prevError) => {
+        return { ...prevError, userError: error.response.data };
+      });
     }
   }
 
@@ -189,17 +211,20 @@ export function UserProvider({ children }) {
         getUser,
         userData,
         editUser,
-        toggleUpdateUser,
-        showUpdateUserModal,
         refresh,
         serverResponse,
         setServerResponse,
-        hiddenFileInput,
-        uploadButtonHandler,
         setUserInfoId,
         userInfoId,
         getUserInfo,
         userInfo,
+        selectedUser,
+        getUsersByIds,
+        postLikesUsers,
+        formKey,
+        resetForm,
+        serverError,
+        setServerError,
       }}
     >
       {children}

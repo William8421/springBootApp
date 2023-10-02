@@ -14,7 +14,9 @@ public class Comment {
     private String id;
     private String postId;
     private String userId;
+    private String userPicture;
     private String commentOwner;
+    private String commentOwnerName;
     private String body;
     private boolean isEdited;
     private Integer commentLikes = 0;

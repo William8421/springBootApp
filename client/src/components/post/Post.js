@@ -1,0 +1,131 @@
+import React from "react";
+import { usePost } from "../../context/PostContext";
+import { useUser } from "../../context/UserContext";
+
+import { BiLike, BiSolidLike } from "react-icons/bi";
+import { FaRegComment, FaComment } from "react-icons/fa";
+import ManagePost from "./ManagePost";
+import PostLikes from "../likes/PostLikes";
+import Comments from "../comment/Comments";
+import PostLikedByModal from "../likedBy/PostLikedByModal";
+import { useNavigate } from "react-router-dom";
+import noPic from "../../images/icon-256x256.png";
+
+export default function Post({ post }) {
+  const { likeAPost, toggleComments, show } = usePost();
+  const { loggedInUser, setUserInfoId, openCloseLoginModal } = useUser();
+  const navigate = useNavigate();
+
+  const isLikedByUser = post.postLikesIds.includes(loggedInUser.id);
+
+  function like(e) {
+    if (loggedInUser) {
+      const likeData = {
+        id: e.id,
+        userId: loggedInUser.id,
+      };
+      likeAPost(likeData);
+    } else {
+      openCloseLoginModal();
+    }
+  }
+
+  function goToUserProfile() {
+    localStorage.setItem("selectedUser", JSON.stringify(post.userId));
+    setUserInfoId(post.userId);
+    navigate(`/userprofile`);
+  }
+
+  const formattedPostBody = post.body.replace(/\n/g, "<br />");
+  const formattedDate = new Date(post.createdAt).toLocaleString();
+
+  const createdAt = new Date(post.createdAt);
+  const now = new Date();
+  const timeDifference = now - createdAt;
+  let formattedTime = "";
+
+  if (timeDifference < 60 * 60 * 1000) {
+    // Less than 1 hour
+    const minutesAgo = Math.floor(timeDifference / (60 * 1000));
+    formattedTime = `${minutesAgo} minute${minutesAgo === 1 ? "" : "s"} ago`;
+  } else if (timeDifference < 24 * 60 * 60 * 1000) {
+    // Less than 1 day
+    const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
+    formattedTime = `${hoursAgo} hour${hoursAgo === 1 ? "" : "s"} ago`;
+  } else {
+    // More than 1 day
+    const daysAgo = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
+    if (daysAgo < 7) {
+      formattedTime = `${daysAgo} day${daysAgo === 1 ? "" : "s"} ago`;
+    } else {
+      formattedTime = `on ${formattedDate}`;
+    }
+  }
+
+  return (
+    <div className="post" key={post.id}>
+      <div className="owner" onClick={() => goToUserProfile()}>
+        <div className="pic-name">
+          {post.userPicture !== "noPic" ? (
+            <img src={post.userPicture} alt="profile" />
+          ) : (
+            <img src={noPic} alt="empty" />
+          )}
+
+          <h4>{post.postOwnerName}</h4>
+        </div>
+        <h5>@{post.postOwner}</h5>
+      </div>
+      {post.image && <img src={post.image} alt="post" />}
+      <div className="post-body-container">
+        <div dangerouslySetInnerHTML={{ __html: formattedPostBody }} />
+        <div className="time-edited">
+          <p>Posted {formattedTime}</p>
+          {post.edited === true && <p className="edited">Edited</p>}
+        </div>
+      </div>
+
+      {/* post likes and manage post */}
+      <div className="reactions-section">
+        {/* LIKE BUTTON */}
+        <div className="reactions-buttons">
+          {!isLikedByUser ? (
+            <BiLike className="icon" onClick={(e) => like(post)} />
+          ) : (
+            <BiSolidLike className="icon" onClick={(e) => like(post)} />
+          )}
+          {show.commentsForPost === post.id ? (
+            <FaComment
+              onClick={() => toggleComments(post.id)}
+              className="icon"
+            />
+          ) : (
+            <FaRegComment
+              onClick={() => toggleComments(post.id)}
+              className="icon"
+            />
+          )}
+        </div>
+        {/* manage post */}
+        <div>
+          <ManagePost post={post} />
+        </div>
+      </div>
+
+      {/* LIKES SECTION */}
+      <div className="likes-comments-section">
+        <PostLikes post={post} />
+      </div>
+
+      {/* COMMENTS SECTION */}
+      <div className="likes-comments-section">
+        {show.commentsForPost === post.id ? <Comments post={post} /> : null}
+      </div>
+      <div>
+        {show.likesForPost === post.id ? (
+          <PostLikedByModal post={post} />
+        ) : null}
+      </div>
+    </div>
+  );
+}

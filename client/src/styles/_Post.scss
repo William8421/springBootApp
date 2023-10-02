@@ -9,21 +9,41 @@
   width: 90%;
   .owner {
     width: 90%;
+    cursor: pointer;
+    .pic-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: block;
+        border: solid 2px $APPLE;
+      }
+    }
     h5 {
       color: grey;
+      text-decoration: underline;
     }
   }
   img {
-    width: 100%;
+    width: 90%;
     object-fit: cover;
   }
   .post-body-container {
     width: 90%;
     display: flex;
-    justify-content: space-between;
-    .edited {
+    flex-direction: column;
+    align-items: flex-start;
+    .time-edited {
+      // border: solid 1px red;
+      margin-top: 0.5rem;
+      width: 100%;
       color: grey;
-      align-self: flex-end;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
     }
   }
   .reactions-section {

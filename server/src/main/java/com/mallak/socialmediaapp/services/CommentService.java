@@ -40,6 +40,8 @@ public class CommentService {
                 comment.setPostId(postId);
                 comment.setUserId(userId);
                 comment.setCommentOwner(user.getUsername());
+                comment.setCommentOwnerName(user.getFirstName() + " " + user.getLastName());
+                comment.setUserPicture(user.getProfilePic());
                 commentRepository.save(comment); comment.setCommentOwner(user.getUsername());
                 post.setPostComments(post.getPostComments() + 1);
                 post.getPostCommentsIds().add(user.getId());

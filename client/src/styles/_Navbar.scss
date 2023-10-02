@@ -20,12 +20,14 @@
       padding: 1rem;
       .nav-icon {
         font-size: 20px;
+        color: black;
       }
       img {
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
         display: block;
+        cursor: pointer;
       }
     }
   }
@@ -69,5 +71,35 @@
     border-radius: 6px;
     padding: 0 0.3rem;
     font-size: 12px;
+  }
+  .alert-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    background-color: $ATHENS_GRAY;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+    .alert-modal-header {
+      background-color: $APPLE;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      color: $ATHENS_GRAY;
+      border-radius: 16px 16px 0 0;
+    }
+    p {
+      width: 80%;
+      text-align: center;
+      margin: 1rem;
+    }
+  }
+  .buttons-container {
+    display: flex;
+    gap: 1rem;
   }
 }

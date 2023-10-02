@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -86,7 +87,9 @@ public class PostService {
             User user = userRepository.findById(post.getUserId()).orElse(null);
             if(user != null){
                 post.setPostOwner(user.getUsername());
+                post.setUserPicture(user.getProfilePic());
                 post.setPostOwnerName(user.getFirstName() + " " + user.getLastName());
+                post.setCreatedAt(new Date());
             }
             postRepository.save(post);
             return new ResponseEntity<>("Post added", HttpStatus.OK);
@@ -106,7 +109,7 @@ public class PostService {
                 post.setPostLikes(post.getPostLikes() - 1);
                 post.getPostLikesIds().remove(userId);
                 if(user != null){
-                    post.getPostLikedBy().remove(user.getUsername());
+                    post.getPostLikedBy().remove(user.getFirstName() + " " + user.getLastName());
                 }
                 postRepository.save(post);
                 return new ResponseEntity<>("Unliked", HttpStatus.OK);
@@ -114,7 +117,7 @@ public class PostService {
                 post.setPostLikes(post.getPostLikes() + 1);
                 post.getPostLikesIds().add(userId);
                 if(user != null){
-                    post.getPostLikedBy().add(user.getUsername());
+                    post.getPostLikedBy().add(user.getFirstName() + " " + user.getLastName());
                 }
                 postRepository.save(post);
                 return new ResponseEntity<>("Liked ", HttpStatus.OK);

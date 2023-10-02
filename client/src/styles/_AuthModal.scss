@@ -1,0 +1,103 @@
+.auth-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: $ATHENS_GRAY;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+
+  .auth-modal-header {
+    background-color: $APPLE;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    color: $ATHENS_GRAY;
+    border-radius: 16px 16px 0 0;
+  }
+
+  form {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 90%;
+
+    input,
+    select {
+      width: 90%;
+      height: 2rem;
+      border: solid 2px $APPLE;
+      border-radius: 6px;
+      padding-left: 0.5rem;
+      color: grey;
+      background-color: white;
+    }
+
+    .password-container {
+      position: relative;
+      width: 90%;
+      input {
+        width: 100%;
+      }
+
+      .showHidePassword {
+        position: absolute;
+        top: 25%;
+        right: 3%;
+        color: black;
+      }
+    }
+  }
+
+  .icons-container {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    .input-button-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}
+
+.signUpModalOff {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.signUpModalOn {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}
+
+.signUp-hidden-div.signUpModalOn,
+.login-hidden-div.loginModalOn {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.loginModalOff {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.loginModalOn {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
+}

@@ -23,22 +23,25 @@ body {
     background-color: transparent;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
-    color: black;
+    color: $ATHENS_GRAY;
   }
-  .main-button {
-    //   color: #131763;
-    //   background-color: #cd729c;
+  .main-button,
+  .cancel-button {
     border-radius: 6px;
     font-size: 1.2rem;
     padding: 0.2rem 0.4rem;
-    // background-color: #8db8ad;
     background-color: $APPLE;
-    color: white;
+    color: $ATHENS_GRAY;
     border: none;
   }
-  .delete-update-buttons-container {
+  .cancel-button {
+    background-color: $BOUQUET;
+  }
+  .submit-buttons-container {
     display: flex;
+    justify-content: center;
     gap: 1rem;
+    margin: 1rem;
   }
   .hidden-div.open {
     position: fixed;
@@ -48,5 +51,18 @@ body {
     height: 100%;
     background-color: black;
     opacity: 0.5;
+  }
+  .date-gender-container {
+    display: flex;
+    width: 90%;
+    gap: 1rem;
+    .date-container {
+      width: 100%;
+    }
+  }
+  .error {
+    color: $BOUQUET;
+    width: 90%;
+    text-align: center;
   }
 }

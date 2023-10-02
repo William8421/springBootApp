@@ -25,19 +25,25 @@ body button {
   background-color: transparent;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.2rem;
-  color: black;
+  color: #f2f4f6;
 }
-.App .main-button {
+.App .main-button,
+.App .cancel-button {
   border-radius: 6px;
   font-size: 1.2rem;
   padding: 0.2rem 0.4rem;
   background-color: #6aaf3c;
-  color: white;
+  color: #f2f4f6;
   border: none;
 }
-.App .delete-update-buttons-container {
+.App .cancel-button {
+  background-color: #b47e9f;
+}
+.App .submit-buttons-container {
   display: flex;
+  justify-content: center;
   gap: 1rem;
+  margin: 1rem;
 }
 .App .hidden-div.open {
   position: fixed;
@@ -47,6 +53,19 @@ body button {
   height: 100%;
   background-color: black;
   opacity: 0.5;
+}
+.App .date-gender-container {
+  display: flex;
+  width: 90%;
+  gap: 1rem;
+}
+.App .date-gender-container .date-container {
+  width: 100%;
+}
+.App .error {
+  color: #b47e9f;
+  width: 90%;
+  text-align: center;
 }
 
 .navbar-container {
@@ -74,12 +93,14 @@ body button {
 }
 .navbar-container .routes-container .route .nav-icon {
   font-size: 20px;
+  color: black;
 }
 .navbar-container .routes-container .route img {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
   display: block;
+  cursor: pointer;
 }
 .navbar-container .pages {
   text-align: center;
@@ -122,156 +143,95 @@ body button {
   padding: 0 0.3rem;
   font-size: 12px;
 }
-
-.login-modal {
-  width: 300px;
+.navbar-container .alert-modal {
   position: fixed;
   top: 50%;
-  right: 0%;
-  transform: translate(-15%, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
+  border-radius: 16px;
 }
-.login-modal .login-modal-header {
-  background-color: #cd729c;
+.navbar-container .alert-modal .alert-modal-header {
+  background-color: #6aaf3c;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  position: fixed;
-  top: 0;
-  padding: 0 1rem;
-  color: black;
-  height: 3rem;
-}
-.login-modal .login-form-container {
-  background-color: #3a3f98;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
   padding: 1rem;
-  color: white;
+  color: #f2f4f6;
+  border-radius: 16px 16px 0 0;
 }
-.login-modal .login-form-container form {
+.navbar-container .alert-modal p {
+  width: 80%;
+  text-align: center;
+  margin: 1rem;
+}
+.navbar-container .buttons-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: fit-content;
   gap: 1rem;
-  height: 100%;
 }
-.login-modal .login-form-container form div {
-  width: 100%;
+
+.auth-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
 }
-.login-modal .login-form-container form div input {
+.auth-modal .auth-modal-header {
+  background-color: #6aaf3c;
   width: 100%;
-  height: 2rem;
-  border: none;
-  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
+  color: #f2f4f6;
+  border-radius: 16px 16px 0 0;
 }
-.login-modal .login-form-container form .password-container {
+.auth-modal form {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 90%;
+}
+.auth-modal form input,
+.auth-modal form select {
+  width: 90%;
+  height: 2rem;
+  border: solid 2px #6aaf3c;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+  color: grey;
+  background-color: white;
+}
+.auth-modal form .password-container {
   position: relative;
+  width: 90%;
 }
-.login-modal .login-form-container form .password-container .showHidePassword {
+.auth-modal form .password-container input {
+  width: 100%;
+}
+.auth-modal form .password-container .showHidePassword {
   position: absolute;
   top: 25%;
   right: 3%;
   color: black;
 }
-
-.loginModalOff {
-  display: none;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-
-.loginModalOn {
-  display: block;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-}
-
-.login-hidden-div.loginModalOn {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.5;
-}
-
-.signUp-modal {
-  width: 300px;
-  position: fixed;
-  top: 50%;
-  right: 0%;
-  transform: translate(-15%, -50%);
-  display: flex;
-  align-items: center;
-  padding-top: 3rem;
-  overflow: auto;
-}
-.signUp-modal .signUp-modal-header {
-  background-color: #cd729c;
+.auth-modal .icons-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  position: fixed;
-  top: 0;
-  padding: 0 1rem;
-  color: black;
-  height: 3rem;
+  width: 90%;
 }
-.signUp-modal .signUp-form-container {
-  background-color: #3a3f98;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  padding: 1rem;
-  color: white;
-}
-.signUp-modal .signUp-form-container form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: fit-content;
-  gap: 1rem;
-  width: 100%;
-}
-.signUp-modal .signUp-form-container form div {
-  width: 100%;
-}
-.signUp-modal .signUp-form-container form div input {
-  width: 100%;
-  height: 2rem;
-  border: none;
-  border-radius: 6px;
-  padding: 1rem;
-}
-.signUp-modal .signUp-form-container form .password-container {
-  position: relative;
-}
-.signUp-modal .signUp-form-container form .password-container .showHidePassword {
-  position: absolute;
-  top: 25%;
-  right: 3%;
-  color: black;
-}
-.signUp-modal .signUp-form-container form .icons-container {
-  display: flex;
-  justify-content: space-between;
-}
-.signUp-modal .signUp-form-container form .icons-container .input-button-container {
+.auth-modal .icons-container .input-button-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -289,7 +249,8 @@ body button {
   transition: 0.5s ease-in-out;
 }
 
-.signUp-hidden-div.signUpModalOn {
+.signUp-hidden-div.signUpModalOn,
+.login-hidden-div.loginModalOn {
   position: fixed;
   top: 0;
   right: 0;
@@ -297,6 +258,18 @@ body button {
   height: 100%;
   background-color: black;
   opacity: 0.5;
+}
+
+.loginModalOff {
+  display: none;
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.loginModalOn {
+  display: block;
+  opacity: 1;
+  transition: 0.5s ease-in-out;
 }
 
 .home-container {
@@ -322,22 +295,41 @@ body button {
 }
 .post .owner {
   width: 90%;
+  cursor: pointer;
+}
+.post .owner .pic-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.post .owner .pic-name img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: block;
+  border: solid 2px #6aaf3c;
 }
 .post .owner h5 {
   color: grey;
+  text-decoration: underline;
 }
 .post img {
-  width: 100%;
+  width: 90%;
   object-fit: cover;
 }
 .post .post-body-container {
   width: 90%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.post .post-body-container .edited {
+.post .post-body-container .time-edited {
+  margin-top: 0.5rem;
+  width: 100%;
   color: grey;
-  align-self: flex-end;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
 }
 .post .reactions-section {
   width: 90%;
@@ -355,33 +347,6 @@ body button {
   width: 90%;
 }
 
-.my-liked-posts {
-  width: 90%;
-  padding: 0.5rem;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: 0.1rem;
-}
-.my-liked-posts .posts-list {
-  width: 32%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: solid 1px black;
-}
-.my-liked-posts .posts-list .post-container img {
-  width: 100%;
-  height: 5rem;
-  object-fit: cover;
-}
-.my-liked-posts .posts-list .post-container p {
-  height: 1rem;
-  overflow: hidden;
-  font-size: 0.5rem;
-}
-
 .add-post,
 .add-comment {
   width: 90%;
@@ -395,6 +360,7 @@ body button {
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
+  white-space: pre-line;
 }
 .add-post form .icons-container,
 .add-comment form .icons-container {
@@ -433,94 +399,102 @@ body button {
   padding: 0.1rem;
 }
 
-.likes-container {
-  width: 100%;
-}
-.likes-container .likes-and-comments {
-  display: flex;
-  gap: 1rem;
-}
-.likes-container .liked-by {
-  display: flex;
-  cursor: pointer;
-}
-
-.post-liked-by {
+.liked-by {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
   background-color: #f2f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 16px;
 }
-.post-liked-by .post-liked-header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 1rem;
-}
-
-.update-post {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  background-color: #f2f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.update-post .update-post-header {
+.liked-by .liked-header {
   background-color: #6aaf3c;
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 1rem;
+  color: #f2f4f6;
+  border-radius: 16px 16px 0 0;
 }
-.update-post form {
+.liked-by .liked-users-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem;
+}
+.liked-by .liked-users-container .liked-user {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: auto;
+  border-bottom: solid 1px #6aaf3c;
+}
+.liked-by .liked-users-container .liked-user img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+.liked-by .liked-users-container .liked-user p {
+  cursor: pointer;
+}
+
+.update-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: #f2f4f6;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+}
+.update-modal .update-header {
+  background-color: #6aaf3c;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  color: #f2f4f6;
+  border-radius: 16px 16px 0 0;
+}
+.update-modal form {
   margin: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  width: 90%;
 }
-.update-post form textarea {
+.update-modal form input,
+.update-modal form select {
+  width: 90%;
+  height: 2rem;
+  border: none;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+  background-color: white;
+  color: grey;
+}
+.update-modal form textarea {
   width: 100%;
   height: 5rem;
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
 }
-.update-post form .icons-container {
+.update-modal form .icons-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.update-post form .icons-container .input-button-container {
+.update-modal form .icons-container .input-button-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.update-comment {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  background-color: #f2f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.update-comment .update-comment-header {
-  background-color: red;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .comments {
@@ -532,6 +506,21 @@ body button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+.comments .comment .comment-owner {
+  cursor: pointer;
+}
+.comments .comment .comment-owner .pic-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.comments .comment .comment-owner .pic-name img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: block;
+  border: solid 2px #6aaf3c;
 }
 .comments .comment .comment-body-container {
   width: 100%;
@@ -555,6 +544,7 @@ body button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 16px;
 }
 .delete-comment .delete-header,
 .delete-comment .update-header,
@@ -566,6 +556,16 @@ body button {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 1rem;
+  color: #f2f4f6;
+  border-radius: 16px 16px 0 0;
+}
+.delete-comment p,
+.delete-post p,
+.update-comment p {
+  width: 80%;
+  text-align: center;
+  margin: 1rem;
 }
 
 .buttons-container {
@@ -573,15 +573,99 @@ body button {
   gap: 1rem;
 }
 
-.profile .my-likes {
+.profile .profile-info {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+.profile .profile-info .pic-container {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
-.profile .my-comments {
+.profile .profile-info .pic-container .user-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: solid 2px #6aaf3c;
+}
+.profile .profile-info .pic-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-position: top;
+  object-fit: cover;
+  border-radius: 50%;
+  border: solid 2px #6aaf3c;
+}
+.profile .profile-info .information {
+  width: 90%;
+}
+.profile .profile-info .information p {
+  display: flex;
+  justify-content: space-between;
+}
+.profile .profile-info .information p span {
+  text-decoration: underline;
+  margin: 0.5rem 0;
+}
+.profile .profile-info .update-section {
+  width: 90%;
+}
+.profile .activity-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.profile .activity-buttons button {
+  margin: 1rem;
+}
+.profile .activity-list {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-liked-posts-comments {
+  width: 90%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.1rem;
+}
+.profile-liked-posts-comments .posts-list {
+  width: 32%;
+  height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  border: solid 1px black;
+}
+.profile-liked-posts-comments .posts-list .post-container img {
+  width: 100%;
+  height: 5rem;
+  object-fit: cover;
+}
+.profile-liked-posts-comments .posts-list .post-container p {
+  height: 1rem;
+  overflow: hidden;
+  font-size: 0.5rem;
+}
+
+.likes-container {
+  width: 100%;
+}
+.likes-container .likes-and-comments {
+  display: flex;
+  gap: 1rem;
+}
+.likes-container .likes-div {
+  display: flex;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=Style.css.map */

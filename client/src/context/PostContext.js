@@ -25,6 +25,7 @@ export function PostProvider({ children }) {
     myComments: null,
     more: null,
     hiddenDiv: false,
+    updateUser: null,
   };
 
   const [show, setShow] = useState(initialShow);
@@ -84,6 +85,14 @@ export function PostProvider({ children }) {
       setShow({ ...show, myComments: userId, myLikes: null });
     } else {
       setShow({ ...show, myComments: null, myLikes: null });
+    }
+  }
+
+  function toggleUpdateUser(userId) {
+    if (show.updateUser === null) {
+      setShow({ ...show, updateUser: userId, hiddenDiv: true });
+    } else {
+      setShow({ ...show, updateUser: null, hiddenDiv: null });
     }
   }
 
@@ -207,6 +216,7 @@ export function PostProvider({ children }) {
         getCommentedPosts,
         commentedPosts,
         toggleMyComments,
+        toggleUpdateUser,
         show,
         setShow,
       }}

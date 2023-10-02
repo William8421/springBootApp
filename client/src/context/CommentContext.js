@@ -13,6 +13,7 @@ export function CommentProvider({ children }) {
     updateCommentModal: null,
     deleteCommentModal: null,
     moreActions: null,
+    likesForComment: null,
     hiddenDiv: false,
   };
 
@@ -53,6 +54,22 @@ export function CommentProvider({ children }) {
       setCommentShow({
         ...commentShow,
         updateCommentModal: null,
+        hiddenDiv: false,
+      });
+    }
+  }
+
+  function toggleCommentLikes(commentId) {
+    if (!commentShow.hiddenDiv) {
+      setCommentShow({
+        ...commentShow,
+        likesForComment: commentId,
+        hiddenDiv: true,
+      });
+    } else {
+      setCommentShow({
+        ...commentShow,
+        likesForComment: null,
         hiddenDiv: false,
       });
     }
@@ -144,6 +161,7 @@ export function CommentProvider({ children }) {
         editComment,
         toggleMoreCommentActions,
         toggleDeleteComment,
+        toggleCommentLikes,
         commentShow,
         setCommentShow,
       }}

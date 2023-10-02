@@ -1,0 +1,41 @@
+.liked-by {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  background-color: $ATHENS_GRAY;
+  border-radius: 16px;
+  .liked-header {
+    background-color: $APPLE;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    color: $ATHENS_GRAY;
+    border-radius: 16px 16px 0 0;
+  }
+  .liked-users-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem;
+    .liked-user {
+      width: 60%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: auto;
+      border-bottom: solid 1px $APPLE;
+      img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+      p {
+        cursor: pointer;
+      }
+    }
+  }
+}

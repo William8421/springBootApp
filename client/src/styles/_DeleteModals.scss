@@ -10,12 +10,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 16px;
   .delete-header,
   .update-header {
     background-color: $APPLE;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: 1rem;
+    color: $ATHENS_GRAY;
+    border-radius: 16px 16px 0 0;
+  }
+  p {
+    width: 80%;
+    text-align: center;
+    margin: 1rem;
   }
 }
 .buttons-container {

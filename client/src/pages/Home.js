@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { usePost } from "../context/PostContext";
 import { useComment } from "../context/CommentContext";
 
-import AddPost from "../components/AddPost";
-import Post from "../components/Post";
+import AddPost from "../components/add/AddPost";
+import Post from "../components/post/Post";
 
 export default function Home() {
   const { getAllPosts, posts, refreshItems } = usePost();
