@@ -1,28 +1,20 @@
 .update-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
+  @include MODAL_POSITION;
   background-color: $ATHENS_GRAY;
   display: flex;
   flex-direction: column;
-  // align-items: center;
   border-radius: 16px;
   .update-header {
     background-color: $APPLE;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    @include FLEX_ROW_BETWEEN;
     padding: 1rem;
     color: $ATHENS_GRAY;
     border-radius: 16px 16px 0 0;
   }
   form {
     margin: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include FLEX_COLUMN_CENTER;
     gap: 1rem;
     width: 90%;
     input,
@@ -36,21 +28,16 @@
       color: grey;
     }
     textarea {
-      width: 100%;
-      height: 5rem;
-      resize: none;
-      border-radius: 6px;
-      padding-left: 0.5rem;
+      @include TEXT_AREA;
     }
     .icons-container {
       width: 100%;
+      @include FLEX_ROW_BETWEEN;
       .input-button-container {
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-      display: flex;
-      justify-content: space-between;
     }
   }
 }

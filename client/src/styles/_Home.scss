@@ -2,8 +2,6 @@
   width: 100%;
 }
 .posts {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include FLEX_COLUMN_CENTER;
   gap: 2rem;
 }

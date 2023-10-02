@@ -13,9 +13,7 @@
         align-items: center;
         gap: 0.5rem;
         img {
-          width: 2rem;
-          height: 2rem;
-          border-radius: 50%;
+          @include CIRCLED_IMG_2REM;
           display: block;
           border: solid 2px $APPLE;
         }
@@ -23,8 +21,7 @@
     }
     .comment-body-container {
       width: 100%;
-      display: flex;
-      justify-content: space-between;
+      @include FLEX_ROW_BETWEEN;
       .edited {
         color: grey;
         align-self: flex-end;

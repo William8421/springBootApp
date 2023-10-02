@@ -1,20 +1,36 @@
-// $MY_GREEN: #6aaf3c;
-// $MY_DARK_BLUE: #3d4774;
-// $MY_LIGHT_BLUE: #8cd4bf;
-// $MY_RED: #f34a52;
-// $MY_LIGHT_GREY: #ede2e2;
-
 $ATHENS_GRAY: #f2f4f6;
-$GULF_STREAM: #7ebbae;
 $APPLE: #6aaf3c;
 $BOUQUET: #b47e9f;
-$OXFORD_BLUE: #40455e;
-@mixin MY_BORDER {
-  border: solid 1px red;
+
+@mixin FLEX_COLUMN_CENTER {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@mixin FLEX_ROW_BETWEEN {
+  display: flex;
+  justify-content: space-between;
 }
 
-// F2F4F6
-// 7EBBAE
-// 6AAF3C
-// B47E9F
-// 40455E
+@mixin TEXT_AREA {
+  width: 100%;
+  height: 5rem;
+  resize: none;
+  border-radius: 6px;
+  padding-left: 0.5rem;
+  white-space: pre-line;
+}
+
+@mixin MODAL_POSITION {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
+
+@mixin CIRCLED_IMG_2REM {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}

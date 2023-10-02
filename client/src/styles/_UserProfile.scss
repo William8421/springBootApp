@@ -1,8 +1,6 @@
 .profile {
   .profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    @include FLEX_COLUMN_CENTER;
     gap: 1rem;
     padding: 1rem;
     .pic-container {
@@ -30,8 +28,7 @@
     .information {
       width: 90%;
       p {
-        display: flex;
-        justify-content: space-between;
+        @include FLEX_ROW_BETWEEN;
         span {
           text-decoration: underline;
           margin: 0.5rem 0;
@@ -66,9 +63,8 @@
   .posts-list {
     width: 32%;
     height: auto;
-    display: flex;
+    @include FLEX_ROW_BETWEEN;
     flex-direction: column;
-    justify-content: space-between;
     border: solid 1px black;
     .post-container {
       img {

@@ -5,21 +5,15 @@
   margin-bottom: 2rem;
   form {
     textarea {
-      width: 100%;
-      height: 5rem;
-      resize: none;
-      border-radius: 6px;
-      padding-left: 0.5rem;
-      white-space: pre-line;
+      @include TEXT_AREA;
     }
     .icons-container {
+      @include FLEX_ROW_BETWEEN;
       .input-button-container {
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-      display: flex;
-      justify-content: space-between;
     }
   }
   .add-post-button-container {

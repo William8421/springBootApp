@@ -43,7 +43,9 @@ body {
     gap: 1rem;
     margin: 1rem;
   }
-  .hidden-div.open {
+  .hidden-div.open,
+  .signUp-hidden-div.signUpModalOn,
+  .login-hidden-div.loginModalOn {
     position: fixed;
     top: 0;
     right: 0;

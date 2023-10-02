@@ -45,7 +45,9 @@ body button {
   gap: 1rem;
   margin: 1rem;
 }
-.App .hidden-div.open {
+.App .hidden-div.open,
+.App .signUp-hidden-div.signUpModalOn,
+.App .login-hidden-div.loginModalOn {
   position: fixed;
   top: 0;
   right: 0;
@@ -85,10 +87,10 @@ body button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2rem;
   width: 2rem;
-  border: solid #6aaf3c 2px;
+  height: 2rem;
   border-radius: 50%;
+  border: solid #6aaf3c 2px;
   padding: 1rem;
 }
 .navbar-container .routes-container .route .nav-icon {
@@ -142,36 +144,6 @@ body button {
   border-radius: 6px;
   padding: 0 0.3rem;
   font-size: 12px;
-}
-.navbar-container .alert-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  background-color: #f2f4f6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 16px;
-}
-.navbar-container .alert-modal .alert-modal-header {
-  background-color: #6aaf3c;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  color: #f2f4f6;
-  border-radius: 16px 16px 0 0;
-}
-.navbar-container .alert-modal p {
-  width: 80%;
-  text-align: center;
-  margin: 1rem;
-}
-.navbar-container .buttons-container {
-  display: flex;
-  gap: 1rem;
 }
 
 .auth-modal {
@@ -237,35 +209,14 @@ body button {
   gap: 0.5rem;
 }
 
-.signUpModalOff {
-  display: none;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-
-.signUpModalOn {
-  display: block;
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-}
-
-.signUp-hidden-div.signUpModalOn,
-.login-hidden-div.loginModalOn {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.5;
-}
-
+.signUpModalOff,
 .loginModalOff {
   display: none;
   opacity: 0;
   transition: 0.5s ease-in-out;
 }
 
+.signUpModalOn,
 .loginModalOn {
   display: block;
   opacity: 1;
@@ -485,6 +436,7 @@ body button {
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
+  white-space: pre-line;
 }
 .update-modal form .icons-container {
   width: 100%;
@@ -641,8 +593,8 @@ body button {
   width: 32%;
   height: auto;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  flex-direction: column;
   border: solid 1px black;
 }
 .profile-liked-posts-comments .posts-list .post-container img {

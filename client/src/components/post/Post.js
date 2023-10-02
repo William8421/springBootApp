@@ -56,8 +56,10 @@ export default function Post({ post }) {
     // More than 1 day
     const daysAgo = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
     if (daysAgo < 7) {
+      // Less than 1 week
       formattedTime = `${daysAgo} day${daysAgo === 1 ? "" : "s"} ago`;
     } else {
+      // more than 1 week
       formattedTime = `on ${formattedDate}`;
     }
   }
@@ -85,9 +87,7 @@ export default function Post({ post }) {
         </div>
       </div>
 
-      {/* post likes and manage post */}
       <div className="reactions-section">
-        {/* LIKE BUTTON */}
         <div className="reactions-buttons">
           {!isLikedByUser ? (
             <BiLike className="icon" onClick={(e) => like(post)} />
@@ -106,18 +106,13 @@ export default function Post({ post }) {
             />
           )}
         </div>
-        {/* manage post */}
         <div>
           <ManagePost post={post} />
         </div>
       </div>
-
-      {/* LIKES SECTION */}
       <div className="likes-comments-section">
         <PostLikes post={post} />
       </div>
-
-      {/* COMMENTS SECTION */}
       <div className="likes-comments-section">
         {show.commentsForPost === post.id ? <Comments post={post} /> : null}
       </div>

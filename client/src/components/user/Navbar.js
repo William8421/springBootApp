@@ -82,11 +82,7 @@ export default function Navbar() {
             </div>
           ) : (
             <div>
-              <AiOutlineUser
-                // onClick={loggedInUser ? logOut : openCloseLoginModal}
-                onClick={switcher}
-                className="nav-icon"
-              />
+              <AiOutlineUser onClick={switcher} className="nav-icon" />
             </div>
           )}
         </div>

@@ -1,22 +1,15 @@
 .delete-comment,
 .delete-post,
 .update-comment {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
+  @include MODAL_POSITION;
   background-color: $ATHENS_GRAY;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include FLEX_COLUMN_CENTER;
   border-radius: 16px;
   .delete-header,
   .update-header {
     background-color: $APPLE;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    @include FLEX_ROW_BETWEEN;
     padding: 1rem;
     color: $ATHENS_GRAY;
     border-radius: 16px 16px 0 0;

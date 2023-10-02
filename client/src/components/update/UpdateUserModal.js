@@ -104,7 +104,6 @@ export default function UpdateUserModal({ userData }) {
         <div className="date-gender-container">
           <div className="date-container">
             <DatePicker
-              // selected={newData.dateOfBirth}
               key={formKey}
               onChange={(date) => setNewData({ ...newData, dateOfBirth: date })}
               placeholderText="Date of birth"
@@ -117,7 +116,6 @@ export default function UpdateUserModal({ userData }) {
               scrollableMonthDropdown
               yearDropdownItemNumber={70}
             />
-            {/* <input type="date" name="dateOfBirth" autoComplete="dateOfBirth" /> */}
           </div>
 
           <select name="gender" placeholder="Gender">

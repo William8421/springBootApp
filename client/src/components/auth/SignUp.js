@@ -86,10 +86,6 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
     });
   };
 
-  // function resetForm() {
-  //   setFormKey((prevKey) => prevKey + 1);
-  // }
-
   function submit() {
     if (signUpFormData.password !== signUpFormData.confirmPassword) {
       setServerError("password and confirm password don't match");

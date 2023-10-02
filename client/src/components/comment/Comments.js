@@ -25,7 +25,7 @@ export default function Comments({ post }) {
     toggleUpdateComment,
     commentShow,
     toggleMoreCommentActions,
-    toggleDeleteCommentModal,
+    toggleDeleteComment,
   } = useComment();
   const { loggedInUser } = useUser();
   const { refreshItems } = usePost();
@@ -53,9 +53,7 @@ export default function Comments({ post }) {
           );
           if (comment.postId === post.id) {
             return (
-              // Comment
               <div className="comment" key={comment.id}>
-                {/* Comment owner */}
                 <div className="comment-owner">
                   <div className="pic-name">
                     {comment.userPicture !== "noPic" ? (
@@ -65,16 +63,12 @@ export default function Comments({ post }) {
                     )}
                     <h4>{comment.commentOwnerName}</h4>
                   </div>
-                  {/* <h5>@{comment.commentOwner}</h5> */}
                 </div>
-
-                {/* comment body container */}
                 <div className="comment-body-container">
                   <p className="comment-body">{comment.body}</p>
                   {comment.edited === true && <p className="edited">Edited</p>}
                 </div>
                 <div className="reactions-section">
-                  {/* like buttons */}
                   {!isLikedByUser ? (
                     <BiLike
                       onClick={() => likeAComment(comment)}
@@ -86,7 +80,6 @@ export default function Comments({ post }) {
                       className="icon"
                     />
                   )}
-                  {/* UPDATE comment AND DELETE BUTTON */}
                   {comment.userId === loggedInUser.id ? (
                     <div className="action-buttons-container">
                       <PiDotsThreeDuotone
@@ -101,9 +94,7 @@ export default function Comments({ post }) {
                           />
                           <RiDeleteBin6Line
                             className="icon"
-                            onClick={(e) =>
-                              toggleDeleteCommentModal(comment.id)
-                            }
+                            onClick={(e) => toggleDeleteComment(comment.id)}
                           />
                         </div>
                       ) : null}
@@ -112,12 +103,11 @@ export default function Comments({ post }) {
                     post.userId === loggedInUser.id && (
                       <RiDeleteBin6Line
                         className="icon"
-                        onClick={(e) => toggleDeleteCommentModal(comment.id)}
+                        onClick={(e) => toggleDeleteComment(comment.id)}
                       />
                     )
                   )}
                 </div>
-                {/* likes section */}
                 <div className="comment-like-section">
                   <CommentLikes comment={comment} />
                 </div>
@@ -126,11 +116,11 @@ export default function Comments({ post }) {
                     <CommentLikedByModal comment={comment} />
                   ) : null}
                 </div>
-                <div style={{ border: "solid 1px blue" }}>
+                <div>
                   {commentShow.updateCommentModal === comment.id ? (
                     <UpdateComment comment={comment} />
                   ) : null}
-                  {commentShow.deleteCommentModalModal === comment.id ? (
+                  {commentShow.deleteCommentModal === comment.id ? (
                     <DeleteCommentModal comment={comment} />
                   ) : null}
                 </div>

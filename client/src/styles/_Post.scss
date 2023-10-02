@@ -1,7 +1,5 @@
 .post {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include FLEX_COLUMN_CENTER;
   padding: 1rem 0;
   gap: 1rem;
   background-color: white;
@@ -15,9 +13,7 @@
       align-items: center;
       gap: 0.5rem;
       img {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
+        @include CIRCLED_IMG_2REM;
         display: block;
         border: solid 2px $APPLE;
       }
@@ -37,19 +33,16 @@
     flex-direction: column;
     align-items: flex-start;
     .time-edited {
-      // border: solid 1px red;
       margin-top: 0.5rem;
       width: 100%;
       color: grey;
-      display: flex;
-      justify-content: space-between;
+      @include FLEX_ROW_BETWEEN;
       font-size: 0.7rem;
     }
   }
   .reactions-section {
     width: 90%;
-    display: flex;
-    justify-content: space-between;
+    @include FLEX_ROW_BETWEEN;
     .reactions-buttons {
       display: flex;
       gap: 1rem;
