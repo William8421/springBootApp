@@ -13,7 +13,8 @@ import noPic from "../../images/icon-256x256.png";
 
 export default function Post({ post }) {
   const { likeAPost, toggleComments, show } = usePost();
-  const { loggedInUser, setUserInfoId, openCloseLoginModal } = useUser();
+  const { loggedInUser, setUserInfoId, openCloseLoginModal, allUsers } =
+    useUser();
   const navigate = useNavigate();
 
   const isLikedByUser = post.postLikesIds.includes(loggedInUser.id);
@@ -37,7 +38,7 @@ export default function Post({ post }) {
   }
 
   const formattedPostBody = post.body.replace(/\n/g, "<br />");
-  const formattedDate = new Date(post.createdAt).toLocaleString();
+  const formattedDate = new Date(post.createdAt).toLocaleString().split(",")[0];
 
   const createdAt = new Date(post.createdAt);
   const now = new Date();
@@ -64,19 +65,23 @@ export default function Post({ post }) {
     }
   }
 
+  const postOwner = allUsers.find((user) => user.id === post.userId);
+
   return (
     <div className="post" key={post.id}>
       <div className="owner" onClick={() => goToUserProfile()}>
         <div className="pic-name">
-          {post.userPicture !== "noPic" ? (
-            <img src={post.userPicture} alt="profile" />
-          ) : (
-            <img src={noPic} alt="empty" />
-          )}
-
-          <h4>{post.postOwnerName}</h4>
+          <img
+            src={
+              postOwner.profilePic !== "noPic" ? postOwner.profilePic : noPic
+            }
+            alt="profile"
+          />
+          <h4>
+            {postOwner.firstName} {postOwner.lastName}
+          </h4>
         </div>
-        <h5>@{post.postOwner}</h5>
+        <h5>@{postOwner.username}</h5>
       </div>
       {post.image && <img src={post.image} alt="post" />}
       <div className="post-body-container">

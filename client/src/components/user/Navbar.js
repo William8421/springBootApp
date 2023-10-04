@@ -17,6 +17,7 @@ export default function Navbar() {
     getUser,
     serverResponse,
     setUserInfoId,
+    refresh,
   } = useUser();
 
   const { show, setShow } = usePost();
@@ -51,6 +52,7 @@ export default function Navbar() {
     setUserInfoId(loggedInUser.id);
     navigate(`/userprofile`);
     switcher();
+    window.scrollTo(0, 0);
   }
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function Navbar() {
       getUser();
     }
     // eslint-disable-next-line
-  }, [!loggedInUser]);
+  }, [refresh]);
 
   return (
     <div className="navbar-container">

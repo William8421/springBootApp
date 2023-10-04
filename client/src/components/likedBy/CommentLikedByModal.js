@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useComment } from "../../context/CommentContext";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import noPic from "../../images/icon-256x256.png";
 
 export default function CommentLikedByModal({ comment }) {
   const { toggleCommentLikes } = useComment();
-  const { getUsersByIds, postLikesUsers, setUserInfoId } = useUser();
+  const { setUserInfoId, allUsers } = useUser();
   const navigate = useNavigate();
 
   function goToUserProfile(userID) {
@@ -16,10 +16,10 @@ export default function CommentLikedByModal({ comment }) {
     navigate(`/userprofile`);
   }
 
-  useEffect(() => {
-    getUsersByIds(comment.commentLikesIds);
-    // eslint-disable-next-line
-  }, []);
+  const users = comment.commentLikesIds.map((id) => {
+    const user = allUsers.find((item) => item.id === id);
+    return user;
+  });
 
   return (
     <div className="liked-by">
@@ -30,15 +30,14 @@ export default function CommentLikedByModal({ comment }) {
         </button>
       </div>
       <div className="liked-users-container">
-        {postLikesUsers.length !== 0 ? (
-          postLikesUsers.map((user) => {
+        {users.length !== 0 ? (
+          users.map((user) => {
             return (
               <div key={user.id} className="liked-user">
-                {user.profilePic !== "noPic" ? (
-                  <img src={user.profilePic} alt="profile" />
-                ) : (
-                  <img src={noPic} alt="empty" />
-                )}
+                <img
+                  src={user.profilePic !== "noPic" ? user.profilePic : noPic}
+                  alt="profile"
+                />
                 <p onClick={() => goToUserProfile(user.id)}>
                   {user.firstName} {user.lastName}
                 </p>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { usePost } from "../../context/PostContext";
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import noPic from "../../images/icon-256x256.png";
 
 export default function PostLikedByModal({ post }) {
   const { togglePostLikes } = usePost();
-  const { getUsersByIds, postLikesUsers, setUserInfoId } = useUser();
+  const { setUserInfoId, allUsers } = useUser();
 
   const navigate = useNavigate();
 
@@ -17,10 +17,10 @@ export default function PostLikedByModal({ post }) {
     navigate(`/userprofile`);
   }
 
-  useEffect(() => {
-    getUsersByIds(post.postLikesIds);
-    // eslint-disable-next-line
-  }, []);
+  const users = post.postLikesIds.map((id) => {
+    const user = allUsers.find((item) => item.id === id);
+    return user;
+  });
 
   return (
     <div className="liked-by">
@@ -31,15 +31,14 @@ export default function PostLikedByModal({ post }) {
         </button>
       </div>
       <div className="liked-users-container">
-        {postLikesUsers.length !== 0 ? (
-          postLikesUsers.map((user) => {
+        {users.length !== 0 ? (
+          users.map((user) => {
             return (
               <div key={user.id} className="liked-user">
-                {user.profilePic !== "noPic" ? (
-                  <img src={user.profilePic} alt="profile" />
-                ) : (
-                  <img src={noPic} alt="empty" />
-                )}
+                <img
+                  src={user.profilePic !== "noPic" ? user.profilePic : noPic}
+                  alt="profile"
+                />
                 <p onClick={() => goToUserProfile(user.id)}>
                   {user.firstName} {user.lastName}
                 </p>

@@ -8,7 +8,9 @@
   .routes-container {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    .app-name {
+      display: none;
+    }
     .route {
       display: flex;
       justify-content: center;

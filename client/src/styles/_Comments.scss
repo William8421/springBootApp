@@ -20,12 +20,20 @@
       }
     }
     .comment-body-container {
-      width: 100%;
-      @include FLEX_ROW_BETWEEN;
-      .edited {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .comment-time-edited {
+        margin-top: 0.5rem;
+        width: 100%;
         color: grey;
-        align-self: flex-end;
+        @include FLEX_ROW_BETWEEN;
+        font-size: 0.7rem;
       }
+    }
+    .comment-reactions-section {
+      width: 100%;
     }
   }
 }

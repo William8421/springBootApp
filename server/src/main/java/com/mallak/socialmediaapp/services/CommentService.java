@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,13 +40,10 @@ public class CommentService {
                 comment.setBody(body);
                 comment.setPostId(postId);
                 comment.setUserId(userId);
-                comment.setCommentOwner(user.getUsername());
-                comment.setCommentOwnerName(user.getFirstName() + " " + user.getLastName());
-                comment.setUserPicture(user.getProfilePic());
-                commentRepository.save(comment); comment.setCommentOwner(user.getUsername());
+                comment.setCreatedAt(new Date());
+                commentRepository.save(comment);
                 post.setPostComments(post.getPostComments() + 1);
                 post.getPostCommentsIds().add(user.getId());
-                post.getPostCommentedBy().add(user.getUsername());
                 postRepository.save(post);
             }
             return new ResponseEntity<>("Comment added", HttpStatus.CREATED);
@@ -89,7 +87,6 @@ public class CommentService {
                 if(post.getPostCommentsIds().contains(comment.getUserId())){
                     post.setPostComments(post.getPostComments() - 1);
                     post.getPostCommentsIds().remove(comment.getUserId());
-                    post.getPostCommentedBy().remove(comment.getCommentOwner());
                     }
                     postRepository.save(post);
                 }
@@ -110,17 +107,11 @@ public class CommentService {
             if(comment.getCommentLikesIds().contains(userId)){
                 comment.setCommentLikes(comment.getCommentLikes() - 1);
                 comment.getCommentLikesIds().remove(userId);
-                if(user != null){
-                    comment.getCommentLikedBy().remove(user.getUsername());
-                }
                 commentRepository.save(comment);
                 return new ResponseEntity<>("Unliked", HttpStatus.OK);
             }else{
                 comment.setCommentLikes(comment.getCommentLikes() + 1);
                 comment.getCommentLikesIds().add(userId);
-                if(user != null){
-                    comment.getCommentLikedBy().add(user.getUsername());
-                }
                 commentRepository.save(comment);
                 return new ResponseEntity<>("Liked", HttpStatus.OK);
             }

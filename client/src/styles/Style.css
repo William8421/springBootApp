@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,500&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,6 +15,7 @@ body button {
 
 .App {
   margin-top: 4rem;
+  font-family: "Playfair Display", serif;
 }
 .App .icon {
   cursor: pointer;
@@ -81,7 +83,9 @@ body button {
 .navbar-container .routes-container {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+}
+.navbar-container .routes-container .app-name {
+  display: none;
 }
 .navbar-container .routes-container .route {
   display: flex;
@@ -234,6 +238,10 @@ body button {
   gap: 2rem;
 }
 
+.spinner {
+  width: 10%;
+}
+
 .post {
   display: flex;
   flex-direction: column;
@@ -282,16 +290,19 @@ body button {
   justify-content: space-between;
   font-size: 0.7rem;
 }
-.post .reactions-section {
+.post .reactions-section,
+.post .comment-reactions-section {
   width: 90%;
   display: flex;
   justify-content: space-between;
 }
-.post .reactions-section .reactions-buttons {
+.post .reactions-section .reactions-buttons,
+.post .comment-reactions-section .reactions-buttons {
   display: flex;
   gap: 1rem;
 }
-.post .reactions-section .reactions-buttons .icon {
+.post .reactions-section .reactions-buttons .icon,
+.post .comment-reactions-section .reactions-buttons .icon {
   cursor: pointer;
 }
 .post .likes-comments-section {
@@ -312,6 +323,10 @@ body button {
   border-radius: 6px;
   padding-left: 0.5rem;
   white-space: pre-line;
+}
+.add-post form textarea::placeholder,
+.add-comment form textarea::placeholder {
+  font-family: "Playfair Display", serif;
 }
 .add-post form .icons-container,
 .add-comment form .icons-container {
@@ -390,6 +405,10 @@ body button {
 }
 .liked-by .liked-users-container .liked-user p {
   cursor: pointer;
+  width: 60%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .update-modal {
@@ -438,6 +457,9 @@ body button {
   padding-left: 0.5rem;
   white-space: pre-line;
 }
+.update-modal form textarea::placeholder {
+  font-family: "Playfair Display", serif;
+}
 .update-modal form .icons-container {
   width: 100%;
   display: flex;
@@ -475,13 +497,21 @@ body button {
   border: solid 2px #6aaf3c;
 }
 .comments .comment .comment-body-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.comments .comment .comment-body-container .comment-time-edited {
+  margin-top: 0.5rem;
   width: 100%;
+  color: grey;
   display: flex;
   justify-content: space-between;
+  font-size: 0.7rem;
 }
-.comments .comment .comment-body-container .edited {
-  color: grey;
-  align-self: flex-end;
+.comments .comment .comment-reactions-section {
+  width: 100%;
 }
 
 .delete-comment,
@@ -532,13 +562,6 @@ body button {
   gap: 1rem;
   padding: 1rem;
 }
-.profile .profile-info .pic-container {
-  width: 10rem;
-  height: 10rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .profile .profile-info .pic-container .user-icon {
   width: 3rem;
   height: 3rem;
@@ -546,8 +569,8 @@ body button {
   border: solid 2px #6aaf3c;
 }
 .profile .profile-info .pic-container img {
-  width: 100%;
-  height: 100%;
+  width: 10rem;
+  height: 10rem;
   display: block;
   object-position: top;
   object-fit: cover;

@@ -30,6 +30,9 @@
     textarea {
       @include TEXT_AREA;
     }
+    textarea::placeholder {
+      font-family: "Playfair Display", serif;
+    }
     .icons-container {
       width: 100%;
       @include FLEX_ROW_BETWEEN;

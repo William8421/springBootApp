@@ -5,3 +5,64 @@
   @include FLEX_COLUMN_CENTER;
   gap: 2rem;
 }
+.spinner {
+  width: 10%;
+}
+.post {
+  @include FLEX_COLUMN_CENTER;
+  padding: 1rem 0;
+  gap: 1rem;
+  background-color: white;
+  border-radius: 16px;
+  width: 90%;
+  .owner {
+    width: 90%;
+    cursor: pointer;
+    .pic-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      img {
+        @include CIRCLED_IMG_2REM;
+        display: block;
+        border: solid 2px $APPLE;
+      }
+    }
+    h5 {
+      color: grey;
+      text-decoration: underline;
+    }
+  }
+  img {
+    width: 90%;
+    object-fit: cover;
+  }
+  .post-body-container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    .time-edited {
+      margin-top: 0.5rem;
+      width: 100%;
+      color: grey;
+      @include FLEX_ROW_BETWEEN;
+      font-size: 0.7rem;
+    }
+  }
+  .reactions-section,
+  .comment-reactions-section {
+    width: 90%;
+    @include FLEX_ROW_BETWEEN;
+    .reactions-buttons {
+      display: flex;
+      gap: 1rem;
+      .icon {
+        cursor: pointer;
+      }
+    }
+  }
+  .likes-comments-section {
+    width: 90%;
+  }
+}

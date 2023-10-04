@@ -3,8 +3,10 @@ import { useUser } from "../../context/UserContext";
 import { usePost } from "../../context/PostContext";
 
 export default function PostLikes({ post }) {
-  const { loggedInUser } = useUser();
+  const { loggedInUser, allUsers } = useUser();
   const { togglePostLikes } = usePost();
+
+  const test = allUsers.find((user) => user.id === post.postLikesIds[0]);
   return (
     <div className="likes-container">
       <div className="likes-and-comments">
@@ -13,25 +15,28 @@ export default function PostLikes({ post }) {
       </div>
       <div className="likes-div" onClick={() => togglePostLikes(post.id)}>
         {/* no likes */}
-        {post.postLikedBy.length === 0 ? (
+        {post.postLikesIds.length === 0 ? (
           "Be the first to like this post"
         ) : // one like
-        post.postLikedBy.length === 1 ? (
+        post.postLikesIds.length === 1 ? (
           // loggedIn user?
-          post.postLikedBy[0] === loggedInUser.username ? (
+          post.postLikesIds[0] === loggedInUser.id ? (
             <p>You like this</p>
           ) : (
             // not?
-            <p>{post.postLikedBy[0]} likes this</p>
+            <p>
+              {test.firstName} {test.lastName} likes this
+            </p>
           )
         ) : // multiple likes loggedIn user?
-        post.postLikedBy.includes(loggedInUser.username) ? (
-          <p>You and {post.postLikedBy.length - 1} others like this</p>
+        post.postLikesIds.includes(loggedInUser.id) ? (
+          <p>You and {post.postLikesIds.length - 1} others like this</p>
         ) : (
           // not?
+
           <p>
-            {post.postLikedBy[0]} and {post.postLikedBy.length - 1} others like
-            this
+            {test.firstName} {test.lastName} and {post.postLikesIds.length - 1}{" "}
+            others like this
           </p>
         )}
       </div>

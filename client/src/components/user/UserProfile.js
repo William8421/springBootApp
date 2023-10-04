@@ -2,13 +2,20 @@ import React, { useEffect } from "react";
 import { useUser } from "../../context/UserContext";
 import { usePost } from "../../context/PostContext";
 import Post from "../post/Post";
-import { AiOutlineEdit, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import UpdateUserModal from "../update/UpdateUserModal";
 import LikedCommentedPosts from "./LikedCommentedPosts";
+import noPic from "../../images/icon-256x256.png";
 
 export default function UserProfile() {
-  const { loggedInUser, refresh, getUserInfo, userInfo, selectedUser } =
-    useUser();
+  const {
+    loggedInUser,
+    refresh,
+    getUserInfo,
+    userInfo,
+    selectedUser,
+    getAllUsers,
+  } = useUser();
   const {
     refreshItems,
     userPosts,
@@ -42,6 +49,8 @@ export default function UserProfile() {
     }
     getUserInfo();
     getUserPosts(user);
+    getAllUsers();
+    window.scrollTo(0, 0);
     // eslint-disable-next-line
   }, [refresh, refreshItems, selectedUser]);
 
@@ -50,11 +59,12 @@ export default function UserProfile() {
       {userInfo ? (
         <div className="profile-info">
           <div className="pic-container">
-            {userInfo.profilePic === "noPic" ? (
-              <AiOutlineUser className="user-icon" />
-            ) : (
-              <img src={userInfo.profilePic} alt="profile" />
-            )}
+            <img
+              src={
+                userInfo.profilePic !== "noPic" ? userInfo.profilePic : noPic
+              }
+              alt="profile"
+            />
           </div>
           <div className="information">
             <p>

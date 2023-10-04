@@ -25,10 +25,9 @@ public class UserController {
         return userService.getUserById(payload.get("id"));
     }
 
-    @PostMapping("/usersByIds")
-    public ResponseEntity<List<User>> getUsersByIds(@RequestBody Map<String, List<String>> payload) {
-        List<String> userIds = payload.get("userIds");
-        return userService.getUsersByIds(userIds);
+    @GetMapping("users")
+    public ResponseEntity<List<User>> getListOfUsers(){
+        return userService.getAllUsers();
     }
 
     @PutMapping("/editprofile")

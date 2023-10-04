@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
   const [userData, setUserData] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [userInfoId, setUserInfoId] = useState("");
-  const [postLikesUsers, setPostLikesUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [serverResponse, setServerResponse] = useState({
     message: "",
     showMessage: false,
@@ -112,7 +112,7 @@ export function UserProvider({ children }) {
         showMessage: true,
       });
       resetForm();
-
+      triggerRefresh();
       setServerError((prevError) => {
         return { ...prevError, userError: null };
       });
@@ -153,12 +153,11 @@ export function UserProvider({ children }) {
       console.error(error);
     }
   }
-  async function getUsersByIds(userIds) {
+
+  async function getAllUsers() {
     try {
-      const response = await axiosInstance.post("/users/usersByIds", {
-        userIds,
-      });
-      setPostLikesUsers(response.data);
+      const response = await axiosInstance.get("users/users");
+      setAllUsers(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -219,12 +218,12 @@ export function UserProvider({ children }) {
         getUserInfo,
         userInfo,
         selectedUser,
-        getUsersByIds,
-        postLikesUsers,
         formKey,
         resetForm,
         serverError,
         setServerError,
+        getAllUsers,
+        allUsers,
       }}
     >
       {children}

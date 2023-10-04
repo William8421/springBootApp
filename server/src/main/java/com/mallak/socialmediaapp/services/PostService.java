@@ -48,6 +48,17 @@ public class PostService {
         }
     }
 
+    public ResponseEntity<String> createPost(Post post) {
+        try{
+            post.setPostLikesIds(new ArrayList<>());
+            post.setCreatedAt(new Date());
+            postRepository.save(post);
+            return new ResponseEntity<>("Post added", HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ResponseEntity<String> updatePost(Post post) {
         try{
             Post oldPost = postRepository.findById(post.getId()).orElse(null);
@@ -70,7 +81,7 @@ public class PostService {
     }
 
     public ResponseEntity<String> deletePost(String id) {
-        try{
+        try {
             Post post = postRepository.findById(id).orElse(null);
             List<Comment> allComments = commentRepository.findAllByPostId(post.getId());
             postRepository.deleteById(id);
@@ -81,44 +92,20 @@ public class PostService {
         }
     }
 
-    public ResponseEntity<String> createPost(Post post) {
-        try{
-            post.setPostLikesIds(new ArrayList<>());
-            User user = userRepository.findById(post.getUserId()).orElse(null);
-            if(user != null){
-                post.setPostOwner(user.getUsername());
-                post.setUserPicture(user.getProfilePic());
-                post.setPostOwnerName(user.getFirstName() + " " + user.getLastName());
-                post.setCreatedAt(new Date());
-            }
-            postRepository.save(post);
-            return new ResponseEntity<>("Post added", HttpStatus.OK);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public ResponseEntity<String> likes(String id, String userId) {
         try {
             Post post = postRepository.findById(id).orElse(null);
-            User user = userRepository.findById(userId).orElse(null);
             if(post == null){
                 return new ResponseEntity<>("post not found", HttpStatus.BAD_REQUEST);
             }
             if (post.getPostLikesIds().contains(userId)) {
                 post.setPostLikes(post.getPostLikes() - 1);
                 post.getPostLikesIds().remove(userId);
-                if(user != null){
-                    post.getPostLikedBy().remove(user.getFirstName() + " " + user.getLastName());
-                }
                 postRepository.save(post);
                 return new ResponseEntity<>("Unliked", HttpStatus.OK);
             } else {
                 post.setPostLikes(post.getPostLikes() + 1);
                 post.getPostLikesIds().add(userId);
-                if(user != null){
-                    post.getPostLikedBy().add(user.getFirstName() + " " + user.getLastName());
-                }
                 postRepository.save(post);
                 return new ResponseEntity<>("Liked ", HttpStatus.OK);
             }

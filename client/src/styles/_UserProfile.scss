@@ -4,11 +4,6 @@
     gap: 1rem;
     padding: 1rem;
     .pic-container {
-      width: 10rem;
-      height: 10rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       .user-icon {
         width: 3rem;
         height: 3rem;
@@ -16,8 +11,8 @@
         border: solid 2px $APPLE;
       }
       img {
-        width: 100%;
-        height: 100%;
+        width: 10rem;
+        height: 10rem;
         display: block;
         object-position: top;
         object-fit: cover;

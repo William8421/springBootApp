@@ -27,6 +27,11 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 
 
     public ResponseEntity<String> editProfile(User user) {
@@ -75,8 +80,5 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<List<User>> getUsersByIds(List<String> ids) {
-        List<User> users = userRepository.findAllById(ids);
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+
 }

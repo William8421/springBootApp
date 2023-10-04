@@ -16,7 +16,7 @@ export default function SinglePost() {
   return (
     <div className="posts">
       {post ? <Post post={post} /> : null}
-      <Link to={"/profile"}>
+      <Link to={"/userprofile"}>
         <button className="main-button">Back</button>
       </Link>
     </div>

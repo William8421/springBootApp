@@ -7,6 +7,9 @@
     textarea {
       @include TEXT_AREA;
     }
+    textarea::placeholder {
+      font-family: "Playfair Display", serif;
+    }
     .icons-container {
       @include FLEX_ROW_BETWEEN;
       .input-button-container {
