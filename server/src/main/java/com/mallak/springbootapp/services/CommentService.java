@@ -19,22 +19,22 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository,
+            UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
 
-
     public ResponseEntity<String> createComment(String userId, String postId, String body) {
-        try{
+        try {
             User user = userRepository.findById(userId).orElse(null);
             Post post = postRepository.findById(postId).orElse(null);
 
-            if(post == null){
+            if (post == null) {
                 return new ResponseEntity<>("post not found", HttpStatus.BAD_REQUEST);
             }
-            if(user != null) {
+            if (user != null) {
                 Comment comment = new Comment();
                 comment.setBody(body);
                 comment.setPostId(postId);
@@ -52,7 +52,7 @@ public class CommentService {
     }
 
     public ResponseEntity<List<Comment>> getAllPostComments(String postId) {
-        try{
+        try {
             List<Comment> allComments = commentRepository.findAllByPostId(postId);
             return new ResponseEntity<>(allComments, HttpStatus.OK);
         } catch (Exception e) {
@@ -63,9 +63,9 @@ public class CommentService {
     public ResponseEntity<String> updateComment(Comment comment) {
         try {
             Comment oldComment = commentRepository.findById(comment.getId()).orElse(null);
-            if (oldComment == null){
+            if (oldComment == null) {
                 return new ResponseEntity<>("comment not found", HttpStatus.BAD_REQUEST);
-            }else{
+            } else {
                 oldComment.setBody(comment.getBody());
                 oldComment.setEdited(true);
                 commentRepository.save(oldComment);
@@ -78,17 +78,17 @@ public class CommentService {
     }
 
     public ResponseEntity<String> deleteComment(String id, String postId) {
-        try{
+        try {
             Post post = postRepository.findById(postId).orElse(null);
             Comment comment = commentRepository.findById(id).orElse(null);
 
-            if((post != null) && (comment != null)){
-                if(post.getPostCommentsIds().contains(comment.getUserId())){
+            if ((post != null) && (comment != null)) {
+                if (post.getPostCommentsIds().contains(comment.getUserId())) {
                     post.setPostComments(post.getPostComments() - 1);
                     post.getPostCommentsIds().remove(comment.getUserId());
-                    }
-                    postRepository.save(post);
                 }
+                postRepository.save(post);
+            }
             commentRepository.deleteById(id);
             return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
@@ -99,16 +99,15 @@ public class CommentService {
     public ResponseEntity<String> commentLikes(String id, String userId) {
         try {
             Comment comment = commentRepository.findById(id).orElse(null);
-            User user = userRepository.findById(userId).orElse(null);
-            if(comment == null){
+            if (comment == null) {
                 return new ResponseEntity<>("Comment not found", HttpStatus.BAD_REQUEST);
             }
-            if(comment.getCommentLikesIds().contains(userId)){
+            if (comment.getCommentLikesIds().contains(userId)) {
                 comment.setCommentLikes(comment.getCommentLikes() - 1);
                 comment.getCommentLikesIds().remove(userId);
                 commentRepository.save(comment);
                 return new ResponseEntity<>("Unliked", HttpStatus.OK);
-            }else{
+            } else {
                 comment.setCommentLikes(comment.getCommentLikes() + 1);
                 comment.getCommentLikesIds().add(userId);
                 commentRepository.save(comment);
