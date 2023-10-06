@@ -1,67 +1,54 @@
 import React, { useRef, useState } from "react";
+// provider
 import { useUser } from "../../context/UserContext";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiCheckLine, RiImageAddFill } from "react-icons/ri";
-import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
-export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
-  const { signUp, openCloseLoginModal, formKey, serverError, setServerError } =
-    useUser();
-
+export default function SignUp() {
+  // provider
+  const {
+    signUp,
+    toggleAuthModal,
+    formKey,
+    serverError,
+    setServerError,
+    isAuthModalOpen,
+  } = useUser();
+  // form states
   const initialForm = {
     firstName: "",
     lastName: "",
     username: "",
     email: "",
     password: "",
-    confirmPassowrd: "",
+    confirmPassword: "",
     dateOfBirth: "",
     gender: "",
-    profilePic: "noPic",
+    profilePic: null,
   };
-
   const [signUpFormData, setSignUpFormData] = useState(initialForm);
-
-  const [passToggle, setPassToggle] = useState({
-    showPassword: "",
-  });
-
-  const [imgSelected, setImgSelected] = useState("");
   const [uploaded, setUploaded] = useState("");
 
-  function show_hidePassword(e) {
-    if (e === "password") {
-      setPassToggle({
-        ...passToggle,
-        showPassword: e === passToggle.showPassword ? "" : e,
-      });
-    } else if (e === "confirmPassword") {
-      setPassToggle({
-        ...passToggle,
-        showConfirmPassword: e === passToggle.showConfirmPassword ? "" : e,
-      });
-    }
-  }
-
   const hiddenFileInput = useRef(null);
-
-  const uploadButtonHandler = (event) => {
+  // handler for input button
+  const uploadButtonHandler = () => {
     hiddenFileInput.current.click();
   };
-
-  function picHandler(e) {
+  // image handler
+  const picHandler = (e) => {
     const selectedFile = e.target.files?.[0];
-    setImgSelected(selectedFile || "");
-  }
-
-  async function uploadPic(e) {
+    setSignUpFormData({ ...signUpFormData, profilePic: selectedFile });
+  };
+  // input file function
+  const uploadPic = async (e) => {
     e.preventDefault();
-    if (!(imgSelected instanceof File)) return;
+    if (!(signUpFormData.profilePic instanceof File)) return;
     const formData = new FormData();
-    formData.append("file", imgSelected);
+    formData.append("file", signUpFormData.profilePic);
     formData.append("upload_preset", "WilliamMallak");
     formData.append("upload_name", "denpxdokx");
     formData.append("folder", "social-media-app/users");
@@ -71,47 +58,51 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
         formData
       );
       setUploaded(response.data.secure_url);
-      setSignUpFormData((prevState) => ({
-        ...prevState,
+      setSignUpFormData({
+        ...signUpFormData,
         profilePic: response.data.secure_url,
-      }));
+      });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+  // form handler
   const signUpFormHandler = (e) => {
     const { name, value } = e.target;
-    setSignUpFormData((prevState) => {
-      return { ...prevState, [name]: value };
+    setSignUpFormData({ ...signUpFormData, [name]: value });
+  };
+  // toggle password
+  const [passToggle, setPassToggle] = useState({ showPassword: "" });
+  const show_hidePassword = (e) => {
+    setPassToggle({
+      ...passToggle,
+      [e]: passToggle[e] === e ? "" : e,
     });
   };
-
-  function submit() {
+  // register/signup
+  const submit = () => {
     if (signUpFormData.password !== signUpFormData.confirmPassword) {
       setServerError("password and confirm password don't match");
     } else {
       signUp(signUpFormData);
-      setSignUpFormData({ ...signUpFormData, dateOfBirth: "" });
-      setImgSelected("");
-      setUploaded("");
+      setSignUpFormData({ ...initialForm, dateOfBirth: "" });
+      setUploaded(""); // Reset uploaded state
     }
-  }
-
-  function goToLogin() {
-    openCloseLoginModal();
-    openCloseSignUpModal();
-  }
+  };
 
   return (
     <div>
       <div
-        className={`signUp-hidden-div ${isSignUpModalOpen}`}
-        onClick={openCloseSignUpModal}
+        className={`signUp-hidden-div ${isAuthModalOpen}`}
+        onClick={() => toggleAuthModal(null)}
       ></div>
-      <div className={`auth-modal ${isSignUpModalOpen}`}>
+      <div className="auth-modal">
         <div className="auth-modal-header">
           <h2>Sign Up</h2>
-          <button className="close-button" onClick={openCloseSignUpModal}>
+          <button
+            className="close-button"
+            onClick={() => toggleAuthModal(null)}
+          >
             X
           </button>
         </div>
@@ -223,16 +214,15 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
           <div className="icons-container">
             <div className="input-button-container">
               <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
-              <span>{imgSelected.name}</span>
+              <span>{signUpFormData.profilePic?.name}</span>
             </div>
 
             <input
               type="file"
               onChange={(e) => picHandler(e)}
               ref={hiddenFileInput}
-              style={{ display: "none" }}
             />
-            {imgSelected === "" ? null : uploaded === "" ? (
+            {signUpFormData.profilePic === null ? null : uploaded === "" ? (
               <FaCloudUploadAlt
                 className="icon"
                 onClick={(e) => uploadPic(e)}
@@ -247,7 +237,10 @@ export default function SignUp({ isSignUpModalOpen, openCloseSignUpModal }) {
           <button className="main-button" onClick={submit}>
             Sign Up
           </button>
-          <button className="cancel-button" onClick={goToLogin}>
+          <button
+            className="cancel-button"
+            onClick={() => toggleAuthModal("login")}
+          >
             Login
           </button>
         </div>

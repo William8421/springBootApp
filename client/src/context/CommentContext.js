@@ -5,10 +5,11 @@ import { useUser } from "./UserContext";
 export const CommentContext = createContext();
 
 export function CommentProvider({ children }) {
+  // user provider
   const { setServerResponse } = useUser();
+  // comment data states
   const [postComments, setPostComments] = useState([]);
-  const [refreshComments, setRefreshComments] = useState(false);
-
+  // toggle modal state
   const initialCommentShow = {
     updateCommentModal: null,
     deleteCommentModal: null,
@@ -16,33 +17,22 @@ export function CommentProvider({ children }) {
     likesForComment: null,
     hiddenDiv: false,
   };
-
   const [commentShow, setCommentShow] = useState(initialCommentShow);
 
-  const axiosInstance = axios.create({
-    baseURL: "http://192.168.1.103:8080/api/comments",
-  });
-
-  function triggerRefresh() {
+  // refresh comments components
+  const [refreshComments, setRefreshComments] = useState(false);
+  function triggerRefreshComments() {
     setRefreshComments(!refreshComments);
   }
-
-  function toggleDeleteComment(commentId) {
-    if (!commentShow.hiddenDiv) {
-      setCommentShow({
-        ...commentShow,
-        deleteCommentModal: commentId,
-        hiddenDiv: true,
-      });
+  // comments' toggle update and delete button
+  function toggleMoreCommentActions(commentId) {
+    if (commentShow.moreActions === null) {
+      setCommentShow({ ...commentShow, moreActions: commentId });
     } else {
-      setCommentShow({
-        ...commentShow,
-        deleteCommentModal: null,
-        hiddenDiv: false,
-      });
+      setCommentShow({ ...commentShow, moreActions: null, hiddenDiv: false });
     }
   }
-
+  // toggle update comment modal
   function toggleUpdateComment(commentId) {
     if (!commentShow.hiddenDiv) {
       setCommentShow({
@@ -58,7 +48,23 @@ export function CommentProvider({ children }) {
       });
     }
   }
-
+  // toggle delete comment modal
+  function toggleDeleteComment(commentId) {
+    if (!commentShow.hiddenDiv) {
+      setCommentShow({
+        ...commentShow,
+        deleteCommentModal: commentId,
+        hiddenDiv: true,
+      });
+    } else {
+      setCommentShow({
+        ...commentShow,
+        deleteCommentModal: null,
+        hiddenDiv: false,
+      });
+    }
+  }
+  // toggle comments liked modal
   function toggleCommentLikes(commentId) {
     if (!commentShow.hiddenDiv) {
       setCommentShow({
@@ -74,15 +80,11 @@ export function CommentProvider({ children }) {
       });
     }
   }
-
-  function toggleMoreCommentActions(commentId) {
-    if (commentShow.moreActions === null) {
-      setCommentShow({ ...commentShow, moreActions: commentId });
-    } else {
-      setCommentShow({ ...commentShow, moreActions: null, hiddenDiv: false });
-    }
-  }
-
+  // Axios instance
+  const axiosInstance = axios.create({
+    baseURL: "http://192.168.1.103:8080/api/comments",
+  });
+  // all post comments
   async function getPostComments(post) {
     try {
       const response = await axiosInstance.post("/postcomments", post);
@@ -91,11 +93,11 @@ export function CommentProvider({ children }) {
       console.error(error);
     }
   }
-
+  // create comment
   async function createComment(comment) {
     try {
       const response = await axiosInstance.post("/addcomment", comment);
-      triggerRefresh();
+      triggerRefreshComments();
       setServerResponse({
         message: response.data,
         showMessage: true,
@@ -104,11 +106,11 @@ export function CommentProvider({ children }) {
       console.error(error);
     }
   }
-
+  // edit comment
   async function editComment(comment) {
     try {
       const response = await axiosInstance.put("/updatepostcomment", comment);
-      triggerRefresh();
+      triggerRefreshComments();
       setCommentShow(initialCommentShow);
       setServerResponse({
         message: response.data,
@@ -119,7 +121,7 @@ export function CommentProvider({ children }) {
       console.error(error);
     }
   }
-
+  // delete comment
   async function removeComment(comment) {
     try {
       const response = await axiosInstance.post("deletecomment", comment);
@@ -129,12 +131,12 @@ export function CommentProvider({ children }) {
       });
       toggleDeleteComment();
       setCommentShow(initialCommentShow);
-      triggerRefresh();
+      triggerRefreshComments();
     } catch (error) {
       console.error(error);
     }
   }
-
+  // like comment function
   async function likeComment(comment) {
     try {
       const response = await axiosInstance.post("commentlike", comment);
@@ -142,7 +144,7 @@ export function CommentProvider({ children }) {
         message: response.data,
         showMessage: true,
       });
-      triggerRefresh();
+      triggerRefreshComments();
     } catch (error) {
       console.error(error);
     }

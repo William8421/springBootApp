@@ -1,10 +1,13 @@
 import "./styles/Style.css";
-import Navbar from "./components/user/Navbar";
-import { CommentProvider } from "./context/CommentContext";
-import { PostProvider } from "./context/PostContext";
+// providers
 import { UserProvider } from "./context/UserContext";
-import Home from "./pages/Home";
+import { PostProvider } from "./context/PostContext";
+import { CommentProvider } from "./context/CommentContext";
+// routers
 import { Route, Routes } from "react-router";
+// components
+import Navbar from "./components/user/Navbar";
+import Home from "./pages/Home";
 import About from "./pages/About";
 import SinglePost from "./components/post/SinglePost";
 import UserProfile from "./components/user/UserProfile";

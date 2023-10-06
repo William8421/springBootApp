@@ -1,11 +1,13 @@
 import React from "react";
-import { usePost } from "../../context/PostContext";
+// providers
 import { useUser } from "../../context/UserContext";
+import { usePost } from "../../context/PostContext";
 
 export default function DeletePostModal({ post }) {
-  const { toggleDelete, removePost } = usePost();
+  // providers
   const { loggedInUser } = useUser();
-
+  const { toggleDelete, removePost } = usePost();
+  // delete post
   function deletePost() {
     if (loggedInUser) {
       const postId = {

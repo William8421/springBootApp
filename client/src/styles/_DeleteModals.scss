@@ -1,6 +1,5 @@
 .delete-comment,
-.delete-post,
-.update-comment {
+.delete-post {
   @include MODAL_POSITION;
   background-color: $ATHENS_GRAY;
   @include FLEX_COLUMN_CENTER;

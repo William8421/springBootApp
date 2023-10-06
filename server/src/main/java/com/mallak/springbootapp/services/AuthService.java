@@ -1,7 +1,7 @@
-package com.mallak.socialmediaapp.services;
+package com.mallak.springbootapp.services;
 
-import com.mallak.socialmediaapp.models.User;
-import com.mallak.socialmediaapp.repositories.UserRepository;
+import com.mallak.springbootapp.models.User;
+import com.mallak.springbootapp.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

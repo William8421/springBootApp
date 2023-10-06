@@ -1,21 +1,23 @@
 import React, { useEffect } from "react";
-
-import { useComment } from "../../context/CommentContext";
+// providers
 import { useUser } from "../../context/UserContext";
 import { usePost } from "../../context/PostContext";
+import { useComment } from "../../context/CommentContext";
+// comments
 import AddComment from "../add/AddComment";
 import Comment from "./Comment";
 
 export default function Comments({ post }) {
-  const { postComments, getPostComments, refreshComments } = useComment();
+  // providers
   const { getAllUsers } = useUser();
-  const { refreshItems } = usePost();
+  const { refreshPost } = usePost();
+  const { postComments, getPostComments, refreshComments } = useComment();
 
   useEffect(() => {
     getPostComments({ postId: post.id });
     getAllUsers();
     // eslint-disable-next-line
-  }, [refreshComments, post.id, refreshItems]);
+  }, [refreshComments, post.id, refreshPost]);
 
   return (
     <div className="comments">

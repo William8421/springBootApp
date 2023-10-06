@@ -1,12 +1,11 @@
-package com.mallak.socialmediaapp.services;
+package com.mallak.springbootapp.services;
 
-import com.mallak.socialmediaapp.models.Comment;
-import com.mallak.socialmediaapp.models.Post;
-import com.mallak.socialmediaapp.models.User;
-import com.mallak.socialmediaapp.repositories.CommentRepository;
-import com.mallak.socialmediaapp.repositories.PostRepository;
-import com.mallak.socialmediaapp.repositories.UserRepository;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.mallak.springbootapp.models.Comment;
+import com.mallak.springbootapp.models.Post;
+import com.mallak.springbootapp.models.User;
+import com.mallak.springbootapp.repositories.CommentRepository;
+import com.mallak.springbootapp.repositories.PostRepository;
+import com.mallak.springbootapp.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

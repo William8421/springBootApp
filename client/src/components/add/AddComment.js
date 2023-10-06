@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { useComment } from "../../context/CommentContext";
+// providers
 import { useUser } from "../../context/UserContext";
+import { useComment } from "../../context/CommentContext";
 
 export default function AddComment({ post }) {
-  const { createComment } = useComment();
-  const { loggedInUser, openCloseLoginModal, setServerError, serverError } =
+  // providers
+  const { loggedInUser, toggleAuthModal, setServerError, serverError } =
     useUser();
-
+  const { createComment } = useComment();
+  // form state
   const [commentBody, setCommentBody] = useState("");
-
-  function addComment() {
+  // add comment
+  const addComment = () => {
     if (!loggedInUser) {
-      openCloseLoginModal();
-    } else if (commentBody === "") {
-      setServerError((prevError) => {
-        return { ...prevError, commentError: "Your comment is empty" };
-      });
+      toggleAuthModal("login");
+    } else if (commentBody.trim() === "") {
+      setServerError((prevError) => ({
+        ...prevError,
+        commentError: "Your comment is empty",
+      }));
     } else {
       const comment = {
         userId: loggedInUser.id,
@@ -24,11 +27,13 @@ export default function AddComment({ post }) {
       };
       createComment(comment);
       setCommentBody("");
-      setServerError((prevError) => {
-        return { ...prevError, commentError: null };
-      });
+      setServerError((prevError) => ({
+        ...prevError,
+        commentError: null,
+      }));
     }
-  }
+  };
+
   return (
     <div className="add-comment">
       <form onSubmit={(e) => e.preventDefault()}>
@@ -36,10 +41,11 @@ export default function AddComment({ post }) {
           value={commentBody}
           onChange={(e) => setCommentBody(e.target.value)}
           placeholder="Your comment"
+          className="comment-textarea"
         />
         <div className="error">{serverError.commentError}</div>
       </form>
-      <button className="main-button" onClick={() => addComment()}>
+      <button className="main-button" onClick={addComment}>
         Comment
       </button>
     </div>

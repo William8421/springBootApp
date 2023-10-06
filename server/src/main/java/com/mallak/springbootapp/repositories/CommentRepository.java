@@ -1,8 +1,7 @@
-package com.mallak.socialmediaapp.repositories;
+package com.mallak.springbootapp.repositories;
 
-import com.mallak.socialmediaapp.models.Comment;
+import com.mallak.springbootapp.models.Comment;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

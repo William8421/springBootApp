@@ -1,24 +1,27 @@
 import React, { useState } from "react";
+// provider
 import { useComment } from "../../context/CommentContext";
 
 export default function UpdateComment({ comment }) {
+  // provider
   const { editComment, toggleUpdateComment } = useComment();
-
+  // form state
   const [newComment, setNewComment] = useState({
     id: comment.id,
     body: comment.body,
   });
-
-  function updateCommentHandler(e) {
+  // form handler
+  const updateCommentHandler = (e) => {
     const { name, value } = e.target;
-    setNewComment((prevState) => {
-      return { ...prevState, [name]: value };
-    });
-  }
-
-  function updateComment(e) {
+    setNewComment((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  // update comment
+  const updateComment = () => {
     editComment(newComment);
-  }
+  };
 
   return (
     <div className="update-modal">
@@ -33,7 +36,6 @@ export default function UpdateComment({ comment }) {
           name="body"
           value={newComment.body}
           onChange={(e) => updateCommentHandler(e)}
-          style={{ resize: "none" }}
         />
       </form>
       <div className="submit-buttons-container">

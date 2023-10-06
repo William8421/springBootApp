@@ -6,16 +6,15 @@ import { useNavigate } from "react-router-dom";
 export const PostContext = createContext();
 
 export function PostProvider({ children }) {
+  const navigate = useNavigate();
+  // user provider
   const { setServerResponse, loggedInUser } = useUser();
-
+  // post data states
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
   const [commentedPosts, setCommentedPosts] = useState([]);
-
-  const navigate = useNavigate();
-
-  const [refreshItems, setRefreshItems] = useState(false);
+  // toggle modal state
   const initialShow = {
     updateModal: null,
     deleteModal: null,
@@ -27,9 +26,14 @@ export function PostProvider({ children }) {
     hiddenDiv: false,
     updateUser: null,
   };
-
   const [show, setShow] = useState(initialShow);
 
+  // refresh posts components
+  const [refreshPost, setRefreshPosts] = useState(false);
+  function triggerRefreshPost() {
+    setRefreshPosts(!refreshPost);
+  }
+  // post's toggle update and delete button
   function toggleMoreActions(postId) {
     if (show.more === null) {
       setShow({ ...show, more: postId });
@@ -37,7 +41,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, more: null });
     }
   }
-
+  // toggle update post modal
   function toggleUpdate(postId) {
     if (!show.hiddenDiv) {
       setShow({ ...show, updateModal: postId, hiddenDiv: true });
@@ -45,7 +49,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, updateModal: null, hiddenDiv: false });
     }
   }
-
+  // toggle delete post modal
   function toggleDelete(postId) {
     if (!show.hiddenDiv) {
       setShow({ ...show, deleteModal: postId, hiddenDiv: true });
@@ -53,7 +57,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, deleteModal: null, hiddenDiv: false });
     }
   }
-
+  // toggle posts' comments
   function toggleComments(postId) {
     setShow((prevState) => {
       if (prevState.commentsForPost === postId) {
@@ -63,7 +67,7 @@ export function PostProvider({ children }) {
       }
     });
   }
-
+  // toggle post's liked modal
   function togglePostLikes(postId) {
     if (!show.hiddenDiv) {
       setShow({ ...show, likesForPost: postId, hiddenDiv: true });
@@ -71,7 +75,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, likesForPost: null, hiddenDiv: false });
     }
   }
-
+  // toggle posts user liked
   function toggleMyLikes(userId) {
     if (show.myLikes === null) {
       setShow({ ...show, myLikes: userId, myComments: null });
@@ -79,7 +83,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, myLikes: null, myComments: null });
     }
   }
-
+  // toggle posts user commented on
   function toggleMyComments(userId) {
     if (show.myComments === null) {
       setShow({ ...show, myComments: userId, myLikes: null });
@@ -87,7 +91,7 @@ export function PostProvider({ children }) {
       setShow({ ...show, myComments: null, myLikes: null });
     }
   }
-
+  // toggle update user modal
   function toggleUpdateUser(userId) {
     if (show.updateUser === null) {
       setShow({ ...show, updateUser: userId, hiddenDiv: true });
@@ -95,11 +99,11 @@ export function PostProvider({ children }) {
       setShow({ ...show, updateUser: null, hiddenDiv: null });
     }
   }
-
+  // Axios instance
   const axiosInstance = axios.create({
     baseURL: "http://192.168.1.103:8080/api/posts",
   });
-
+  // all posts
   async function getAllPosts() {
     try {
       const response = await axiosInstance.get("/allposts");
@@ -108,7 +112,7 @@ export function PostProvider({ children }) {
       console.error(error);
     }
   }
-
+  // create post
   async function createPost(newPost) {
     try {
       const response = await axiosInstance.post("/addpost", newPost);
@@ -116,12 +120,12 @@ export function PostProvider({ children }) {
         message: response.data,
         showMessage: true,
       });
-      setRefreshItems(!refreshItems);
+      triggerRefreshPost();
     } catch (error) {
       console.error(error);
     }
   }
-
+  // user's posts
   async function getUserPosts(user) {
     try {
       const response = await axiosInstance.post("/userposts", user);
@@ -131,7 +135,7 @@ export function PostProvider({ children }) {
       console.error(error);
     }
   }
-
+  // posts user liked
   async function getLikedPosts() {
     try {
       const userId = {
@@ -143,7 +147,7 @@ export function PostProvider({ children }) {
       console.error(error);
     }
   }
-
+  // posts user commented on
   async function getCommentedPosts() {
     try {
       const userId = {
@@ -155,7 +159,7 @@ export function PostProvider({ children }) {
       console.error(error);
     }
   }
-
+  // edit post
   async function editPost(post) {
     try {
       const response = await axiosInstance.put("/updatepost", post);
@@ -164,12 +168,12 @@ export function PostProvider({ children }) {
         showMessage: true,
       });
       setShow(initialShow);
-      setRefreshItems(!refreshItems);
+      triggerRefreshPost();
     } catch (error) {
       console.error(error);
     }
   }
-
+  // delete post
   async function removePost(post) {
     try {
       const response = await axiosInstance.post("/deletepost", post);
@@ -178,19 +182,19 @@ export function PostProvider({ children }) {
         message: response.data,
         showMessage: true,
       });
-      setRefreshItems(!refreshItems);
+      triggerRefreshPost();
     } catch (error) {
       console.error(error);
     }
   }
-
+  // like post function
   async function likeAPost(like) {
     const response = await axiosInstance.post("/postlike", like);
     setServerResponse({
       message: response.data,
       showMessage: true,
     });
-    setRefreshItems(!refreshItems);
+    triggerRefreshPost();
   }
 
   return (
@@ -200,7 +204,7 @@ export function PostProvider({ children }) {
         posts,
         createPost,
         likeAPost,
-        refreshItems,
+        refreshPost,
         editPost,
         removePost,
         userPosts,

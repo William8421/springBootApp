@@ -1,37 +1,41 @@
 import React, { useEffect, useState } from "react";
-
-import { usePost } from "../../context/PostContext";
-import PostsList from "../post/PostsList";
+// providers
 import { useUser } from "../../context/UserContext";
+import { usePost } from "../../context/PostContext";
+// components
+import PostsList from "../post/PostsList";
 
 export default function LikedCommentedPosts() {
+  // providers
+  const { loggedInUser } = useUser();
   const {
     getLikedPosts,
     likedPosts,
-    refreshItems,
+    refreshPost,
     getCommentedPosts,
     commentedPosts,
     show,
   } = usePost();
-  const { loggedInUser } = useUser();
+  // state to manage liked or comments data
   const [data, setData] = useState([]);
 
   useEffect(() => {
     getLikedPosts();
     getCommentedPosts();
+
     if (show.myLikes === loggedInUser.id) {
       setData(likedPosts);
     } else if (show.myComments === loggedInUser.id) {
       setData(commentedPosts);
     }
+
     // eslint-disable-next-line
-  }, [refreshItems, show]);
+  }, [refreshPost, show]);
+
   return (
     <div className="profile-liked-posts-comments">
       {data.length > 0 ? (
-        data.map((post) => {
-          return <PostsList post={post} key={post.id} />;
-        })
+        data.map((post) => <PostsList post={post} key={post.id} />)
       ) : (
         <p>
           {show.myLikes === loggedInUser.id

@@ -66,3 +66,8 @@
     width: 90%;
   }
 }
+.single-post {
+  @include FLEX_COLUMN_CENTER;
+  gap: 2rem;
+  padding-bottom: 5rem;
+}

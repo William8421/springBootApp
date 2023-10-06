@@ -1,18 +1,23 @@
 import React from "react";
+// providers
+import { useUser } from "../../context/UserContext";
+import { useComment } from "../../context/CommentContext";
+// components
+import UpdateComment from "../update/UpdateComment";
+import DeleteCommentModal from "../delete/DeleteCommentModal";
+import CommentLikes from "../likes/CommentLikes";
+import CommentLikedByModal from "../likedBy/CommentLikedByModal";
+// react icons
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { AiOutlineEdit } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiDotsThreeDuotone } from "react-icons/pi";
-
-import UpdateComment from "../update/UpdateComment";
-import DeleteCommentModal from "../delete/DeleteCommentModal";
-import CommentLikes from "../likes/CommentLikes";
+// other
 import noPic from "../../images/icon-256x256.png";
-import CommentLikedByModal from "../likedBy/CommentLikedByModal";
-import { useComment } from "../../context/CommentContext";
-import { useUser } from "../../context/UserContext";
 
 export default function Comment({ comment }) {
+  // providers
+  const { loggedInUser, allUsers } = useUser();
   const {
     likeComment,
     toggleUpdateComment,
@@ -20,11 +25,8 @@ export default function Comment({ comment }) {
     toggleMoreCommentActions,
     toggleDeleteComment,
   } = useComment();
-
-  const { loggedInUser, allUsers } = useUser();
-
+  // like function
   const isLikedByUser = comment.commentLikesIds.includes(loggedInUser.id);
-
   function likeAComment(comment) {
     const likeData = {
       id: comment.id,
@@ -33,13 +35,13 @@ export default function Comment({ comment }) {
     likeComment(likeData);
   }
 
-  const user = allUsers.find((user) => user.id === comment.userId);
-
+  const commentOwner = allUsers.find((user) => user.id === comment.userId);
+  // body shows the break lines
   const formattedPostBody = comment.body.replace(/\n/g, "<br />");
+  // date and time format
   const formattedDate = new Date(comment.createdAt)
     .toLocaleString()
     .split(",")[0];
-
   const createdAt = new Date(comment.createdAt);
   const now = new Date();
   const timeDifference = now - createdAt;
@@ -70,11 +72,15 @@ export default function Comment({ comment }) {
       <div className="comment-owner">
         <div className="pic-name">
           <img
-            src={user.profilePic !== "noPic" ? user.profilePic : noPic}
+            src={
+              commentOwner.profilePic !== "noPic"
+                ? commentOwner.profilePic
+                : noPic
+            }
             alt="profile"
           />
           <h4>
-            {user.firstName} {user.lastName}
+            {commentOwner.firstName} {commentOwner.lastName}
           </h4>
         </div>
       </div>

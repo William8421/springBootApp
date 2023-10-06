@@ -1,4 +1,4 @@
-package com.mallak.socialmediaapp.models;
+package com.mallak.springbootapp.models;
 
 import lombok.Getter;
 import lombok.Setter;

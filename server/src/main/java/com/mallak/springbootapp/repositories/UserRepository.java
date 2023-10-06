@@ -1,9 +1,7 @@
-package com.mallak.socialmediaapp.repositories;
+package com.mallak.springbootapp.repositories;
 
-import com.mallak.socialmediaapp.models.User;
+import com.mallak.springbootapp.models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-
-import java.util.List;
 
 public interface UserRepository extends MongoRepository<User, String> {
 

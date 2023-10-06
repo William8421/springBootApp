@@ -48,8 +48,8 @@ body button {
   margin: 1rem;
 }
 .App .hidden-div.open,
-.App .signUp-hidden-div.signUpModalOn,
-.App .login-hidden-div.loginModalOn {
+.App .signUp-hidden-div.signup,
+.App .login-hidden-div.login {
   position: fixed;
   top: 0;
   right: 0;
@@ -71,6 +71,18 @@ body button {
   width: 90%;
   text-align: center;
 }
+.App input[type=file] {
+  display: none;
+}
+.App .landscape-NavLink {
+  text-decoration: none;
+  text-decoration: underline;
+  background-color: transparent;
+  color: #6aaf3c;
+  border: none;
+  font-size: 1rem;
+  height: 1.5rem;
+}
 
 .navbar-container {
   background-color: #f2f4f6;
@@ -83,9 +95,6 @@ body button {
 .navbar-container .routes-container {
   display: flex;
   justify-content: space-around;
-}
-.navbar-container .routes-container .app-name {
-  display: none;
 }
 .navbar-container .routes-container .route {
   display: flex;
@@ -227,6 +236,16 @@ body button {
   transition: 0.5s ease-in-out;
 }
 
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+.about h1 {
+  text-align: center;
+}
+
 .home-container {
   width: 100%;
 }
@@ -309,6 +328,14 @@ body button {
   width: 90%;
 }
 
+.single-post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-bottom: 5rem;
+}
+
 .add-post,
 .add-comment {
   width: 90%;
@@ -318,15 +345,20 @@ body button {
 .add-post form textarea,
 .add-comment form textarea {
   width: 100%;
-  height: 5rem;
+  min-height: 5rem;
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
   white-space: pre-line;
+  font-family: "Playfair Display", serif;
 }
 .add-post form textarea::placeholder,
 .add-comment form textarea::placeholder {
   font-family: "Playfair Display", serif;
+}
+.add-post form .comment-textarea,
+.add-comment form .comment-textarea {
+  min-height: 3rem;
 }
 .add-post form .icons-container,
 .add-comment form .icons-container {
@@ -391,12 +423,13 @@ body button {
   margin: 1rem;
 }
 .liked-by .liked-users-container .liked-user {
-  width: 60%;
+  width: 70%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   height: auto;
   border-bottom: solid 1px #6aaf3c;
+  cursor: pointer;
 }
 .liked-by .liked-users-container .liked-user img {
   width: 2rem;
@@ -404,8 +437,8 @@ body button {
   border-radius: 50%;
 }
 .liked-by .liked-users-container .liked-user p {
-  cursor: pointer;
-  width: 60%;
+  text-align: right;
+  width: 70%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -451,11 +484,12 @@ body button {
 }
 .update-modal form textarea {
   width: 100%;
-  height: 5rem;
+  min-height: 5rem;
   resize: none;
   border-radius: 6px;
   padding-left: 0.5rem;
   white-space: pre-line;
+  font-family: "Playfair Display", serif;
 }
 .update-modal form textarea::placeholder {
   font-family: "Playfair Display", serif;
@@ -475,6 +509,7 @@ body button {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-size: 0.8rem;
 }
 .comments .comment {
   display: flex;
@@ -515,8 +550,7 @@ body button {
 }
 
 .delete-comment,
-.delete-post,
-.update-comment {
+.delete-post {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -531,9 +565,7 @@ body button {
 .delete-comment .delete-header,
 .delete-comment .update-header,
 .delete-post .delete-header,
-.delete-post .update-header,
-.update-comment .delete-header,
-.update-comment .update-header {
+.delete-post .update-header {
   background-color: #6aaf3c;
   width: 100%;
   display: flex;
@@ -543,8 +575,7 @@ body button {
   border-radius: 16px 16px 0 0;
 }
 .delete-comment p,
-.delete-post p,
-.update-comment p {
+.delete-post p {
   width: 80%;
   text-align: center;
   margin: 1rem;
@@ -555,6 +586,9 @@ body button {
   gap: 1rem;
 }
 
+.profile {
+  padding-bottom: 5rem;
+}
 .profile .profile-info {
   display: flex;
   flex-direction: column;
@@ -617,8 +651,13 @@ body button {
   height: auto;
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
   border: solid 1px black;
+  cursor: pointer;
+}
+.profile-liked-posts-comments .posts-list .post-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .profile-liked-posts-comments .posts-list .post-container img {
   width: 100%;
@@ -626,9 +665,13 @@ body button {
   object-fit: cover;
 }
 .profile-liked-posts-comments .posts-list .post-container p {
-  height: 1rem;
+  height: 3rem;
+  text-overflow: ellipsis;
   overflow: hidden;
   font-size: 0.5rem;
+}
+.profile-liked-posts-comments .posts-list .post-container .icon {
+  font-size: 20px;
 }
 
 .likes-container {

@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
+// provider
 import { usePost } from "../../context/PostContext";
-import axios from "axios";
+// react icons
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageAddFill, RiCheckLine } from "react-icons/ri";
+// other
+import axios from "axios";
 
 export default function UpdatePostModal({ post }) {
+  // provider
   const { editPost, toggleUpdate } = usePost();
-
+  // form handler
   const [newData, setNewData] = useState({
     id: post.id,
     body: post.body,
@@ -16,17 +20,17 @@ export default function UpdatePostModal({ post }) {
   const [uploaded, setUploaded] = useState("");
 
   const hiddenFileInput = useRef(null);
-
-  const uploadButtonHandler = (event) => {
+  // handler for input button
+  const uploadButtonHandler = () => {
     hiddenFileInput.current.click();
   };
-
-  function picHandler(e) {
+  // image handler
+  const picHandler = (e) => {
     const selectedFile = e.target.files?.[0];
     setImgSelected(selectedFile || "");
-  }
-
-  async function uploadPic(e) {
+  };
+  // input file function
+  const uploadPic = async (e) => {
     e.preventDefault();
     if (!(imgSelected instanceof File)) return;
     const formData = new FormData();
@@ -47,17 +51,20 @@ export default function UpdatePostModal({ post }) {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  function updatePostHandler(e) {
+  };
+  // form handler
+  const updatePostHandler = (e) => {
     const { name, value } = e.target;
-    setNewData((prevState) => {
-      return { ...prevState, [name]: value, id: post.id };
-    });
-  }
-  function updatePost(e) {
+    setNewData((prevState) => ({
+      ...prevState,
+      [name]: value,
+      id: post.id,
+    }));
+  };
+  // update post
+  const updatePost = (e) => {
     editPost(newData);
-  }
+  };
 
   return (
     <div className="update-modal">
@@ -74,7 +81,7 @@ export default function UpdatePostModal({ post }) {
           value={newData.body}
           onChange={(e) => updatePostHandler(e)}
         />
-        <img src={post.image} alt="post" />
+        {post.image && <img src={post.image} alt="post" />}
         <div className="icons-container">
           <div className="input-button-container">
             <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
@@ -85,7 +92,6 @@ export default function UpdatePostModal({ post }) {
             type="file"
             onChange={(e) => picHandler(e)}
             ref={hiddenFileInput}
-            style={{ display: "none" }}
           />
           {imgSelected === "" ? null : uploaded === "" ? (
             <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />

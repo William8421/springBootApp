@@ -1,35 +1,39 @@
 import React, { useRef, useState } from "react";
-import { usePost } from "../../context/PostContext";
+// providers
 import { useUser } from "../../context/UserContext";
+import { usePost } from "../../context/PostContext";
+// other
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageAddFill, RiCheckLine } from "react-icons/ri";
 import axios from "axios";
 
 export default function AddPost() {
-  const { createPost } = usePost();
-  const { loggedInUser, openCloseLoginModal, setServerError, serverError } =
+  // providers
+  const { loggedInUser, toggleAuthModal, setServerError, serverError } =
     useUser();
+  const { createPost } = usePost();
 
   const initialValue = {
     body: "",
     image: "",
   };
+  // form states
   const [newPost, setNewPost] = useState(initialValue);
-  const [imgSelected, setImgSelected] = useState("");
+  const [imgSelected, setImgSelected] = useState(null);
   const [uploaded, setUploaded] = useState("");
 
   const hiddenFileInput = useRef(null);
-
-  const uploadButtonHandler = (event) => {
+  // handler for input button
+  const uploadButtonHandler = () => {
     hiddenFileInput.current.click();
   };
-
-  function picHandler(e) {
+  // image handler
+  const picHandler = (e) => {
     const selectedFile = e.target.files?.[0];
     setImgSelected(selectedFile);
-  }
-
-  async function uploadPic(e) {
+  };
+  // input file function
+  const uploadPic = async (e) => {
     e.preventDefault();
     if (!(imgSelected instanceof File)) return;
     const formData = new FormData();
@@ -50,34 +54,36 @@ export default function AddPost() {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  function handlePostForm(e) {
+  };
+  // form handler
+  const handlePostForm = (e) => {
     const { name, value } = e.target;
-    if (loggedInUser) {
-      setNewPost((prevState) => {
-        return { ...prevState, [name]: value, userId: loggedInUser.id };
-      });
-    }
-  }
-
-  function addPost() {
+    setNewPost((prevState) => ({
+      ...prevState,
+      [name]: value,
+      userId: loggedInUser.id,
+    }));
+  };
+  // add post
+  const addPost = () => {
     if (!loggedInUser) {
-      openCloseLoginModal();
+      toggleAuthModal("login");
     } else if (newPost.body === "") {
-      setServerError((prevError) => {
-        return { ...prevError, postError: "Your post and image are empty" };
-      });
+      setServerError((prevError) => ({
+        ...prevError,
+        postError: "Your post and image are empty",
+      }));
     } else {
       createPost(newPost);
       setUploaded("");
-      setImgSelected("");
+      setImgSelected(null);
       setNewPost(initialValue);
-      setServerError((prevError) => {
-        return { ...prevError, postError: null };
-      });
+      setServerError((prevError) => ({
+        ...prevError,
+        postError: null,
+      }));
     }
-  }
+  };
 
   return (
     <div className="add-post">
@@ -86,24 +92,18 @@ export default function AddPost() {
           name="body"
           placeholder="What's on your mind?"
           value={newPost.body}
-          onChange={(e) => handlePostForm(e)}
+          onChange={handlePostForm}
         />
         <div className="icons-container">
           <div className="input-button-container">
             <RiImageAddFill onClick={uploadButtonHandler} className="icon" />
-            <span>{imgSelected.name}</span>
+            <span>{imgSelected?.name}</span>
           </div>
-
-          <input
-            type="file"
-            onChange={(e) => picHandler(e)}
-            ref={hiddenFileInput}
-            style={{ display: "none" }}
-          />
-          {imgSelected === "" ? null : uploaded === "" ? (
-            <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />
+          <input type="file" onChange={picHandler} ref={hiddenFileInput} />
+          {imgSelected === null ? null : uploaded === "" ? (
+            <FaCloudUploadAlt className="icon" onClick={uploadPic} />
           ) : (
-            <RiCheckLine className="icon" onClick={(e) => uploadPic(e)} />
+            <RiCheckLine className="icon" onClick={uploadPic} />
           )}
         </div>
         <div className="error">{serverError.postError}</div>

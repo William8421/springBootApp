@@ -1,37 +1,43 @@
 import React from "react";
+// providers
 import { useUser } from "../../context/UserContext";
 import { useComment } from "../../context/CommentContext";
 
 export default function CommentLikes({ comment }) {
-  const { toggleCommentLikes } = useComment();
+  // providers
   const { loggedInUser, allUsers } = useUser();
+  const { toggleCommentLikes } = useComment();
+  // likes count variables
+  const likesCount = comment.commentLikesIds.length;
+  const isLikedByCurrentUser = comment.commentLikesIds.includes(
+    loggedInUser.id
+  );
+  const firstLikeUser = allUsers.find(
+    (user) => user.id === comment.commentLikesIds[0]
+  );
 
-  const test = allUsers.find((user) => user.id === comment.commentLikesIds[0]);
   return (
     <div className="likes-container">
-      <p>{comment.commentLikes} likes</p>
+      <p>
+        {likesCount} {likesCount === 1 ? "like" : "likes"}
+      </p>
       <div className="likes-div" onClick={() => toggleCommentLikes(comment.id)}>
-        {comment.commentLikesIds.length === 0 ? (
+        {likesCount === 0 ? (
           "Be the first to like this comment"
-        ) : // one comment
-        comment.commentLikesIds.length === 1 ? (
-          // loggedin user?
-          comment.commentLikesIds[0] === loggedInUser.id ? (
+        ) : likesCount === 1 ? (
+          isLikedByCurrentUser ? (
             <p>You like this</p>
           ) : (
-            // not?
             <p>
-              {test.firstName} {test.lastName} likes this
+              {firstLikeUser.firstName} {firstLikeUser.lastName} likes this
             </p>
           )
-        ) : // multiple comments loggedin user?
-        comment.commentLikesIds.includes(loggedInUser.id) ? (
-          <p>You and {comment.commentLikesIds.length - 1} others like this</p>
+        ) : isLikedByCurrentUser ? (
+          <p>You and {likesCount - 1} others like this</p>
         ) : (
-          // not
           <p>
-            {test.firstName} {test.lastName} and{" "}
-            {comment.commentLikesIds.length - 1} others like this
+            {firstLikeUser.firstName} {firstLikeUser.lastName} and{" "}
+            {likesCount - 1} others like this
           </p>
         )}
       </div>

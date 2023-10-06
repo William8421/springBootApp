@@ -9,11 +9,12 @@ export const UserContext = createContext();
 export function UserProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
-
+  // user data and info
   const [userData, setUserData] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [userInfoId, setUserInfoId] = useState("");
   const [allUsers, setAllUsers] = useState([]);
+  // server response and error
   const [serverResponse, setServerResponse] = useState({
     message: "",
     showMessage: false,
@@ -23,60 +24,45 @@ export function UserProvider({ children }) {
     postError: null,
     commentError: null,
   });
-
+  // menu control
   const [menu, setMenu] = useState("off");
-
   function switcher() {
     setMenu(menu === "off" ? "on" : "off");
   }
-
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState("loginModalOff");
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState("signUpModalOff");
-
-  function openCloseLoginModal() {
-    setIsLoginModalOpen(
-      isLoginModalOpen === "loginModalOff" ? "loginModalOn" : "loginModalOff"
-    );
-    setMenu("off");
-  }
-  function openCloseSignUpModal() {
-    setIsSignUpModalOpen(
-      isSignUpModalOpen === "signUpModalOff"
-        ? "signUpModalOn"
-        : "signUpModalOff"
-    );
+  // authentication modal
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(null);
+  function toggleAuthModal(modalType) {
+    setIsAuthModalOpen(isAuthModalOpen === modalType ? null : modalType);
     switcher();
   }
-
+  // refresh components
   const [refresh, setRefresh] = useState(false);
-
-  const triggerRefresh = () => {
+  function triggerRefresh() {
     setRefresh(!refresh);
-  };
-
+  }
+  // Axios instance
   const axiosInstance = axios.create({
     baseURL: "http://192.168.1.103:8080/api",
   });
-
+  // local storage
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || "";
   const selectedUser = JSON.parse(localStorage.getItem("selectedUser")) || "";
-
+  // form key
   const [formKey, setFormKey] = useState(0);
-
   function resetForm() {
     setFormKey((prevKey) => prevKey + 1);
   }
-
+  // registration
   async function signUp(data) {
     try {
       const response = await axiosInstance.post(`/auth/register`, data);
-      const user = response.data.split("&");
+      const [username, id] = response.data?.split("&") || [];
       const userStorage = {
-        username: user[0],
-        id: user[1],
+        username,
+        id,
       };
       localStorage.setItem("user", JSON.stringify(userStorage));
-      openCloseSignUpModal();
+      toggleAuthModal(null);
       setMenu("off");
       setServerResponse({
         message: `Welcome ${userStorage.username}`,
@@ -88,6 +74,7 @@ export function UserProvider({ children }) {
       if (response.data) {
         resetForm();
       }
+      triggerRefresh();
     } catch (error) {
       console.error(error);
       setServerError((prevError) => {
@@ -95,17 +82,17 @@ export function UserProvider({ children }) {
       });
     }
   }
-
+  // login
   async function signIn(data) {
     try {
       const response = await axiosInstance.post("/auth/signin", data);
-      const user = response.data.split("&");
+      const [username, id] = response.data?.split("&") || [];
       const userStorage = {
-        username: user[0],
-        id: user[1],
+        username,
+        id,
       };
       localStorage.setItem("user", JSON.stringify(userStorage));
-      openCloseLoginModal();
+      toggleAuthModal(null);
       setMenu("off");
       setServerResponse({
         message: "You are logged in",
@@ -122,7 +109,7 @@ export function UserProvider({ children }) {
       });
     }
   }
-
+  // logout
   function logOut() {
     localStorage.removeItem("user");
     localStorage.removeItem("selectedUser");
@@ -132,7 +119,7 @@ export function UserProvider({ children }) {
       navigate("/");
     }
   }
-
+  // user data function
   async function getUser() {
     if (loggedInUser) {
       try {
@@ -143,6 +130,7 @@ export function UserProvider({ children }) {
       }
     }
   }
+  // user info function
   async function getUserInfo() {
     try {
       const response = await axiosInstance.post("/users/user", {
@@ -153,7 +141,7 @@ export function UserProvider({ children }) {
       console.error(error);
     }
   }
-
+  // all users function
   async function getAllUsers() {
     try {
       const response = await axiosInstance.get("users/users");
@@ -162,7 +150,7 @@ export function UserProvider({ children }) {
       console.error(error);
     }
   }
-
+  // edit user profile
   async function editUser(user) {
     try {
       const response = await axiosInstance.put("/users/editprofile", user);
@@ -181,7 +169,7 @@ export function UserProvider({ children }) {
       });
     }
   }
-
+  // Timer to clear server response message after a certain time
   useEffect(() => {
     const timer = setTimeout(() => {
       setServerResponse({
@@ -193,7 +181,6 @@ export function UserProvider({ children }) {
     return () => {
       clearTimeout(timer);
     };
-    // eslint-disable-next-line
   }, [serverResponse.showMessage]);
 
   return (
@@ -205,8 +192,8 @@ export function UserProvider({ children }) {
         loggedInUser,
         switcher,
         menu,
-        openCloseLoginModal,
-        openCloseSignUpModal,
+        toggleAuthModal,
+        isAuthModalOpen,
         getUser,
         userData,
         editUser,
@@ -227,18 +214,8 @@ export function UserProvider({ children }) {
       }}
     >
       {children}
-      {
-        <SignIn
-          isLoginModalOpen={isLoginModalOpen}
-          openCloseLoginModal={openCloseLoginModal}
-        />
-      }
-      {
-        <SignUp
-          isSignUpModalOpen={isSignUpModalOpen}
-          openCloseSignUpModal={openCloseSignUpModal}
-        />
-      }
+      {isAuthModalOpen === "login" && <SignIn />}
+      {isAuthModalOpen === "signup" && <SignUp />}
     </UserContext.Provider>
   );
 }

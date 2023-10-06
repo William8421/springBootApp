@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
+// providers
 import { useUser } from "../../context/UserContext";
-import { NavLink, useNavigate } from "react-router-dom";
-import { AiOutlineUser, AiOutlineHome, AiOutlineInfo } from "react-icons/ai";
 import { usePost } from "../../context/PostContext";
 import { useComment } from "../../context/CommentContext";
+// react icons
+import { AiOutlineUser, AiOutlineHome, AiOutlineInfo } from "react-icons/ai";
+// navigation
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  // providers
   const {
-    openCloseLoginModal,
-    openCloseSignUpModal,
+    toggleAuthModal,
     logOut,
     switcher,
     menu,
@@ -19,13 +22,19 @@ export default function Navbar() {
     setUserInfoId,
     refresh,
   } = useUser();
-
   const { show, setShow } = usePost();
   const { commentShow, setCommentShow } = useComment();
-
+  // navigation
   const navigate = useNavigate();
-
-  function closeHiddenDiv() {
+  const goToUserProfile = () => {
+    localStorage.setItem("selectedUser", JSON.stringify(loggedInUser.id));
+    setUserInfoId(loggedInUser.id);
+    navigate(`/userprofile`);
+    switcher();
+    window.scrollTo(0, 0);
+  };
+  // control hidden div for modals
+  const closeHiddenDiv = () => {
     if (show.hiddenDiv) {
       setShow({
         ...show,
@@ -45,15 +54,7 @@ export default function Navbar() {
         hiddenDiv: false,
       });
     }
-  }
-
-  function goToUserProfile() {
-    localStorage.setItem("selectedUser", JSON.stringify(loggedInUser.id));
-    setUserInfoId(loggedInUser.id);
-    navigate(`/userprofile`);
-    switcher();
-    window.scrollTo(0, 0);
-  }
+  };
 
   useEffect(() => {
     if (loggedInUser) {
@@ -65,9 +66,9 @@ export default function Navbar() {
   return (
     <div className="navbar-container">
       <div
-        className={`hidden-div ${show.hiddenDiv ? "open" : ""} ${
-          commentShow.hiddenDiv ? "open" : ""
-        } `}
+        className={`hidden-div ${
+          show.hiddenDiv || commentShow.hiddenDiv ? "open" : ""
+        }`}
         onClick={closeHiddenDiv}
       ></div>
       <div className="routes-container">
@@ -75,7 +76,7 @@ export default function Navbar() {
           {loggedInUser ? (
             <div>
               <div onClick={switcher}>
-                {userData.profilePic === "noPic" ? (
+                {!userData.profilePic ? (
                   loggedInUser.username[0].toUpperCase()
                 ) : (
                   <img src={userData.profilePic} alt="profile" />
@@ -103,13 +104,13 @@ export default function Navbar() {
         <div className={`burger-menu ${menu}`}>
           {!loggedInUser ? (
             <div className="signUp-login-container">
-              <button onClick={openCloseSignUpModal}>Sign Up</button>
-              <button onClick={openCloseLoginModal}>Login</button>
+              <button onClick={() => toggleAuthModal("signup")}>Sign Up</button>
+              <button onClick={() => toggleAuthModal("login")}>Login</button>
             </div>
           ) : (
             <div>
               <div className="signUp-login-container">
-                <button onClick={goToUserProfile}>Your profile</button>
+                <button onClick={goToUserProfile}>My profile</button>
                 <button onClick={logOut}>Logout</button>
               </div>
             </div>

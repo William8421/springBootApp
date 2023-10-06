@@ -15,17 +15,18 @@
     gap: 1rem;
     margin: 1rem;
     .liked-user {
-      width: 60%;
+      width: 70%;
       @include FLEX_ROW_BETWEEN;
       align-items: flex-end;
       height: auto;
       border-bottom: solid 1px $APPLE;
+      cursor: pointer;
       img {
         @include CIRCLED_IMG_2REM;
       }
       p {
-        cursor: pointer;
-        width: 60%;
+        text-align: right;
+        width: 70%;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;

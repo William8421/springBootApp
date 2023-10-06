@@ -1,32 +1,32 @@
 import React, { useEffect } from "react";
-
+// providers
+import { useUser } from "../context/UserContext";
 import { usePost } from "../context/PostContext";
 import { useComment } from "../context/CommentContext";
-
+// components
 import AddPost from "../components/add/AddPost";
 import Post from "../components/post/Post";
+// other
 import spinner from "../images/loading-loading-forever.gif";
-import { useUser } from "../context/UserContext";
 
 export default function Home() {
-  const { getAllPosts, posts, refreshItems } = usePost();
-  const { refreshComments } = useComment();
+  // providers
   const { getAllUsers } = useUser();
+  const { getAllPosts, posts, refreshPost } = usePost();
+  const { refreshComments } = useComment();
 
   useEffect(() => {
     getAllPosts();
     getAllUsers();
     // eslint-disable-next-line
-  }, [refreshItems, refreshComments]);
+  }, [refreshPost, refreshComments]);
 
   return (
     <div className="home-container">
       <AddPost />
       <div className="posts">
         {posts.length > 0 ? (
-          posts.map((post) => {
-            return <Post post={post} key={post.id} />;
-          })
+          posts.map((post) => <Post post={post} key={post.id} />)
         ) : (
           <img className="spinner" src={spinner} alt="spinner" />
         )}

@@ -1,11 +1,13 @@
 import React from "react";
-import { useComment } from "../../context/CommentContext";
+// providers
 import { useUser } from "../../context/UserContext";
+import { useComment } from "../../context/CommentContext";
 
 export default function DeleteCommentModal({ comment }) {
-  const { removeComment, toggleDeleteComment } = useComment();
+  // providers
   const { loggedInUser } = useUser();
-
+  const { removeComment, toggleDeleteComment } = useComment();
+  // delete comment
   function deleteComment() {
     if (loggedInUser) {
       const commentId = {

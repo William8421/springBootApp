@@ -1,24 +1,34 @@
 import React, { useEffect } from "react";
-import Post from "./Post";
+// provider
 import { usePost } from "../../context/PostContext";
-import { Link, useParams } from "react-router-dom";
+import Post from "./Post";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SinglePost() {
-  const { postId } = useParams();
+  // provider
   const { posts, getAllPosts } = usePost();
+
+  const { postId } = useParams();
+  // navigation
+  const navigate = useNavigate();
+  function goBack() {
+    navigate("/userprofile");
+  }
 
   useEffect(() => {
     getAllPosts();
+    window.scrollTo(0, 0);
     // eslint-disable-next-line
   }, []);
 
   const post = posts.find((post) => post.id === postId);
+
   return (
-    <div className="posts">
-      {post ? <Post post={post} /> : null}
-      <Link to={"/userprofile"}>
-        <button className="main-button">Back</button>
-      </Link>
+    <div className="single-post">
+      {post && <Post post={post} />}
+      <button onClick={goBack} className="main-button">
+        Back
+      </button>
     </div>
   );
 }

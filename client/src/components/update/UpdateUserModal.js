@@ -1,14 +1,20 @@
 import React, { useRef, useState } from "react";
-import axios from "axios";
+// providers
 import { useUser } from "../../context/UserContext";
+import { usePost } from "../../context/PostContext";
+// react icons
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageAddFill, RiCheckLine } from "react-icons/ri";
-import { usePost } from "../../context/PostContext";
+// date picker
 import DatePicker from "react-datepicker";
+// other
+import axios from "axios";
 
 export default function UpdateUserModal({ userData }) {
+  // providers
   const { editUser, formKey } = useUser();
   const { toggleUpdateUser } = usePost();
+  // form states
   const originalData = {
     id: userData.id,
     profilePic: userData.profilePic,
@@ -19,21 +25,20 @@ export default function UpdateUserModal({ userData }) {
     gender: userData.gender,
   };
   const [newData, setNewData] = useState(originalData);
-
   const [imgSelected, setImgSelected] = useState("");
   const [uploaded, setUploaded] = useState("");
 
   const hiddenFileInput = useRef(null);
-
+  // handler for input button
   const uploadButtonHandler = (event) => {
     hiddenFileInput.current.click();
   };
-
+  // image handler
   function picHandler(e) {
     const selectedFile = e.target.files?.[0];
     setImgSelected(selectedFile || "");
   }
-
+  // input file function
   async function uploadPic(e) {
     e.preventDefault();
     if (!(imgSelected instanceof File)) return;
@@ -56,13 +61,14 @@ export default function UpdateUserModal({ userData }) {
       console.error(error);
     }
   }
-
+  // form handler
   function updateUserHandler(e) {
     const { name, value } = e.target;
     setNewData((prevState) => {
       return { ...prevState, [name]: value, id: userData.id };
     });
   }
+  // update post
   function updateUser() {
     if (newData !== originalData) {
       editUser(newData);
@@ -137,7 +143,6 @@ export default function UpdateUserModal({ userData }) {
             key={formKey}
             onChange={(e) => picHandler(e)}
             ref={hiddenFileInput}
-            style={{ display: "none" }}
           />
           {imgSelected === "" ? null : uploaded === "" ? (
             <FaCloudUploadAlt className="icon" onClick={(e) => uploadPic(e)} />

@@ -1,13 +1,11 @@
-package com.mallak.socialmediaapp.controllers;
-import com.mallak.socialmediaapp.models.User;
-import com.mallak.socialmediaapp.services.AuthService;
-import com.mallak.socialmediaapp.services.UserService;
+package com.mallak.springbootapp.controllers;
+import com.mallak.springbootapp.models.User;
+import com.mallak.springbootapp.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.103:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.104:3000"})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

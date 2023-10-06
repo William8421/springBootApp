@@ -10,6 +10,9 @@
     textarea::placeholder {
       font-family: "Playfair Display", serif;
     }
+    .comment-textarea {
+      min-height: 3rem;
+    }
     .icons-container {
       @include FLEX_ROW_BETWEEN;
       .input-button-container {

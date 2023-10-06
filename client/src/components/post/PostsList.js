@@ -1,26 +1,30 @@
 import React from "react";
+//providers
 import { useUser } from "../../context/UserContext";
 import { usePost } from "../../context/PostContext";
-
+// react icons
 import { BiLike, BiSolidLike } from "react-icons/bi";
+// other
 import { useNavigate } from "react-router-dom";
 
 export default function PostsList({ post }) {
+  //providers
   const { loggedInUser } = useUser();
   const { likeAPost } = usePost();
+  // navigation
   const navigate = useNavigate();
+  const navigateToPost = (postId) => {
+    navigate(`/post/${postId}`);
+  };
+  // like function
   const isLikedByUser = post.postLikesIds.includes(loggedInUser.id);
-
-  function like(e) {
+  const like = (e) => {
     const likeData = {
       id: e.id,
       userId: loggedInUser.id,
     };
     likeAPost(likeData);
-  }
-  function navigateToPost(postId) {
-    navigate(`/post/${postId}`);
-  }
+  };
 
   return (
     <div className="posts-list" key={post.id}>
@@ -31,9 +35,9 @@ export default function PostsList({ post }) {
         </div>
         <div className="">
           {!isLikedByUser ? (
-            <BiLike className="icon" onClick={(e) => like(post)} />
+            <BiLike className="icon" onClick={() => like(post)} />
           ) : (
-            <BiSolidLike className="icon" onClick={(e) => like(post)} />
+            <BiSolidLike className="icon" onClick={() => like(post)} />
           )}
         </div>
       </div>

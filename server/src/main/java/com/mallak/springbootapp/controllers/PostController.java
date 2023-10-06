@@ -1,15 +1,15 @@
-package com.mallak.socialmediaapp.controllers;
+package com.mallak.springbootapp.controllers;
 
-import com.mallak.socialmediaapp.models.Post;
-import com.mallak.socialmediaapp.models.User;
-import com.mallak.socialmediaapp.services.PostService;
+import com.mallak.springbootapp.models.Post;
+import com.mallak.springbootapp.models.User;
+import com.mallak.springbootapp.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.103:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.104:3000"})
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {

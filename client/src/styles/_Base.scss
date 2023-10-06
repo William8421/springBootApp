@@ -45,8 +45,8 @@ body {
     margin: 1rem;
   }
   .hidden-div.open,
-  .signUp-hidden-div.signUpModalOn,
-  .login-hidden-div.loginModalOn {
+  .signUp-hidden-div.signup,
+  .login-hidden-div.login {
     position: fixed;
     top: 0;
     right: 0;
@@ -67,5 +67,18 @@ body {
     color: $BOUQUET;
     width: 90%;
     text-align: center;
+  }
+  input[type="file"] {
+    display: none;
+  }
+
+  .landscape-NavLink {
+    text-decoration: none;
+    text-decoration: underline;
+    background-color: transparent;
+    color: $APPLE;
+    border: none;
+    font-size: 1rem;
+    height: 1.5rem;
   }
 }

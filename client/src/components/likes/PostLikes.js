@@ -1,43 +1,51 @@
 import React from "react";
+// providers
 import { useUser } from "../../context/UserContext";
 import { usePost } from "../../context/PostContext";
 
 export default function PostLikes({ post }) {
+  // providers
   const { loggedInUser, allUsers } = useUser();
   const { togglePostLikes } = usePost();
+  // likes count variables
+  const likesCount = post.postLikesIds.length;
+  const isLikedByCurrentUser = post.postLikesIds.includes(loggedInUser.id);
+  const firstLikeUser = allUsers.find(
+    (user) => user.id === post.postLikesIds[0]
+  );
 
-  const test = allUsers.find((user) => user.id === post.postLikesIds[0]);
   return (
     <div className="likes-container">
       <div className="likes-and-comments">
-        <p>{post.postLikes} likes</p>
-        <p>{post.postComments} comments</p>
+        <p>
+          {likesCount} {likesCount === 1 ? "like" : "likes"}
+        </p>
+        <p>
+          {post.postComments} {post.postComments === 1 ? "comment" : "comments"}
+        </p>
       </div>
       <div className="likes-div" onClick={() => togglePostLikes(post.id)}>
-        {/* no likes */}
-        {post.postLikesIds.length === 0 ? (
+        {likesCount === 0 ? (
           "Be the first to like this post"
-        ) : // one like
-        post.postLikesIds.length === 1 ? (
-          // loggedIn user?
-          post.postLikesIds[0] === loggedInUser.id ? (
+        ) : likesCount === 1 ? (
+          isLikedByCurrentUser ? (
             <p>You like this</p>
           ) : (
-            // not?
             <p>
-              {test.firstName} {test.lastName} likes this
+              {firstLikeUser.firstName} {firstLikeUser.lastName} likes this
             </p>
           )
-        ) : // multiple likes loggedIn user?
-        post.postLikesIds.includes(loggedInUser.id) ? (
-          <p>You and {post.postLikesIds.length - 1} others like this</p>
+        ) : isLikedByCurrentUser ? (
+          <p>You and {likesCount - 1} others like this</p>
         ) : (
-          // not?
-
-          <p>
-            {test.firstName} {test.lastName} and {post.postLikesIds.length - 1}{" "}
-            others like this
-          </p>
+          <div>
+            {firstLikeUser && (
+              <p>
+                {firstLikeUser.firstName} {firstLikeUser.lastName} and{" "}
+                {likesCount - 1} others like this
+              </p>
+            )}
+          </div>
         )}
       </div>
     </div>

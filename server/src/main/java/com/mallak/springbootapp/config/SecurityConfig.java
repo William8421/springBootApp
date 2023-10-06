@@ -1,4 +1,4 @@
-package com.mallak.socialmediaapp.config;
+package com.mallak.springbootapp.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
