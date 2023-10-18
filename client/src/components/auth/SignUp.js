@@ -7,6 +7,7 @@ import { RiCheckLine, RiImageAddFill } from "react-icons/ri";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function SignUp() {
   // provider
@@ -233,16 +234,15 @@ export default function SignUp() {
           </div>
           <div className="error">{serverError.userError}</div>
         </form>
-        <div className="submit-buttons-container">
+        <div className="login-sign-up-buttons">
           <button className="main-button" onClick={submit}>
             Sign Up
           </button>
-          <button
-            className="cancel-button"
-            onClick={() => toggleAuthModal("login")}
-          >
-            Login
-          </button>
+          <div>
+            {" "}
+            You have an account?
+            <Link onClick={() => toggleAuthModal("login")}> Login</Link>
+          </div>
         </div>
       </div>
     </div>

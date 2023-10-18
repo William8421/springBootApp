@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.104:3000"})
+@CrossOrigin(origins = { "http://localhost:3000", "http://192.168.1.104:3000" })
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,17 +21,17 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String, String> payload){
+    public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String, String> payload) {
         return userService.getUserById(payload.get("id"));
     }
 
     @GetMapping("users")
-    public ResponseEntity<List<User>> getListOfUsers(){
+    public ResponseEntity<List<User>> getListOfUsers() {
         return userService.getAllUsers();
     }
 
     @PutMapping("/editprofile")
-    public ResponseEntity<String> editMyProfile(@RequestBody User user){
+    public ResponseEntity<String> editMyProfile(@RequestBody User user) {
         return userService.editProfile(user);
     }
 }

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useUser } from "../../context/UserContext";
 // other
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 export default function SignIn() {
   // provider
@@ -87,17 +88,15 @@ export default function SignIn() {
           </div>
           <div className="error">{serverError.userError}</div>
         </form>
-
-        <div className="submit-buttons-container">
+        <div className="login-sign-up-buttons">
           <button className="main-button" onClick={submit}>
             Login
           </button>
-          <button
-            className="cancel-button"
-            onClick={() => toggleAuthModal("signup")}
-          >
-            Sign up
-          </button>
+          <div>
+            {" "}
+            Don't have an account?
+            <Link onClick={() => toggleAuthModal("signup")}> Sign Up</Link>
+          </div>
         </div>
       </div>
     </div>

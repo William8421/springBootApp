@@ -3,7 +3,6 @@
   background-color: $ATHENS_GRAY;
   @include FLEX_COLUMN_CENTER;
   border-radius: 16px;
-
   .auth-modal-header {
     background-color: $APPLE;
     width: 100%;
@@ -54,6 +53,12 @@
       align-items: center;
       gap: 0.5rem;
     }
+  }
+
+  .login-sign-up-buttons {
+    @include FLEX_COLUMN_CENTER;
+    gap: 1rem;
+    padding-bottom: 1rem;
   }
 }
 

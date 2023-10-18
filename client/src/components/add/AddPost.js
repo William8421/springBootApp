@@ -25,7 +25,9 @@ export default function AddPost() {
   const hiddenFileInput = useRef(null);
   // handler for input button
   const uploadButtonHandler = () => {
-    hiddenFileInput.current.click();
+    if (loggedInUser) {
+      hiddenFileInput.current.click();
+    }
   };
   // image handler
   const picHandler = (e) => {

@@ -24,16 +24,18 @@ public class AuthService {
     }
 
     public ResponseEntity<String> registerUser(User user) {
-        try{
+        try {
             if (isInvalidUser(user)) {
-                return new ResponseEntity<>("First name, last name, username and age cannot be empty", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("First name, last name, username and age cannot be empty",
+                        HttpStatus.BAD_REQUEST);
             }
             Date currentDate = new Date();
             long ageInMillis = currentDate.getTime() - user.getDateOfBirth().getTime();
             int age = (int) (ageInMillis / (1000L * 60 * 60 * 24 * 365));
             if (age < 18) {
                 int remainingYears = 18 - age;
-                return new ResponseEntity<>("You must be at least 18 years old to register. Please wait for another " + remainingYears + " year(s).", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("You must be at least 18 years old to register. Please wait for another "
+                        + remainingYears + " year(s).", HttpStatus.BAD_REQUEST);
             }
 
             if (!isValidEmail(user.getEmail())) {
@@ -53,7 +55,7 @@ public class AuthService {
     }
 
     public ResponseEntity<String> authenticateUser(String email, String providedPassword) {
-        try{
+        try {
             User user = userRepository.findByEmail(email);
             if (user != null && passwordEncoder.matches(providedPassword, user.getPassword())) {
                 return new ResponseEntity<>(user.getUsername() + "&" + user.getId(), HttpStatus.OK);

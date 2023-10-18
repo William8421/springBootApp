@@ -42,7 +42,7 @@ export function UserProvider({ children }) {
   }
   // Axios instance
   const axiosInstance = axios.create({
-    baseURL: "http://192.168.1.103:8080/api",
+    baseURL: "http://192.168.1.104:8080/api",
   });
   // local storage
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || "";
@@ -177,11 +177,19 @@ export function UserProvider({ children }) {
         showMessage: false,
       });
     }, 2000);
+    const errorTimer = setTimeout(() => {
+      setServerError({
+        userError: null,
+        postError: null,
+        commentError: null,
+      });
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(errorTimer);
     };
-  }, [serverResponse.showMessage]);
+  }, [serverResponse.showMessage, serverError]);
 
   return (
     <UserContext.Provider

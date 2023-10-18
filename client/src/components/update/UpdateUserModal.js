@@ -89,21 +89,21 @@ export default function UpdateUserModal({ userData }) {
       <form key={formKey} onChange={updateUserHandler}>
         <input
           type="text"
-          placeholder="First name"
+          placeholder={originalData.firstName}
           name="firstName"
           autoComplete="given-name"
         />
 
         <input
           type="text"
-          placeholder="Last name"
+          placeholder={originalData.lastName}
           name="lastName"
           autoComplete="family-name"
         />
 
         <input
           type="text"
-          placeholder="Username"
+          placeholder={originalData.username}
           name="username"
           autoComplete="username"
         />
@@ -125,7 +125,7 @@ export default function UpdateUserModal({ userData }) {
           </div>
 
           <select name="gender" placeholder="Gender">
-            <option value="not set">--</option>
+            <option value="not set">Gender</option>
             <option>Male</option>
             <option>Female</option>
             <option>Others</option>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.1.104:3000"})
+@CrossOrigin(origins = { "http://localhost:3000", "http://192.168.1.104:3000" })
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
@@ -21,17 +21,17 @@ public class PostController {
     }
 
     @GetMapping("/allposts")
-    public ResponseEntity<List<Post>> getAllPosts(){
+    public ResponseEntity<List<Post>> getAllPosts() {
         return postService.allPosts();
     }
 
     @PostMapping("/addpost")
-    public ResponseEntity<String> addPost(@RequestBody Post post){
+    public ResponseEntity<String> addPost(@RequestBody Post post) {
         return postService.createPost(post);
     }
 
     @PostMapping("/userposts")
-    public ResponseEntity<List<Post>> getSingleUserPosts(@RequestBody User user){
+    public ResponseEntity<List<Post>> getSingleUserPosts(@RequestBody User user) {
         return postService.getUserPosts(user.getId());
     }
 
@@ -48,17 +48,17 @@ public class PostController {
     }
 
     @PutMapping("/updatepost")
-    public ResponseEntity<String> updateUserPost(@RequestBody Post post){
+    public ResponseEntity<String> updateUserPost(@RequestBody Post post) {
         return postService.updatePost(post);
     }
 
     @PostMapping("/deletepost")
-    public ResponseEntity<String> deleteUserPost(@RequestBody Map<String, String> payload){
+    public ResponseEntity<String> deleteUserPost(@RequestBody Map<String, String> payload) {
         return postService.deletePost(payload.get("id"));
     }
 
     @PostMapping("postlike")
-    public ResponseEntity<String> manageLikes(@RequestBody Map<String, String> payload){
+    public ResponseEntity<String> manageLikes(@RequestBody Map<String, String> payload) {
         return postService.likes(payload.get("id"), payload.get("userId"));
     }
 }

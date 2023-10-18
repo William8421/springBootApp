@@ -40,7 +40,7 @@ export default function AddComment({ post }) {
         <textarea
           value={commentBody}
           onChange={(e) => setCommentBody(e.target.value)}
-          placeholder="Your comment"
+          placeholder="Write a comment"
           className="comment-textarea"
         />
         <div className="error">{serverError.commentError}</div>

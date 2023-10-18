@@ -82,7 +82,7 @@ export function CommentProvider({ children }) {
   }
   // Axios instance
   const axiosInstance = axios.create({
-    baseURL: "http://192.168.1.103:8080/api/comments",
+    baseURL: "http://192.168.1.104:8080/api/comments",
   });
   // all post comments
   async function getPostComments(post) {
