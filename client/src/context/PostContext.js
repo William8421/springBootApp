@@ -101,7 +101,7 @@ export function PostProvider({ children }) {
   }
   // Axios instance
   const axiosInstance = axios.create({
-    baseURL: "http://192.168.1.104:8080/api/posts",
+    baseURL: "http://localhost:8080/api/posts",
   });
   // all posts
   async function getAllPosts() {

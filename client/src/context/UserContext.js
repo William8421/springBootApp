@@ -42,7 +42,7 @@ export function UserProvider({ children }) {
   }
   // Axios instance
   const axiosInstance = axios.create({
-    baseURL: "http://192.168.1.104:8080/api",
+    baseURL: "http://localhost:8080/api",
   });
   // local storage
   const loggedInUser = JSON.parse(localStorage.getItem("user")) || "";
